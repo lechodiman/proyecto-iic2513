@@ -1,7 +1,19 @@
 module.exports = (sequelize, DataTypes) => {
   const place = sequelize.define('place', {
-    name: DataTypes.STRING,
-    location: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    location: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
     description: DataTypes.STRING,
   });
   place.associate = function associate(models) {
