@@ -1,13 +1,13 @@
-<h2>Places</h2>
+<h2>Routes</h2>
 
-<a href="<%- submitPlacePath %>">New place</a>
+<a href="<%- submitRoutePath %>">New route</a>
 
 
-<% if (!places.length) { %>
+<% if (!routes.length) { %>
   <p>No results</p>
 <% } else { %>
 
-  <table id="places-list">
+  <table id="routes-list">
     <thead>
         <tr>
           <th>Name</th>
@@ -17,14 +17,13 @@
         </tr>
     </thead>
     <tbody>
-      <% places.forEach((place) => { %>
+      <% routes.forEach((route) => { %>
         <tr>
-          <td><%- place.name %></td>
-          <td><%- place.location %></td>
-          <td><%- place.description %></td>
-          <td><a href="<%- editPlacePath(place) %>">Edit</a></td>
+          <td><%- route.name %></td>
+          <td><%- route.description %></td>
+          <td><a href="<%- editRoutePath(route) %>">Edit</a></td>
           <td>
-            <form action="<%- deletePlacePath(place) %>" method="POST">
+            <form action="<%- deleteRoutePath(route) %>" method="POST">
               <input type="hidden" name="_method" value="delete" />
               <input type="submit" value="Delete" />
             </form>
