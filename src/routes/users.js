@@ -14,6 +14,7 @@ router.get('users.list', '/', async(ctx) => {
     submitUserPath: ctx.router.url('users.new'),
     editUserPath: user => ctx.router.url('users.edit', { id: user.id }),
     deleteUserPath: user => ctx.router.url('users.delete', { id: user.id }),
+    profilePath: user => ctx.router.url('users.profile', { id: user.id }),
   });
 });
 
@@ -72,3 +73,10 @@ router.del('users.delete', '/:id', loadUser, async(ctx) => {
 });
 
 module.exports = router;
+
+router.get('users.profile', '/profile/:id', loadUser, async(ctx) => {
+  const { user } = ctx.state;
+  await ctx.render('users/profile', {
+    user,
+  });
+});
