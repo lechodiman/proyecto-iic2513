@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
   });
   place.associate = function associate(models) {
     // associations can be defined here
+
+    // Adds placeId to route, place get the accessors getRoutes and setRoutes
+    place.hasMany(models.route, {as: 'Routes'});
+    place.hasMany(models.reviewPlace, {as: 'ReviewPlaces'});
   };
   return place;
 };
