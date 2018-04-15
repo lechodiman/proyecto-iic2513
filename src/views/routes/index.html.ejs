@@ -19,7 +19,7 @@
     <tbody>
       <% routes.forEach((route) => { %>
         <tr>
-          <td><%- route.name %></td>
+          <td><a href="<%- routePath(route) %>"><%- route.name %></a></td>
           <td><%- route.description %></td>
           <td><a href="<%- editRoutePath(route) %>">Edit</a></td>
           <td>
