@@ -29,6 +29,12 @@ async function getReviews(ctx, next) {
   return next();
 }
 
+
+async function getRoutes(ctx) {
+  const routes = await ctx.orm.route.findAll({where: { placeId: ctx.params.id},});
+  return routes;
+}
+
 router.get('places.list', '/', async(ctx) => {
   const places = await ctx.orm.place.findAll();
   await ctx.render('places/index', {
@@ -99,8 +105,10 @@ router.get('places.profile', '/places/:id', loadPlace, getReviews, async(ctx) =>
   const { place } = ctx.state;
   await ctx.render('places/profile', {
     place,
+    routes: await getRoutes(ctx),
     reviews: ctx.state.reviews,
     placePath: place => ctx.router.url('places.profile', { id: place.id }),
+    routePath: route => ctx.router.url('routes.profile', { id: route.id }),
   });
 });
 
@@ -108,8 +116,10 @@ router.post('places.profile', '/places/:id', loadPlace, saveReview, getReviews, 
   const { place } = ctx.state;
   await ctx.render('places/profile', {
     place,
+    routes: await getRoutes(ctx),
     reviews: ctx.state.reviews,
     placePath: place => ctx.router.url('places.profile', { id: place.id }),
+    routePath: route => ctx.router.url('routes.profile', { id: route.id }),
   });
 });
 
