@@ -1,3 +1,16 @@
+const bcrypt = require('bcrypt');
+
+const PASSWORD_SALT = 10;
+
+async function buildPasswordHash(instance) {
+  if (instance.changed('password')) {
+    const hash = await bcrypt.hash(instance.password, PASSWORD_SALT);
+    instance.set('password', hash);
+  }
+}
+
+
+
 module.exports = (sequelize, DataTypes) => {
   const user = sequelize.define('user', {
     name: {
@@ -28,10 +41,18 @@ module.exports = (sequelize, DataTypes) => {
   });
   user.associate = function associate(models) {
     // Adds userId to reviewRoute, user get the accessors getReviewRoutes and setReviewRoutes
-    user.hasMany(models.reviewRoute, {as: 'ReviewRoutes'}, { onDelete: 'cascade' });
-    user.hasMany(models.reviewPlace, {as: 'ReviewPlaces'}, { onDelete: 'cascade' });
-    user.hasMany(models.profileComment, {as: 'SentComment'}, { onDelete: 'cascade' });
-    user.hasMany(models.profileComment, {as: 'ReceivedComment'}, { onDelete: 'cascade' });
+    user.hasMany(models.reviewRoute, {as: 'ReviewRoutes'}, { onDelete: 'cascade', hooks: true });
+    user.hasMany(models.reviewPlace, {as: 'ReviewPlaces'}, { onDelete: 'cascade', hooks: true });
+    user.hasMany(models.profileComment, {as: 'SentComment'}, { onDelete: 'cascade', hooks: true });
+    user.hasMany(models.profileComment, {as: 'ReceivedComment'}, { onDelete: 'cascade', hooks: true });
   };
+
+  user.beforeUpdate(buildPasswordHash);
+  user.beforeCreate(buildPasswordHash);
+
+  user.prototype.checkPassword = function checkPassword(password) {
+    return bcrypt.compare(password, this.password);
+  };
+
   return user;
 };

@@ -49,8 +49,8 @@ router.get('users.new', '/new', async(ctx) => {
 });
 
 router.post('users.create', '/', async(ctx) => {
-  const user = ctx.orm.user.build(ctx.request.body);
   try {
+    const user = ctx.orm.user.build(ctx.request.body);
     await user.save({
       fields: ['name', 'email', 'password']
     });
@@ -75,6 +75,7 @@ router.get('users.edit', '/:id/edit', loadUser, async (ctx) => {
 
 router.patch('users.update', '/:id', loadUser, async (ctx) => {
   const { user } = ctx.state;
+  console.log('HERE');
   try {
     const { name, email, password } = ctx.request.body;
     await user.update({ name, email, password });
@@ -83,7 +84,7 @@ router.patch('users.update', '/:id', loadUser, async (ctx) => {
     await ctx.render('users/edit', {
       user,
       errors: validationError.errors,
-      submitUserPath: ctx.router.url('users.update'),
+      submitUserPath: ctx.router.url('users.update', { id: user.id }),
     });
   }
 });
