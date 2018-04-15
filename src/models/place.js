@@ -20,8 +20,8 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
 
     // Adds placeId to route, place get the accessors getRoutes and setRoutes
-    place.hasMany(models.route, {as: 'Routes'});
-    place.hasMany(models.reviewPlace, {as: 'ReviewPlaces'});
+    place.hasMany(models.route, {as: 'Routes'}, { onDelete: 'cascade' });
+    place.hasMany(models.reviewPlace, {as: 'ReviewPlaces'}, { onDelete: 'cascade' });
   };
   return place;
 };

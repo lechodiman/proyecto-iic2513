@@ -28,10 +28,10 @@ module.exports = (sequelize, DataTypes) => {
   });
   user.associate = function associate(models) {
     // Adds userId to reviewRoute, user get the accessors getReviewRoutes and setReviewRoutes
-    user.hasMany(models.reviewRoute, {as: 'ReviewRoutes'});
-    user.hasMany(models.reviewPlace, {as: 'ReviewPlaces'});
-    user.hasMany(models.profileComment, {as: 'SentComment'});
-    user.hasMany(models.profileComment, {as: 'ReceivedComment'});
+    user.hasMany(models.reviewRoute, {as: 'ReviewRoutes'}, { onDelete: 'cascade' });
+    user.hasMany(models.reviewPlace, {as: 'ReviewPlaces'}, { onDelete: 'cascade' });
+    user.hasMany(models.profileComment, {as: 'SentComment'}, { onDelete: 'cascade' });
+    user.hasMany(models.profileComment, {as: 'ReceivedComment'}, { onDelete: 'cascade' });
   };
   return user;
 };

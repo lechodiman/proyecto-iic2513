@@ -7,6 +7,15 @@ async function loadPlace(ctx, next) {
   return next();
 }
 
+async function getReviews(ctx, next) {
+  ctx.state.reviews = await ctx.orm.reviewPlace.findAll({
+                                  attributes: ['id', 'comment', 'userId', 'createdAt'],
+                                  where: { placeId: ctx.params.id},
+                                  order: [ ['createdAt', 'DESC'], ],
+                                  });
+  return next();
+}
+
 router.get('places.list', '/', async(ctx) => {
   const places = await ctx.orm.place.findAll();
   await ctx.render('places/index', {
@@ -14,6 +23,7 @@ router.get('places.list', '/', async(ctx) => {
     submitPlacePath: ctx.router.url('places.new'),
     editPlacePath: place => ctx.router.url('places.edit', { id: place.id }),
     deletePlacePath: place => ctx.router.url('places.delete', { id: place.id }),
+    placePath: place => ctx.router.url('places.profile', { id: place.id }),
   });
 });
 
@@ -69,6 +79,16 @@ router.del('places.delete', '/:id', loadPlace, async(ctx) => {
   const { place } = ctx.state;
   await place.destroy();
   ctx.redirect(ctx.router.url('places.list'));
+});
+
+
+router.get('places.profile', '/places/:id', loadPlace, getReviews, async(ctx) => {
+  const { place } = ctx.state;
+  await ctx.render('places/profile', {
+    place,
+    reviews: ctx.state.reviews,
+    placePath: place => ctx.router.url('places.profile', { id: place.id }),
+  });
 });
 
 module.exports = router;
