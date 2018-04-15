@@ -1,7 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
   const reviewRoute = sequelize.define('reviewRoute', {
-    comment: DataTypes.STRING,
-    allowNull: false,
+    comment: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   });
   reviewRoute.associate = function associate(models) {
     // associations can be defined here

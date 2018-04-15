@@ -7,6 +7,28 @@ async function loadUser(ctx, next) {
   return next();
 }
 
+async function saveComment(ctx, next) {
+  const name = ctx.request.body.name;
+  let comment = ctx.request.body.comment;
+  const sender = await ctx.orm.user.findOne({ where: {name: name} });
+  if (sender) {
+    comment = await ctx.orm.profileComment.build({comment});
+    comment = await comment.save();
+    await comment.setSender(sender.id);
+    await comment.setReceiver(ctx.params.id);
+  }
+  return next();
+}
+
+async function getComments(ctx, next) {
+  ctx.state.comments = await ctx.orm.profileComment.findAll({
+                                  attributes: ['id', 'comment', 'SenderId', 'createdAt'],
+                                  where: { ReceiverId: ctx.params.id},
+                                  order: [ ['createdAt', 'DESC'], ],
+                                  });
+  return next();
+}
+
 router.get('users.list', '/', async(ctx) => {
   const users = await ctx.orm.user.findAll();
   await ctx.render('users/index', {
@@ -72,11 +94,27 @@ router.del('users.delete', '/:id', loadUser, async(ctx) => {
   ctx.redirect(ctx.router.url('users.list'));
 });
 
-module.exports = router;
-
-router.get('users.profile', '/profile/:id', loadUser, async(ctx) => {
+router.get('users.profile', '/profile/:id', loadUser, getComments, async(ctx) => {
   const { user } = ctx.state;
   await ctx.render('users/profile', {
     user,
+    comments: ctx.state.comments,
+    profilePath: user => ctx.router.url('users.profile', { id: user.id }),
   });
 });
+
+
+router.post('users.comment', '/profile/:id', loadUser, saveComment, getComments, async(ctx) => {
+  const { user } = ctx.state;
+  await ctx.render('users/profile', {
+    user,
+    comments: ctx.state.comments,
+    profilePath: user => ctx.router.url('users.profile', { id: user.id }),
+  });
+});
+
+
+
+
+
+module.exports = router;

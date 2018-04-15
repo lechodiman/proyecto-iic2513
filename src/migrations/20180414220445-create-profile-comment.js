@@ -11,6 +11,12 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      SenderId:{
+        type: Sequelize.STRING,
+      },
+      ReceiverId:{
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
