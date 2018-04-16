@@ -1,0 +1,13 @@
+<div class="container">	
+	<h2><%- user.name %>'s profile</h2>
+
+	<% comments.forEach(comment => { %>
+	  <div>
+	    <p><%- comment.comment %> </p>
+	    <p>Posted at <%- comment.createdAt %></p>
+	  </div>
+
+	<% }); %>
+
+	<%- include('_comment') %>
+</div>

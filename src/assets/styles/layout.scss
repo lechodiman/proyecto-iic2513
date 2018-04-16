@@ -1,4 +1,60 @@
 html, body {
   margin: 0;
   padding: 0;
+  background-color: #f4f4f4; 
+  font-family: "Helvetica", arial;
+}
+
+#banner {
+  text-align: left;
+  border-bottom: 2px solid black;
+  height: 40px;
+  background-color: grey;
+}
+
+#banner a{
+	color: white;
+	text-decoration: none;
+}
+
+#banner p {
+  display: inline-block;
+  padding-right: 30px;
+}
+
+.container{
+	margin: auto;
+	width: 80%;
+}
+
+.container a{
+	text-decoration: none;
+}
+
+label{
+	display: inline-block;
+	float: left;
+	clear: left;
+	width: 250px;
+}
+
+input{
+	display: inline-block;
+}
+
+.btn {
+	display: inline-block;
+	text-align: center;
+	white-space: nowrap;
+	user-select: none;
+	border: 1px solid transparent;
+	background-color: #fff;
+	color: #333;
+	border-color: #ccc;
+	border-radius: 3px;
+
+}
+
+.btn:hover{
+	background-color: #f2f2f2;
 }

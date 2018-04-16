@@ -1,0 +1,13 @@
+<div class="container">	
+	<h2><%- route.name %></h2>
+
+	<% reviews.forEach(review => { %>
+	  <div>
+	    <p><%- review.comment %> </p>
+	    <p>Posted at <%- review.createdAt %></p>
+	  </div>
+
+	<% }); %>
+
+	<%- include('_comment') %>
+</div>
