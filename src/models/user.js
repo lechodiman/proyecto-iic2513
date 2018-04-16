@@ -45,7 +45,8 @@ module.exports = (sequelize, DataTypes) => {
     user.hasMany(models.reviewPlace, {as: 'ReviewPlaces'}, { onDelete: 'cascade', hooks: true });
     user.hasMany(models.profileComment, {as: 'SentComment'}, { onDelete: 'cascade', hooks: true });
     user.hasMany(models.profileComment, {as: 'ReceivedComment'}, { onDelete: 'cascade', hooks: true });
-    user.hasMany(models.condition, {as: 'Conditions'}, { onDelete: 'cascade', hooks: true });
+    user.hasMany(models.achievementUser, {as: 'AchievementUser'}, { onDelete: 'cascade', hooks: true });
+
   };
 
   user.beforeUpdate(buildPasswordHash);
