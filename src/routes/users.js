@@ -49,8 +49,8 @@ router.get('users.new', '/new', async(ctx) => {
 });
 
 router.post('users.create', '/', async(ctx) => {
+  const user = ctx.orm.user.build(ctx.request.body);
   try {
-    const user = ctx.orm.user.build(ctx.request.body);
     await user.save({
       fields: ['name', 'email', 'password']
     });
