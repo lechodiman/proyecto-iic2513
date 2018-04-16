@@ -1,12 +1,11 @@
-<div class="container">	
+<div class="container">
 	<h2><%- group.name %>'s hub</h2>
 
 	<h3> Members: </h3>
 
-	<% members.forEach(member=> { %>
-	  <div>
+	<% members.forEach( (member) => { %>
+
 	    <p><%- member.name %> </p>
-	  </div>
 
 	<% }); %>
 

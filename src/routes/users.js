@@ -107,11 +107,7 @@ router.get('users.profile', '/profile/:id', loadUser, getComments, async(ctx) =>
 
 router.post('users.comment', '/profile/:id', loadUser, saveComment, getComments, async(ctx) => {
   const { user } = ctx.state;
-  await ctx.render('users/profile', {
-    user,
-    comments: ctx.state.comments,
-    profilePath: user => ctx.router.url('users.profile', { id: user.id }),
-  });
+  ctx.redirect(ctx.router.url('users.profile', { id: ctx.params.id }));
 });
 
 

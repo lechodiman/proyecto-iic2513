@@ -108,11 +108,7 @@ router.get('routes.profile', '/routes/:id', loadRoute, getReviews, async(ctx) =>
 
 router.post('routes.profile', '/routes/:id', loadRoute, saveReview, getReviews, async(ctx) => {
   const { route } = ctx.state;
-  await ctx.render('routes/profile', {
-    route,
-    reviews: ctx.state.reviews,
-    routePath: route => ctx.router.url('routes.profile', { id: route.id }),
-  });
+  ctx.redirect(ctx.router.url('routes.profile', { id: ctx.params.id }));
 });
 
 module.exports = router;

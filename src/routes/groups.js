@@ -7,7 +7,8 @@ async function loadGroup(ctx, next) {
   return next();
 }
 
-async function isMember(groupId, member){
+async function isMember(ctx, groupId, member){
+  if (!member){ return false; };
 
   return await ctx.orm.groupMembers.findOne({ where: {
                                                   memberId: member.id,
@@ -17,7 +18,8 @@ async function isMember(groupId, member){
 async function saveMember(ctx, next) {
   const name = ctx.request.body.name;
   const user = await ctx.orm.user.findOne({ where: {name: name} });
-  if (user) {
+  const alreadyMember = await isMember(ctx, ctx.params.id, user);
+  if (user && await !alreadyMember) {
     let groupInfo = await ctx.orm.groupMembers.build();
     groupInfo = await groupInfo.save();
     await groupInfo.setGroup(ctx.params.id);
@@ -32,14 +34,18 @@ async function getMembers(ctx, next) {
                                   });
   let members = [];
 
-  membersId.forEach( async (member) => {
+  for (let member of membersId) {
     const user = await ctx.orm.user.findOne({ where: {id: member.memberId} });
 
+    let newMember = await { id: member.memberId, name: user.name};
+    await members.push(newMember);
 
-    members.push({ id: member.memberId, name: user.name});
-  });
+    console.log("NEW MEMBER:");
+    console.log(newMember);
+  };
 
-
+  console.log("MEMBERS:");
+  console.log(members);
   ctx.state.members = members;
 
   return next();
@@ -124,11 +130,7 @@ router.get('groups.profile', '/profile/:id', loadGroup, getMembers, async(ctx) =
 
 router.post('groups.comment', '/profile/:id', loadGroup, saveMember, getMembers, async(ctx) => {
   const { group } = ctx.state;
-  await ctx.render('groups/profile', {
-    group,
-    members: ctx.state.members,
-    profilePath: group => ctx.router.url('groups.profile', { id: group.id }),
-  });
+  ctx.redirect(ctx.router.url('groups.profile', { id: ctx.params.id }));
 });
 
 
