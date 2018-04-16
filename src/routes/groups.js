@@ -73,8 +73,8 @@ router.get('groups.new', '/new', async(ctx) => {
 });
 
 router.post('groups.create', '/', async(ctx) => {
+  const group = ctx.orm.group.build(ctx.request.body);
   try {
-    const group = ctx.orm.group.build(ctx.request.body);
     await group.save({
       fields: ['name']
     });
