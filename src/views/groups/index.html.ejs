@@ -1,0 +1,33 @@
+<h2>Groups</h2>
+
+<a href="<%- submitGroupPath %>">New group</a>
+
+
+<% if (!groups.length) { %>
+  <p>No results</p>
+<% } else { %>
+
+  <table id="groups-list">
+    <thead>
+        <tr>
+          <th>Name</th>
+          <th </th>
+          <th </th>
+        </tr>
+    </thead>
+    <tbody>
+      <% groups.forEach((group) => { %>
+        <tr>
+          <td><a href="<%- profilePath(group) %>"><%- group.name %></a></td>
+          <td><a href="<%- editGroupPath(group) %>">Edit</a></td>
+          <td>
+            <form action="<%- deleteGroupPath(group) %>" method="POST">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="submit" value="Delete" />
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>

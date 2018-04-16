@@ -1,0 +1,12 @@
+<h2><%- group.name %>'s hub</h2>
+
+<h3> Members: </h3>
+
+<% members.forEach(member=> { %>
+  <div>
+    <p><%- member.name %> </p>
+  </div>
+
+<% }); %>
+
+<%- include('_addMember') %>

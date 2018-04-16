@@ -1,7 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
   const groupMembers = sequelize.define('groupMembers', {
-    groupId: DataTypes.INTEGER,
-    memberId: DataTypes.INTEGER,
+    groupId: {
+      type: DataTypes.INTEGER,
+      unique: 'unique',
+    },
+    memberId: {
+      type: DataTypes.INTEGER,
+      unique: 'unique',
+    },
   });
   groupMembers.associate = function associate(models) {
     // associations can be defined here
