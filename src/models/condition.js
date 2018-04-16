@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
     });
     condition.associate = function associate(models) {
       // associations can be defined here
-      // Adds conditionId to route, condition get the accessors getRoutes and setRoutes
       condition.belongsTo(models.achievemt);
       condition.belongsTo(models.user);
     };

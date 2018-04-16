@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const achievemt = sequelize.define('achievemt', {
+  const achievement = sequelize.define('achievement', {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     description: DataTypes.STRING,
   });
-  achievemt.associate = function associate(models) {
+  achievement.associate = function associate(models) {
     // associations can be defined here
-    achievemt.hasMany(models.condition, { as: 'Conditions' }, { onDelete: 'cascade', hooks: true });
+    achievement.hasMany(models.condition, { as: 'Conditions' }, { onDelete: 'cascade', hooks: true });
   };
-  return achievemt;
+  return achievement;
 };
