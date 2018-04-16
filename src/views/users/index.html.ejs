@@ -1,35 +1,37 @@
-<h2>Users</h2>
+<div class="container">
+  <h2>Users</h2>
 
-<a href="<%- submitUserPath %>">New user</a>
+  <a href="<%- submitUserPath %>">New user</a>
 
 
-<% if (!users.length) { %>
-  <p>No results</p>
-<% } else { %>
+  <% if (!users.length) { %>
+    <p>No results</p>
+  <% } else { %>
 
-  <table id="users-list">
-    <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th </th>
-          <th </th>
-        </tr>
-    </thead>
-    <tbody>
-      <% users.forEach((user) => { %>
-        <tr>
-          <td><a href="<%- profilePath(user) %>"><%- user.name %></a></td>
-          <td><%- user.email %></td>
-          <td><a href="<%- editUserPath(user) %>">Edit</a></td>
-          <td>
-            <form action="<%- deleteUserPath(user) %>" method="POST">
-              <input type="hidden" name="_method" value="delete" />
-              <input type="submit" value="Delete" />
-            </form>
-          </td>
-        </tr>
-      <% }) %>
-    </tbody>
-  </table>
-<% } %>
+    <table id="users-list">
+      <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th </th>
+            <th </th>
+          </tr>
+      </thead>
+      <tbody>
+        <% users.forEach((user) => { %>
+          <tr>
+            <td><a href="<%- profilePath(user) %>"><%- user.name %></a></td>
+            <td><%- user.email %></td>
+            <td><a href="<%- editUserPath(user) %>">Edit</a></td>
+            <td>
+              <form action="<%- deleteUserPath(user) %>" method="POST">
+                <input type="hidden" name="_method" value="delete" />
+                <input class="btn" type="submit" value="Delete" />
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>

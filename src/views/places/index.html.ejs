@@ -1,36 +1,38 @@
-<h2>Places</h2>
+<div class="container">
+  <h2>Places</h2>
 
-<a href="<%- submitPlacePath %>">New place</a>
+  <a href="<%- submitPlacePath %>">New place</a>
 
 
-<% if (!places.length) { %>
-  <p>No results</p>
-<% } else { %>
+  <% if (!places.length) { %>
+    <p>No results</p>
+  <% } else { %>
 
-  <table id="places-list">
-    <thead>
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th </th>
-          <th </th>
-        </tr>
-    </thead>
-    <tbody>
-      <% places.forEach((place) => { %>
-        <tr>
-          <td><a href="<%- placePath(place) %>"><%- place.name %></a></td>
-          <td><%- place.location %></td>
-          <td><%- place.description %></td>
-          <td><a href="<%- editPlacePath(place) %>">Edit</a></td>
-          <td>
-            <form action="<%- deletePlacePath(place) %>" method="POST">
-              <input type="hidden" name="_method" value="delete" />
-              <input type="submit" value="Delete" />
-            </form>
-          </td>
-        </tr>
-      <% }) %>
-    </tbody>
-  </table>
-<% } %>
+    <table id="places-list">
+      <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th </th>
+            <th </th>
+          </tr>
+      </thead>
+      <tbody>
+        <% places.forEach((place) => { %>
+          <tr>
+            <td><a href="<%- placePath(place) %>"><%- place.name %></a></td>
+            <td><%- place.location %></td>
+            <td><%- place.description %></td>
+            <td><a href="<%- editPlacePath(place) %>">Edit</a></td>
+            <td>
+              <form action="<%- deletePlacePath(place) %>" method="POST">
+                <input type="hidden" name="_method" value="delete" />
+                <input type="submit" value="Delete" />
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>

@@ -1,20 +1,22 @@
-<h2><%- place.name %></h2>
+<div class="container">	
+	<h2><%- place.name %></h2>
 
-<h2> Routes: </h2>
-<% routes.forEach(route => { %>
-  <div>
-    <p><a href="<%- routePath(route) %>"><%- route.name %></a></p>
-  </div>
+	<h2> Routes: </h2>
+	<% routes.forEach(route => { %>
+	  <div>
+	    <p><a href="<%- routePath(route) %>"><%- route.name %></a></p>
+	  </div>
 
-<% }); %>
+	<% }); %>
 
 
-<% reviews.forEach(review => { %>
-  <div>
-    <p><%- review.comment %> </p>
-    <p>Posted at <%- review.createdAt %></p>
-  </div>
+	<% reviews.forEach(review => { %>
+	  <div>
+	    <p><%- review.comment %> </p>
+	    <p>Posted at <%- review.createdAt %></p>
+	  </div>
 
-<% }); %>
+	<% }); %>
 
-<%- include('_comment') %>
+	<%- include('_comment') %>
+</div>

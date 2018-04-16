@@ -1,11 +1,13 @@
-<h2><%- user.name %>'s profile</h2>
+<div class="container">	
+	<h2><%- user.name %>'s profile</h2>
 
-<% comments.forEach(comment => { %>
-  <div>
-    <p><%- comment.comment %> </p>
-    <p>Posted at <%- comment.createdAt %></p>
-  </div>
+	<% comments.forEach(comment => { %>
+	  <div>
+	    <p><%- comment.comment %> </p>
+	    <p>Posted at <%- comment.createdAt %></p>
+	  </div>
 
-<% }); %>
+	<% }); %>
 
-<%- include('_comment') %>
+	<%- include('_comment') %>
+</div>
