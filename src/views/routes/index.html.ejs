@@ -1,35 +1,37 @@
-<h2>Routes</h2>
+<div class="container">  
+  <h2>Routes</h2>
 
-<a href="<%- submitRoutePath %>">New route</a>
+  <a href="<%- submitRoutePath %>">New route</a>
 
 
-<% if (!routes.length) { %>
-  <p>No results</p>
-<% } else { %>
+  <% if (!routes.length) { %>
+    <p>No results</p>
+  <% } else { %>
 
-  <table id="routes-list">
-    <thead>
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th </th>
-          <th </th>
-        </tr>
-    </thead>
-    <tbody>
-      <% routes.forEach((route) => { %>
-        <tr>
-          <td><a href="<%- routePath(route) %>"><%- route.name %></a></td>
-          <td><%- route.description %></td>
-          <td><a href="<%- editRoutePath(route) %>">Edit</a></td>
-          <td>
-            <form action="<%- deleteRoutePath(route) %>" method="POST">
-              <input type="hidden" name="_method" value="delete" />
-              <input type="submit" value="Delete" />
-            </form>
-          </td>
-        </tr>
-      <% }) %>
-    </tbody>
-  </table>
-<% } %>
+    <table id="routes-list">
+      <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th </th>
+            <th </th>
+          </tr>
+      </thead>
+      <tbody>
+        <% routes.forEach((route) => { %>
+          <tr>
+            <td><a href="<%- routePath(route) %>"><%- route.name %></a></td>
+            <td><%- route.description %></td>
+            <td><a href="<%- editRoutePath(route) %>">Edit</a></td>
+            <td>
+              <form action="<%- deleteRoutePath(route) %>" method="POST">
+                <input type="hidden" name="_method" value="delete" />
+                <input type="submit" value="Delete" />
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>
