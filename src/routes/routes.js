@@ -8,11 +8,11 @@ async function loadRoute(ctx, next) {
 }
 
 async function saveReview(ctx, next) {
-  const name = ctx.request.body.name;
+  const { name } = ctx.request.body;
   let comment = ctx.request.body.review;
-  const user = await ctx.orm.user.findOne({ where: {name: name} });
+  const user = await ctx.orm.user.findOne({ where: { name } });
   if (user) {
-    comment = await ctx.orm.reviewRoute.build({comment});
+    comment = await ctx.orm.reviewRoute.build({ comment });
     comment = await comment.save();
     await comment.setUser(user.id);
     await comment.setRoute(ctx.params.id);
@@ -22,15 +22,15 @@ async function saveReview(ctx, next) {
 
 async function getReviews(ctx, next) {
   ctx.state.reviews = await ctx.orm.reviewRoute.findAll({
-                                  attributes: ['id', 'comment', 'userId', 'createdAt'],
-                                  where: { routeId: ctx.params.id},
-                                  order: [ ['createdAt', 'DESC'], ],
-                                  });
+    attributes: ['id', 'comment', 'userId', 'createdAt'],
+    where: { routeId: ctx.params.id },
+    order: [['createdAt', 'DESC']],
+  });
   return next();
 }
 
 
-router.get('routes.list', '/', async(ctx) => {
+router.get('routes.list', '/', async (ctx) => {
   const routes = await ctx.orm.route.findAll();
   await ctx.render('routes/index', {
     routes,
@@ -41,7 +41,7 @@ router.get('routes.list', '/', async(ctx) => {
   });
 });
 
-router.get('routes.new', '/new', async(ctx) => {
+router.get('routes.new', '/new', async (ctx) => {
   const route = ctx.orm.route.build();
   await ctx.render('routes/new', {
     route,
@@ -49,12 +49,12 @@ router.get('routes.new', '/new', async(ctx) => {
   });
 });
 
-router.post('routes.create', '/', async(ctx) => {
-  const placeId = await ctx.orm.place.findOne({ where: { name: ctx.request.body.place},});
+router.post('routes.create', '/', async (ctx) => {
+  const placeId = await ctx.orm.place.findOne({ where: { name: ctx.request.body.place } });
   const route = ctx.orm.route.build(ctx.request.body);
   try {
     await route.save({
-      fields: ['name', 'description']
+      fields: ['name', 'description'],
     });
     route.setPlace(placeId);
     ctx.redirect(ctx.router.url('routes.list'));
@@ -91,23 +91,22 @@ router.patch('routes.update', '/:id', loadRoute, async (ctx) => {
   }
 });
 
-router.del('routes.delete', '/:id', loadRoute, async(ctx) => {
+router.del('routes.delete', '/:id', loadRoute, async (ctx) => {
   const { route } = ctx.state;
   await route.destroy();
   ctx.redirect(ctx.router.url('routes.list'));
 });
 
-router.get('routes.profile', '/routes/:id', loadRoute, getReviews, async(ctx) => {
+router.get('routes.profile', '/routes/:id', loadRoute, getReviews, async (ctx) => {
   const { route } = ctx.state;
   await ctx.render('routes/profile', {
     route,
     reviews: ctx.state.reviews,
-    routePath: route => ctx.router.url('routes.profile', { id: route.id }),
+    routePath: _route => ctx.router.url('routes.profile', { id: _route.id }),
   });
 });
 
-router.post('routes.profile', '/routes/:id', loadRoute, saveReview, getReviews, async(ctx) => {
-  const { route } = ctx.state;
+router.post('routes.profile', '/routes/:id', loadRoute, saveReview, getReviews, async (ctx) => {
   ctx.redirect(ctx.router.url('routes.profile', { id: ctx.params.id }));
 });
 

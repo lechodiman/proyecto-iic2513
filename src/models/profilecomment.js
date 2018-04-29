@@ -8,10 +8,10 @@ module.exports = (sequelize, DataTypes) => {
   profileComment.associate = function associate(models) {
     // associations can be defined here
     profileComment.belongsTo(models.user, {
-      as: 'Sender'
+      as: 'Sender',
     });
     profileComment.belongsTo(models.user, {
-      as: 'Receiver'
+      as: 'Receiver',
     });
   };
   return profileComment;

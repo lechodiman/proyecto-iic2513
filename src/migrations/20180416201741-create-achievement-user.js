@@ -7,10 +7,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      userId:{
+      userId: {
         type: Sequelize.INTEGER,
       },
-      achievementId:{
+      achievementId: {
         type: Sequelize.INTEGER,
       },
       createdAt: {

@@ -7,14 +7,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      comment:{
+      comment: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      SenderId:{
+      SenderId: {
         type: Sequelize.INTEGER,
       },
-      ReceiverId:{
+      ReceiverId: {
         type: Sequelize.INTEGER,
       },
       createdAt: {

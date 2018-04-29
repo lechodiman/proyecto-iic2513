@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 
     route.belongsTo(models.place); // Adds placeId attribute to route
     // Adds routeId to reviewRoute, route get the accessors getReviewRoutes and setReviewRoutes
-    route.hasMany(models.reviewRoute, {as: 'ReviewRoutes'}, { onDelete: 'cascade', hooks: true });
+    route.hasMany(models.reviewRoute, { as: 'ReviewRoutes' }, { onDelete: 'cascade', hooks: true });
   };
   return route;
 };

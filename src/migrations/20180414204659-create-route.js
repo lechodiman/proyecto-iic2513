@@ -14,7 +14,7 @@ module.exports = {
       description: {
         type: Sequelize.STRING,
       },
-      placeId:{
+      placeId: {
         type: Sequelize.INTEGER,
       },
       createdAt: {

@@ -1,7 +1,8 @@
-html, body {
+body,
+html {
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4; 
+  background-color: #f4f4f4;
   font-family: "Helvetica", arial;
 }
 
@@ -12,9 +13,9 @@ html, body {
   background-color: grey;
 }
 
-#banner a{
-	color: white;
-	text-decoration: none;
+#banner a {
+  color: white;
+  text-decoration: none;
 }
 
 #banner p {
@@ -22,39 +23,38 @@ html, body {
   padding-right: 30px;
 }
 
-.container{
-	margin: auto;
-	width: 80%;
+.container {
+  margin: auto;
+  width: 80%;
 }
 
-.container a{
-	text-decoration: none;
+.container a {
+  text-decoration: none;
 }
 
-label{
-	display: inline-block;
-	float: left;
-	clear: left;
-	width: 250px;
+label {
+  display: inline-block;
+  float: left;
+  clear: left;
+  width: 250px;
 }
 
-input{
-	display: inline-block;
+input {
+  display: inline-block;
 }
 
 .btn {
-	display: inline-block;
-	text-align: center;
-	white-space: nowrap;
-	user-select: none;
-	border: 1px solid transparent;
-	background-color: #fff;
-	color: #333;
-	border-color: #ccc;
-	border-radius: 3px;
-
+  display: inline-block;
+  text-align: center;
+  white-space: nowrap;
+  user-select: none;
+  border: 1px solid transparent;
+  background-color: #fff;
+  color: #333;
+  border-color: #ccc;
+  border-radius: 3px;
 }
 
-.btn:hover{
-	background-color: #f2f2f2;
+.btn:hover {
+  background-color: #f2f2f2;
 }
