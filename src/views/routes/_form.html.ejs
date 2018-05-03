@@ -22,10 +22,6 @@
       <input type="text" name="description" value="<%= route.description %>" />
     </div>
     <div class="field">
-      <label for="place">Place</label>
-      <input type="text" name="place" value="<%= route.place %>" />
-    </div>
-    <div class="field">
       <% if (route.isNewRecord) { %>
         <input type="submit" name="create" value="Create" />
       <% } else { %>

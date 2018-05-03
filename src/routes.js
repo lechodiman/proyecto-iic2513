@@ -25,7 +25,7 @@ router.use('/', index.routes());
 router.use('/hello', hello.routes());
 router.use('/users', users.routes());
 router.use('/places', places.routes());
-router.use('/routes', routes.routes());
+router.use('/places/:id/routes', routes.routes());
 router.use('/groups', groups.routes());
 router.use('/misc', miscs.routes());
 router.use('/session', session.routes());
