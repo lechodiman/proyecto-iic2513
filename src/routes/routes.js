@@ -90,10 +90,30 @@ router.get('routes.profile', '/:route_id', loadRoute, getReviews, async (ctx) =>
     route,
     reviews: ctx.state.reviews,
     routePath: _route => ctx.router.url('routes.profile', { id: ctx.params.id, route_id: _route.id }),
+    routeAddPath: _route => ctx.router.url('routes.add', { id: ctx.params.id, route_id: _route.id }),
   });
 });
 
 router.post('routes.profile', '/:route_id', loadRoute, saveReview, getReviews, async (ctx) => {
+  ctx.redirect(ctx.router.url('routes.profile', { id: ctx.params.id, route_id: ctx.params.route_id }));
+});
+
+router.post('routes.add', '/:route_id/add', loadRoute, async (ctx) => {
+  const user = ctx.state.currentUser;
+  let routeCount = await ctx.orm.routeCount
+    .findOne({ where: { userId: user.id, routeId: ctx.params.route_id } });
+
+  if (!routeCount) {
+    routeCount = ctx.orm.routeCount.build({ route_count: 1 });
+    await routeCount.save();
+    await routeCount.setUser(user.id);
+    await routeCount.setRoute(ctx.params.route_id);
+  } else {
+    routeCount.route_count += 1;
+    await routeCount.save();
+  }
+
+
   ctx.redirect(ctx.router.url('routes.profile', { id: ctx.params.id, route_id: ctx.params.route_id }));
 });
 

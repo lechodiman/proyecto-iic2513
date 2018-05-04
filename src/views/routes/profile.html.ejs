@@ -10,6 +10,11 @@
 	<% }); %>
 
 	<% if (currentUser) { %>
-		<%- include('_comment') %>
+		<div>
+			<%- include('_comment') %>
+		</div>
+		<div>
+			<%- include('_add_route') %>
+		</div>
 	<% } %>
 </div>
