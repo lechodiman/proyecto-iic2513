@@ -8,9 +8,8 @@ async function loadUser(ctx, next) {
 }
 
 async function saveComment(ctx, next) {
-  const { name } = ctx.request.body;
   let { comment } = ctx.request.body;
-  const sender = await ctx.orm.user.findOne({ where: { name } });
+  const sender = ctx.state.currentUser;
   if (sender) {
     comment = await ctx.orm.profileComment.build({ comment });
     comment = await comment.save();
