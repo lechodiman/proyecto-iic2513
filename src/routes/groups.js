@@ -21,14 +21,7 @@ async function isMember(ctx, groupId, member) {
 }
 
 async function saveMember(ctx, next) {
-  const {
-    name,
-  } = ctx.request.body;
-  const user = await ctx.orm.user.findOne({
-    where: {
-      name,
-    },
-  });
+  const user = ctx.state.currentUser;
   const alreadyMember = await isMember(ctx, ctx.params.id, user);
   if (user && await !alreadyMember) {
     let groupInfo = await ctx.orm.groupMembers.build();
@@ -53,17 +46,21 @@ async function getMembers(ctx, next) {
         id: member.memberId,
       },
     });
-
-    const newMember = {
-      id: member.memberId,
-      name: user.name,
-    };
-    members.push(newMember);
+    members.push(user);
   });
 
-  ctx.state.members = await Promise.all(members);
-
-  return next();
+  return Promise.all(members)
+    .then((allMembers) => {
+      const formattedMembers = [];
+      allMembers.forEach((member) => {
+        formattedMembers.push({
+          id: member.id,
+          name: member.name,
+        });
+      });
+      ctx.state.members = formattedMembers;
+      return next();
+    });
 }
 
 
@@ -98,7 +95,10 @@ router.post('groups.create', '/', async (ctx) => {
     await group.save({
       fields: ['name'],
     });
-    ctx.redirect(ctx.router.url('groups.list'));
+    await saveMember(ctx, () => {});
+    ctx.redirect(ctx.router.url('groups.profile', {
+      id: group.id,
+    }));
   } catch (validationError) {
     await ctx.render('groups/new', {
       group,
@@ -156,7 +156,7 @@ router.get('groups.profile', '/profile/:id', loadGroup, getMembers, async (ctx) 
 });
 
 
-router.post('groups.comment', '/profile/:id', loadGroup, saveMember, getMembers, async (ctx) => {
+router.post('groups.profile', '/profile/:id', loadGroup, saveMember, getMembers, async (ctx) => {
   ctx.redirect(ctx.router.url('groups.profile', {
     id: ctx.params.id,
   }));
