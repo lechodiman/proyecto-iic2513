@@ -1,20 +1,37 @@
 <div class="container">
 	<h2><%- user.name %>'s profile</h2>
 
-	<% comments.forEach(comment => { %>
-	  <div>
-	    <p><%- comment.comment %> </p>
-	    <p>Posted at <%- comment.createdAt %></p>
-	  </div>
+	<div id="routes">
 
-	<% }); %>
+		<h3>Routes</h3>
+			<table>
+			  <tr>
+			    <th class="title">Route</th>
+			    <th class="title">Times climbed</th>
+			  </tr>
 
-	<% routes.forEach(route => { %>
-	  <div>
-	    <p><%- route.route.name %> <%- route.count %></p>
-	  </div>
+		<% routes.forEach(route => { %>
+			<tr>
+				<td class="routes-item"><%- route.route.name %></td>
+				<td class="routes-item"><%- route.count %></td>
+			</tr>
+		<% }); %>
+		</table>
+	</div>
 
-	<% }); %>
+	<div id="comments">
+
+		<h3>Comments</h3>
+
+		<% comments.forEach(comment => { %>
+		  <div class="comment">
+		    <p><%- comment.comment.comment %> </p>
+		    <p>Posted at <%- comment.comment.createdAt %> by <%- comment.sender.name %></p>
+		  </div>
+
+		<% }); %>
+
+	</div>
 
 	<%- include('_comment') %>
 </div>

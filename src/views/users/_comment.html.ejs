@@ -1,10 +1,11 @@
-<div>
-  <form action="<%= profilePath(user) %>" method="post">
-    <div>
-      <label for="Message">Message</label>
-      <textarea name="comment">
-      </textarea>
-    </div>
-    <input type="submit" value="Comment">
-  </form>
-</div>
+<% if (currentUser) { %>
+  <div>
+    <form action="<%= profilePath(user) %>" method="post">
+      <div>
+        <textarea name="comment">
+        </textarea>
+      </div>
+      <input type="submit" value="Comment">
+    </form>
+  </div>
+<% } %>

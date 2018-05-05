@@ -43,12 +43,28 @@ async function saveComment(ctx, next) {
 }
 
 async function getComments(ctx, next) {
-  ctx.state.comments = await ctx.orm.profileComment.findAll({
+  const profileComments = await ctx.orm.profileComment.findAll({
     attributes: ['id', 'comment', 'SenderId', 'createdAt'],
     where: { ReceiverId: ctx.params.id },
     order: [['createdAt', 'DESC']],
   });
-  return next();
+
+  const users = [];
+
+  profileComments.forEach((profileComment) => {
+    const user = ctx.orm.user.findOne({ where: { id: profileComment.SenderId } });
+    users.push(user);
+  });
+
+  return Promise.all(users)
+    .then((allUsers) => {
+      const result = [];
+      for (let i = 0; i < allUsers.length; i += 1) {
+        result.push({ comment: profileComments[i], sender: allUsers[i] });
+      }
+      ctx.state.comments = result;
+      return next();
+    });
 }
 
 router.get('users.list', '/', async (ctx) => {
@@ -118,7 +134,6 @@ router.del('users.delete', '/:id', loadUser, async (ctx) => {
 
 router.get('users.profile', '/profile/:id', loadUser, loadRoutes, getComments, async (ctx) => {
   const { user } = ctx.state;
-  console.log(ctx.state.routes);
   await ctx.render('users/profile', {
     user,
     comments: ctx.state.comments,
