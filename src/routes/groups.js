@@ -69,15 +69,10 @@ router.get('groups.list', '/', async (ctx) => {
   await ctx.render('groups/index', {
     groups,
     submitGroupPath: ctx.router.url('groups.new'),
-    editGroupPath: group => ctx.router.url('groups.edit', {
-      id: group.id,
-    }),
-    deleteGroupPath: group => ctx.router.url('groups.delete', {
-      id: group.id,
-    }),
-    profilePath: group => ctx.router.url('groups.profile', {
-      id: group.id,
-    }),
+    editGroupPath: group => ctx.router.url('groups.edit', { id: group.id }),
+    deleteGroupPath: group => ctx.router.url('groups.delete', { id: group.id }),
+    profilePath: group => ctx.router.url('groups.profile', { id: group.id }),
+    admin: await ctx.state.isAdmin(),
   });
 });
 

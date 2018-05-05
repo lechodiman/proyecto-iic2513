@@ -75,6 +75,7 @@ router.get('users.list', '/', async (ctx) => {
     editUserPath: user => ctx.router.url('users.edit', { id: user.id }),
     deleteUserPath: user => ctx.router.url('users.delete', { id: user.id }),
     profilePath: user => ctx.router.url('users.profile', { id: user.id }),
+    admin: await ctx.state.isAdmin(),
   });
 });
 

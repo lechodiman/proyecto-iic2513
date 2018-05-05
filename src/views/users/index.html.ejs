@@ -12,23 +12,27 @@
       <thead>
           <tr>
             <th class="title">Name</th>
-            <th class="title">Email</th>
-            <th </th>
-            <th </th>
+            <% if (admin) { %>
+              <th class="title">Email</th>
+              <th </th>
+              <th </th>
+            <% } %>
           </tr>
       </thead>
       <tbody>
         <% users.forEach((user) => { %>
           <tr>
             <td><a href="<%- profilePath(user) %>"><%- user.name %></a></td>
-            <td><%- user.email %></td>
-            <td><a href="<%- editUserPath(user) %>">Edit</a></td>
-            <td>
-              <form action="<%- deleteUserPath(user) %>" method="POST">
-                <input type="hidden" name="_method" value="delete" />
-                <input class="btn" type="submit" value="Delete" />
-              </form>
-            </td>
+            <% if (admin) { %>
+              <td><%- user.email %></td>
+              <td><a href="<%- editUserPath(user) %>">Edit</a></td>
+              <td>
+                <form action="<%- deleteUserPath(user) %>" method="POST">
+                  <input type="hidden" name="_method" value="delete" />
+                  <input class="btn" type="submit" value="Delete" />
+                </form>
+              </td>
+            <% } %>
           </tr>
         <% }) %>
       </tbody>

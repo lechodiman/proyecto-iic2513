@@ -42,6 +42,7 @@ router.get('places.list', '/', async (ctx) => {
     editPlacePath: place => ctx.router.url('places.edit', { id: place.id }),
     deletePlacePath: place => ctx.router.url('places.delete', { id: place.id }),
     placePath: place => ctx.router.url('places.profile', { id: place.id }),
+    admin: await ctx.state.isAdmin(),
   });
 });
 

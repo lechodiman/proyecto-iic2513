@@ -17,9 +17,14 @@ router.use(async (ctx, next) => {
     newSessionPath: ctx.router.url('session.new'),
     destroySessionPath: ctx.router.url('session.destroy'),
     profilePath: user => ctx.router.url('users.profile', { id: user.id }),
+    isAdmin: async () => {
+      if (!ctx.state.currentUser) { return false; }
+      return ctx.orm.admin.findOne({ where: { adminId: ctx.session.userId } });
+    },
   });
   return next();
 });
+
 
 router.use('/', index.routes());
 router.use('/hello', hello.routes());
