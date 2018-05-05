@@ -1,10 +1,17 @@
-<div class="container">	
+<div class="container">
 	<h2><%- user.name %>'s profile</h2>
 
 	<% comments.forEach(comment => { %>
 	  <div>
 	    <p><%- comment.comment %> </p>
 	    <p>Posted at <%- comment.createdAt %></p>
+	  </div>
+
+	<% }); %>
+
+	<% routes.forEach(route => { %>
+	  <div>
+	    <p><%- route.route.name %> <%- route.count %></p>
 	  </div>
 
 	<% }); %>

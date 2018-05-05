@@ -7,6 +7,29 @@ async function loadUser(ctx, next) {
   return next();
 }
 
+async function loadRoutes(ctx, next) {
+  const routesCount = await ctx.orm.routeCount.findAll({
+    where: { userId: ctx.state.user.id },
+  });
+
+  const routes = [];
+
+  routesCount.forEach((routeCount) => {
+    const route = ctx.orm.route.findOne({ where: { id: routeCount.routeId } });
+    routes.push(route);
+  });
+
+  return Promise.all(routes)
+    .then((allRoutes) => {
+      const stats = [];
+      for (let i = 0; i < routesCount.length; i += 1) {
+        stats.push({ route: allRoutes[i], count: routesCount[i].route_count });
+      }
+      ctx.state.routes = stats;
+      return next();
+    });
+}
+
 async function saveComment(ctx, next) {
   let { comment } = ctx.request.body;
   const sender = ctx.state.currentUser;
@@ -93,11 +116,13 @@ router.del('users.delete', '/:id', loadUser, async (ctx) => {
   ctx.redirect(ctx.router.url('users.list'));
 });
 
-router.get('users.profile', '/profile/:id', loadUser, getComments, async (ctx) => {
+router.get('users.profile', '/profile/:id', loadUser, loadRoutes, getComments, async (ctx) => {
   const { user } = ctx.state;
+  console.log(ctx.state.routes);
   await ctx.render('users/profile', {
     user,
     comments: ctx.state.comments,
+    routes: ctx.state.routes,
     profilePath: _user => ctx.router.url('users.profile', { id: _user.id }),
   });
 });
