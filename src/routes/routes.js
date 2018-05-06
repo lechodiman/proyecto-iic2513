@@ -28,6 +28,31 @@ async function getReviews(ctx, next) {
   return next();
 }
 
+
+async function awardTrophies(ctx) {
+  const user = ctx.state.currentUser;
+  const climbs = await ctx.orm.routeCount.findAll({ where: { userId: user.id } });
+  let total = 0;
+  climbs.forEach((climb) => {
+    total += climb.route_count;
+  });
+
+  if (total >= 5) {
+    const trophy = await ctx.orm.achievement.findOne({ where: { name: '5 Climbs' } });
+    const alreadyAwarded = await ctx.orm.achievementUser.findOne({
+      attributes: ['id', 'userId', 'achievementId', 'createdAt'],
+      where: { achievementId: trophy.id, userId: user.id },
+    });
+    if (!alreadyAwarded) {
+      const result = ctx.orm.achievementUser.build();
+      await result.save();
+      result.setUser(user.id);
+      result.setAchievement(trophy.id);
+    }
+  }
+}
+
+
 router.get('routes.new', '/new', async (ctx) => {
   const route = ctx.orm.route.build();
   await ctx.render('routes/new', {
@@ -113,6 +138,7 @@ router.post('routes.add', '/:route_id/add', loadRoute, async (ctx) => {
     await routeCount.save();
   }
 
+  await awardTrophies(ctx);
 
   ctx.redirect(ctx.router.url('routes.profile', { id: ctx.params.id, route_id: ctx.params.route_id }));
 });

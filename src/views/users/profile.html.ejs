@@ -19,6 +19,22 @@
 		</table>
 	</div>
 
+	<div id="trophies">
+
+		<h3>Achievements</h3>
+			<table>
+			  <tr>
+			    <th class="title">Name</th>
+			  </tr>
+
+		<% achievements.forEach(achievement => { %>
+			<tr>
+				<td><%- achievement.name %></td>
+			</tr>
+		<% }); %>
+		</table>
+	</div>
+
 	<div id="comments">
 
 		<h3>Comments</h3>

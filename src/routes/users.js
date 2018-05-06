@@ -30,6 +30,23 @@ async function loadRoutes(ctx, next) {
     });
 }
 
+async function loadAchievements(ctx, next) {
+  const achIds = await ctx.orm.achievementUser.findAll({ where: { userId: ctx.state.user.id } });
+
+  const trophies = [];
+
+  achIds.forEach((achId) => {
+    const trophy = ctx.orm.achievement.findOne({ where: { id: achId.achievementId } });
+    trophies.push(trophy);
+  });
+
+  return Promise.all(trophies)
+    .then((allTrophies) => {
+      ctx.state.achievements = allTrophies;
+      return next();
+    });
+}
+
 async function saveComment(ctx, next) {
   let { comment } = ctx.request.body;
   const sender = ctx.state.currentUser;
@@ -133,12 +150,13 @@ router.del('users.delete', '/:id', loadUser, async (ctx) => {
   ctx.redirect(ctx.router.url('users.list'));
 });
 
-router.get('users.profile', '/profile/:id', loadUser, loadRoutes, getComments, async (ctx) => {
+router.get('users.profile', '/profile/:id', loadUser, loadRoutes, loadAchievements, getComments, async (ctx) => {
   const { user } = ctx.state;
   await ctx.render('users/profile', {
     user,
     comments: ctx.state.comments,
     routes: ctx.state.routes,
+    achievements: ctx.state.achievements,
     profilePath: _user => ctx.router.url('users.profile', { id: _user.id }),
   });
 });
