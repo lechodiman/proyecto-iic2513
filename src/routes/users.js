@@ -110,7 +110,8 @@ router.post('users.create', '/', async (ctx) => {
     await user.save({
       fields: ['name', 'email', 'password'],
     });
-    ctx.redirect(ctx.router.url('users.list'));
+    ctx.session.userId = user.id;
+    ctx.redirect(ctx.router.url('users.profile', { id: user.id }));
   } catch (validationError) {
     await ctx.render('users/new', {
       user,
