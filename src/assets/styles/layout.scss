@@ -6,6 +6,30 @@ html {
   font-family: "Helvetica", arial;
 }
 
+a {
+  background-color: transparent;
+}
+a:hover,
+a:focus {
+  color: #23527c;
+  text-decoration: underline;
+}
+a:focus {
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+label {
+  display: inline-block;
+  float: left;
+  clear: left;
+  width: 250px;
+}
+
+input {
+  display: inline-block;
+}
+
 #banner {
   text-align: left;
   border-bottom: 2px solid black;
@@ -32,16 +56,6 @@ html {
   text-decoration: none;
 }
 
-label {
-  display: inline-block;
-  float: left;
-  clear: left;
-  width: 250px;
-}
-
-input {
-  display: inline-block;
-}
 
 .btn {
   display: inline-block;
@@ -49,12 +63,135 @@ input {
   white-space: nowrap;
   user-select: none;
   border: 1px solid transparent;
-  background-color: #fff;
-  color: #333;
-  border-color: #ccc;
-  border-radius: 3px;
+  color: #fff;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+  padding: 6px 12px;
+
+
 }
 
 .btn:hover {
-  background-color: #f2f2f2;
+  color: #fff;
+  background-color: #286090;
+  border-color: #204d74;
+  text-decoration: none;
+}
+
+.btn:focus {
+  color: #fff;
+  background-color: #286090;
+  border-color: #122b40;
+  text-decoration: none;
+}
+
+
+// Helper classes
+
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.text-center {
+  text-align: center;
+}
+.text-justify {
+  text-align: justify;
+}
+.text-nowrap {
+  white-space: nowrap;
+}
+.text-lowercase {
+  text-transform: lowercase;
+}
+.text-uppercase {
+  text-transform: uppercase;
+}
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+.center-block {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+.pull-right {
+  float: right !important;
+}
+.pull-left {
+  float: left !important;
+}
+.hide {
+  display: none !important;
+}
+
+
+// Columns classes
+.seven:first-child,.eight:first-child, .nine:first-child, .ten:first-child,.eleven:first-child,.five:first-child, .four:first-child, .three:first-child, .two:first-child, .one:first-child, .six:first-child { 
+  margin-left: 0; /* This line of code makes the left-most column align to the left of the screen */
+}
+.eleven {
+  width: 91.5%;
+  float: left;
+  margin-left: 2%;
+}
+.ten {
+  width: 83%;
+  float: left;
+  margin-left: 2%;
+}
+.nine {
+  width: 74.5%;
+  float: left;
+  margin-left: 2%;
+}
+.eight {
+  width: 66%;
+  float: left;
+  margin-left: 2%;
+}
+.seven {
+  width: 57.5%;
+  float: left;
+  margin-left: 2%;
+}
+.six {
+  width: 49%; /* This div spans six columns (the entire row)*/
+  float: left;
+  margin-left: 2%;
+}
+.five {
+  width: 40.5%; /* This div spans five columns */
+  margin-left: 2%;
+  float:left;
+}
+.four {
+  width: 32%;
+  float:left;
+  margin-left: 2%;
+}
+.three {
+  width: 23.5%;
+  float:left;
+  margin-left: 2%;
+}
+.two {
+  width: 15%;
+  float:left;
+  margin-left: 2%;
+
+}
+.one {
+  width: 6.5%;
+  float:left;
+  margin-left: 2%;
+}
+.row {
+  width: 100%;
+  clear: both; /* Clear creates new styles for the next row */
+  padding: 0px;
+  margin: 0px;
 }
