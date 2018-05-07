@@ -131,23 +131,29 @@ router.get('users.edit', '/:id/edit', loadUser, async (ctx) => {
 
 
 router.patch('users.update', '/:id', loadUser, async (ctx) => {
-  const { user } = ctx.state;
-  try {
-    const { name, email, password } = ctx.request.body;
-    await user.update({ name, email, password });
+  if (await ctx.state.isAdmin()) {
+    const { user } = ctx.state;
+    try {
+      const { name, email, password } = ctx.request.body;
+      await user.update({ name, email, password });
+      ctx.redirect(ctx.router.url('users.list'));
+    } catch (validationError) {
+      await ctx.render('users/edit', {
+        user,
+        errors: validationError.errors,
+        submitUserPath: ctx.router.url('users.update', { id: user.id }),
+      });
+    }
+  } else {
     ctx.redirect(ctx.router.url('users.list'));
-  } catch (validationError) {
-    await ctx.render('users/edit', {
-      user,
-      errors: validationError.errors,
-      submitUserPath: ctx.router.url('users.update', { id: user.id }),
-    });
   }
 });
 
 router.del('users.delete', '/:id', loadUser, async (ctx) => {
-  const { user } = ctx.state;
-  await user.destroy();
+  if (await ctx.state.isAdmin()) {
+    const { user } = ctx.state;
+    await user.destroy();
+  }
   ctx.redirect(ctx.router.url('users.list'));
 });
 
