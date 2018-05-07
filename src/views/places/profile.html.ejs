@@ -1,5 +1,20 @@
-<div class="container">	
+<div class="container">
 	<h2><%- place.name %></h2>
+
+	<div class="row">
+	<div class="place-description">
+		<div class="four">
+			<h3>Place's Image</h3>
+		</div>
+
+		<div class="eight">
+			<h3>Place's Description</h3>
+			<p><%- place.description %></p>
+		</div>		
+	</div>
+	</div>
+
+
 
 	<h2> Routes: </h2>
 	<% routes.forEach(route => { %>
@@ -8,15 +23,20 @@
 	  </div>
 
 	<% }); %>
+	<% if (currentUser) { %>
+		<div> <a href ="<%- submitRoutePath %>"> New route </a></div>
+	<% } %>
 
 
+	<h2> Reviews: </h2>
 	<% reviews.forEach(review => { %>
 	  <div>
-	    <p><%- review.comment %> </p>
-	    <p>Posted at <%- review.createdAt %></p>
+	    <p><%- review.comment.comment %> </p>
+	    <p>Posted at <%- review.comment.createdAt %> by <%- review.sender.name %></p>
 	  </div>
 
 	<% }); %>
-
-	<%- include('_comment') %>
+	<% if (currentUser) { %>
+		<div> <%- include('_comment') %> </div>
+	<% }; %>
 </div>

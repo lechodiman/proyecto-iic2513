@@ -1,20 +1,19 @@
 module.exports = {
   up(queryInterface, Sequelize) {
-    return queryInterface.createTable('routes', {
+    return queryInterface.createTable('routeCounts', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
+      userId: {
+        type: Sequelize.INTEGER,
       },
-      description: {
-        type: Sequelize.STRING,
+      routeId: {
+        type: Sequelize.INTEGER,
       },
-      placeId: {
+      route_count: {
         type: Sequelize.INTEGER,
       },
       createdAt: {
@@ -28,6 +27,6 @@ module.exports = {
     });
   },
   down(queryInterface, Sequelize) {
-    return queryInterface.dropTable('routes');
+    return queryInterface.dropTable('routeCounts');
   },
 };

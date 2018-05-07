@@ -1,21 +1,15 @@
 module.exports = {
   up(queryInterface, Sequelize) {
-    return queryInterface.createTable('routes', {
+    return queryInterface.createTable('admins', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      description: {
-        type: Sequelize.STRING,
-      },
-      placeId: {
+      adminId: {
         type: Sequelize.INTEGER,
+        unique: true,
       },
       createdAt: {
         allowNull: false,
@@ -28,6 +22,6 @@ module.exports = {
     });
   },
   down(queryInterface, Sequelize) {
-    return queryInterface.dropTable('routes');
+    return queryInterface.dropTable('admins');
   },
 };

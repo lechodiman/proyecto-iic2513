@@ -7,12 +7,51 @@ async function loadUser(ctx, next) {
   return next();
 }
 
+async function loadRoutes(ctx, next) {
+  const routesCount = await ctx.orm.routeCount.findAll({
+    where: { userId: ctx.state.user.id },
+  });
+
+  const routes = [];
+
+  routesCount.forEach((routeCount) => {
+    const route = ctx.orm.route.findOne({ where: { id: routeCount.routeId } });
+    routes.push(route);
+  });
+
+  return Promise.all(routes)
+    .then((allRoutes) => {
+      const stats = [];
+      for (let i = 0; i < routesCount.length; i += 1) {
+        stats.push({ route: allRoutes[i], count: routesCount[i].route_count });
+      }
+      ctx.state.routes = stats;
+      return next();
+    });
+}
+
+async function loadAchievements(ctx, next) {
+  const achIds = await ctx.orm.achievementUser.findAll({ where: { userId: ctx.state.user.id } });
+
+  const trophies = [];
+
+  achIds.forEach((achId) => {
+    const trophy = ctx.orm.achievement.findOne({ where: { id: achId.achievementId } });
+    trophies.push(trophy);
+  });
+
+  return Promise.all(trophies)
+    .then((allTrophies) => {
+      ctx.state.achievements = allTrophies;
+      return next();
+    });
+}
+
 async function saveComment(ctx, next) {
-  const name = ctx.request.body.name;
-  let comment = ctx.request.body.comment;
-  const sender = await ctx.orm.user.findOne({ where: {name: name} });
+  let { comment } = ctx.request.body;
+  const sender = ctx.state.currentUser;
   if (sender) {
-    comment = await ctx.orm.profileComment.build({comment});
+    comment = await ctx.orm.profileComment.build({ comment });
     comment = await comment.save();
     await comment.setSender(sender.id);
     await comment.setReceiver(ctx.params.id);
@@ -21,15 +60,31 @@ async function saveComment(ctx, next) {
 }
 
 async function getComments(ctx, next) {
-  ctx.state.comments = await ctx.orm.profileComment.findAll({
-                                  attributes: ['id', 'comment', 'SenderId', 'createdAt'],
-                                  where: { ReceiverId: ctx.params.id},
-                                  order: [ ['createdAt', 'DESC'], ],
-                                  });
-  return next();
+  const profileComments = await ctx.orm.profileComment.findAll({
+    attributes: ['id', 'comment', 'SenderId', 'createdAt'],
+    where: { ReceiverId: ctx.params.id },
+    order: [['createdAt', 'DESC']],
+  });
+
+  const users = [];
+
+  profileComments.forEach((profileComment) => {
+    const user = ctx.orm.user.findOne({ where: { id: profileComment.SenderId } });
+    users.push(user);
+  });
+
+  return Promise.all(users)
+    .then((allUsers) => {
+      const result = [];
+      for (let i = 0; i < allUsers.length; i += 1) {
+        result.push({ comment: profileComments[i], sender: allUsers[i] });
+      }
+      ctx.state.comments = result;
+      return next();
+    });
 }
 
-router.get('users.list', '/', async(ctx) => {
+router.get('users.list', '/', async (ctx) => {
   const users = await ctx.orm.user.findAll();
   await ctx.render('users/index', {
     users,
@@ -37,10 +92,11 @@ router.get('users.list', '/', async(ctx) => {
     editUserPath: user => ctx.router.url('users.edit', { id: user.id }),
     deleteUserPath: user => ctx.router.url('users.delete', { id: user.id }),
     profilePath: user => ctx.router.url('users.profile', { id: user.id }),
+    admin: await ctx.state.isAdmin(),
   });
 });
 
-router.get('users.new', '/new', async(ctx) => {
+router.get('users.new', '/new', async (ctx) => {
   const user = ctx.orm.user.build();
   await ctx.render('users/new', {
     user,
@@ -48,13 +104,14 @@ router.get('users.new', '/new', async(ctx) => {
   });
 });
 
-router.post('users.create', '/', async(ctx) => {
+router.post('users.create', '/', async (ctx) => {
   const user = ctx.orm.user.build(ctx.request.body);
   try {
     await user.save({
-      fields: ['name', 'email', 'password']
+      fields: ['name', 'email', 'password'],
     });
-    ctx.redirect(ctx.router.url('users.list'));
+    ctx.session.userId = user.id;
+    ctx.redirect(ctx.router.url('users.profile', { id: user.id }));
   } catch (validationError) {
     await ctx.render('users/new', {
       user,
@@ -74,44 +131,47 @@ router.get('users.edit', '/:id/edit', loadUser, async (ctx) => {
 
 
 router.patch('users.update', '/:id', loadUser, async (ctx) => {
-  const { user } = ctx.state;
-  console.log('HERE');
-  try {
-    const { name, email, password } = ctx.request.body;
-    await user.update({ name, email, password });
+  if (await ctx.state.isAdmin()) {
+    const { user } = ctx.state;
+    try {
+      const { name, email, password } = ctx.request.body;
+      await user.update({ name, email, password });
+      ctx.redirect(ctx.router.url('users.list'));
+    } catch (validationError) {
+      await ctx.render('users/edit', {
+        user,
+        errors: validationError.errors,
+        submitUserPath: ctx.router.url('users.update', { id: user.id }),
+      });
+    }
+  } else {
     ctx.redirect(ctx.router.url('users.list'));
-  } catch (validationError) {
-    await ctx.render('users/edit', {
-      user,
-      errors: validationError.errors,
-      submitUserPath: ctx.router.url('users.update', { id: user.id }),
-    });
   }
 });
 
-router.del('users.delete', '/:id', loadUser, async(ctx) => {
-  const { user } = ctx.state;
-  await user.destroy();
+router.del('users.delete', '/:id', loadUser, async (ctx) => {
+  if (await ctx.state.isAdmin()) {
+    const { user } = ctx.state;
+    await user.destroy();
+  }
   ctx.redirect(ctx.router.url('users.list'));
 });
 
-router.get('users.profile', '/profile/:id', loadUser, getComments, async(ctx) => {
+router.get('users.profile', '/profile/:id', loadUser, loadRoutes, loadAchievements, getComments, async (ctx) => {
   const { user } = ctx.state;
   await ctx.render('users/profile', {
     user,
     comments: ctx.state.comments,
-    profilePath: user => ctx.router.url('users.profile', { id: user.id }),
+    routes: ctx.state.routes,
+    achievements: ctx.state.achievements,
+    profilePath: _user => ctx.router.url('users.profile', { id: _user.id }),
   });
 });
 
 
-router.post('users.comment', '/profile/:id', loadUser, saveComment, getComments, async(ctx) => {
-  const { user } = ctx.state;
+router.post('users.comment', '/profile/:id', loadUser, saveComment, getComments, async (ctx) => {
   ctx.redirect(ctx.router.url('users.profile', { id: ctx.params.id }));
 });
-
-
-
 
 
 module.exports = router;
