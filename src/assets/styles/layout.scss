@@ -3,11 +3,19 @@ html {
   margin: 0;
   padding: 0;
   background-color: #f4f4f4;
-  font-family: "Helvetica", arial;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 1.6em;
+  margin: 0; 
+
 }
 
 a {
   background-color: transparent;
+  text-decoration: none;
+  color: #000;
+
 }
 a:hover,
 a:focus {
@@ -30,30 +38,36 @@ input {
   display: inline-block;
 }
 
-#banner {
-  text-align: left;
-  border-bottom: 2px solid black;
-  height: 40px;
-  background-color: grey;
+.navbar{
+    background-color: #3b5998;
+    overflow: hidden;
+    height: 63px;
 }
 
-#banner a {
-  color: white;
-  text-decoration: none;
+.navbar a{
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
 }
 
-#banner p {
-  display: inline-block;
-  padding-right: 30px;
+.navbar ul{
+    margin: 8px 0 0 0;
+    list-style: none;
 }
+
+.navbar a:hover{
+    background-color: #ddd;
+    color: #000;
+}
+
 
 .container {
   margin: auto;
   width: 80%;
-}
-
-.container a {
-  text-decoration: none;
 }
 
 
@@ -128,6 +142,9 @@ input {
   display: none !important;
 }
 
+.clr {
+  clear: both;
+}
 
 // Columns classes
 .seven:first-child,.eight:first-child, .nine:first-child, .ten:first-child,.eleven:first-child,.five:first-child, .four:first-child, .three:first-child, .two:first-child, .one:first-child, .six:first-child { 
