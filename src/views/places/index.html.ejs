@@ -13,7 +13,6 @@
           <tr>
             <th>Name</th>
             <th>Location</th>
-            <th>Description</th>
             <% if (admin) { %>
               <th </th>
               <th </th>
@@ -25,7 +24,6 @@
           <tr>
             <td><a href="<%- placePath(place) %>"><%- place.name %></a></td>
             <td><%- place.location %></td>
-            <td><%- place.description %></td>
             <% if (admin) { %>
               <td><a href="<%- editPlacePath(place) %>">Edit</a></td>
               <td>
