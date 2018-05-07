@@ -12,13 +12,14 @@
 <body>
   <header>
     <div class="navbar">
+      <h1>TOCHOVA</h1>
       <ul>
         <a href="/"> Home </a>
         <a href="/misc/faq"> FAQ </a>
         <a href="/misc/tips"> Tips </a>        
       <% if (currentUser) { %>
         <a href="<%= profilePath(currentUser) %>"> <%- currentUser.name %> </a>
-        <a class="pull-right"> href="<%= destroySessionPath %>"> Logout </a>
+        <a class="pull-right" href="<%= destroySessionPath %>"> Logout </a>
       <% } else { %>
         <a class="pull-right" href="<%= newSessionPath %>"> Login </a>
       <% } %>
