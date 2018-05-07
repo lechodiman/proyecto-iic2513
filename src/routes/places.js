@@ -83,7 +83,9 @@ router.patch('places.update', '/:id', loadPlace, async (ctx) => {
   const { place } = ctx.state;
   try {
     const { name, location, description } = ctx.request.body;
-    await place.update({ name, location, description });
+    if (await ctx.state.isAdmin()) {
+      await place.update({ name, location, description });
+    }
     ctx.redirect(ctx.router.url('places.list'));
   } catch (validationError) {
     await ctx.render('places/edit', {
@@ -96,7 +98,9 @@ router.patch('places.update', '/:id', loadPlace, async (ctx) => {
 
 router.del('places.delete', '/:id', loadPlace, async (ctx) => {
   const { place } = ctx.state;
-  await place.destroy();
+  if (await ctx.state.isAdmin()) {
+    await place.destroy();
+  }
   ctx.redirect(ctx.router.url('places.list'));
 });
 

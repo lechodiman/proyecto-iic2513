@@ -92,7 +92,9 @@ router.patch('routes.update', '/:route_id', loadRoute, async (ctx) => {
   const { route } = ctx.state;
   try {
     const { name, description } = ctx.request.body;
-    await route.update({ name, description });
+    if (await ctx.state.isAdmin()) {
+      await route.update({ name, description });
+    }
     ctx.redirect(ctx.router.url('routes.profile', { id: ctx.params.id, route_id: route.id }));
   } catch (validationError) {
     await ctx.render('routes/edit', {
@@ -105,7 +107,9 @@ router.patch('routes.update', '/:route_id', loadRoute, async (ctx) => {
 
 router.del('routes.delete', '/:route_id', loadRoute, async (ctx) => {
   const { route } = ctx.state;
-  await route.destroy();
+  if (await ctx.state.isAdmin()) {
+    await route.destroy();
+  }
   ctx.redirect(ctx.router.url('places.profile', { id: ctx.params.id }));
 });
 
