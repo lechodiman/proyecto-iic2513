@@ -10,25 +10,23 @@
 </head>
 
 <body>
-  <header>
-    <div class="navbar">
-      <h1>TOCHOVA</h1>
-      <ul>
-        <a href="/"> Home </a>
-        <a href="/misc/faq"> FAQ </a>
-        <a href="/misc/tips"> Tips </a>        
-      </ul>
-      <ul>
-      <% if (currentUser) { %>
-        <a class="pull-right" href="<%= destroySessionPath %>"> Logout </a>
-        <a class="pull-right" href="<%= profilePath(currentUser) %>"> <%- currentUser.name %> </a>
-      <% } else { %>
-        <a class="pull-right" href="<%= newSessionPath %>"> Login </a>
-      <% } %>        
-      </ul>
-    </div>
+  <div class="navbar">
+    <h1>TOCHOVA</h1>
+    <ul>
+      <a href="/"> Home </a>
+      <a href="/misc/faq"> FAQ </a>
+      <a href="/misc/tips"> Tips </a>        
+    </ul>
+    <ul>
+    <% if (currentUser) { %>
+      <a class="pull-right" href="<%= destroySessionPath %>"> Logout </a>
+      <a class="pull-right" href="<%= profilePath(currentUser) %>"> <%- currentUser.name %> </a>
+    <% } else { %>
+      <a class="pull-right" href="<%= newSessionPath %>"> Login </a>
+    <% } %>        
+    </ul>
+  </div>
 
-  </header>
   <%- body %>
     <script src="/assets/app.js"></script>
     <script src="/assets/appReact.js"></script>
