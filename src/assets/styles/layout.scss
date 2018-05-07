@@ -7,8 +7,6 @@ html {
   font-size: 16px;
   font-weight: normal;
   line-height: 1.6em;
-  margin: 0; 
-
 }
 
 a {
@@ -38,10 +36,21 @@ input {
   display: inline-block;
 }
 
+textarea {
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  height: auto;
+}
+
 .navbar{
     background-color: #3b5998;
     overflow: hidden;
     height: 63px;
+    margin-bottom: 0;
 }
 
 .navbar a{
@@ -80,11 +89,23 @@ input {
   width: 80%;
 }
 
+.glaphicon {
+  width: 142px;
+  height: 142px;
+  padding-left: 160px;
+}
+
+.glaphicon img {
+  width: 100%;
+  height: auto;
+}
+
 .hero-image {
   height: 510px;
-  // background: url(/images/logo.png) no-repeat center center fixed;
-  background-color: #C5EFF7;
+  background: url(/assets/hero-image.jpg) no-repeat center center;
+  // background-color: #C5EFF7;
   text-align: right; 
+  background-size: cover;
 }
 
 .hero-image h2 {
@@ -108,7 +129,6 @@ input {
 }
 
 .section h2 {
-  padding-top: 60%;
   padding-left: 20%;
 }
 
@@ -119,6 +139,14 @@ input {
 .about {
   height: 443px;
   background-color: #67809F;
+}
+
+.about-header {
+  padding-top: 32px;
+}
+
+.about h2, p{
+  padding-left: 45px;
 }
 
 #footer {
@@ -136,8 +164,6 @@ input {
   background-color: #337ab7;
   border-color: #2e6da4;
   padding: 6px 12px;
-
-
 }
 
 .btn:hover {
@@ -153,6 +179,9 @@ input {
   border-color: #122b40;
   text-decoration: none;
 }
+
+// Tables
+
 
 
 // Helper classes

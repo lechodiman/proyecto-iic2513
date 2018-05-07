@@ -17,12 +17,14 @@
         <a href="/"> Home </a>
         <a href="/misc/faq"> FAQ </a>
         <a href="/misc/tips"> Tips </a>        
+      </ul>
+      <ul>
       <% if (currentUser) { %>
-        <a href="<%= profilePath(currentUser) %>"> <%- currentUser.name %> </a>
         <a class="pull-right" href="<%= destroySessionPath %>"> Logout </a>
+        <a class="pull-right" href="<%= profilePath(currentUser) %>"> <%- currentUser.name %> </a>
       <% } else { %>
         <a class="pull-right" href="<%= newSessionPath %>"> Login </a>
-      <% } %>
+      <% } %>        
       </ul>
     </div>
 
