@@ -13,9 +13,10 @@
           <tr>
             <th>Name</th>
             <th>Location</th>
-            <th>Description</th>
-            <th </th>
-            <th </th>
+            <% if (admin) { %>
+              <th </th>
+              <th </th>
+            <% } %>
           </tr>
       </thead>
       <tbody>
@@ -23,14 +24,15 @@
           <tr>
             <td><a href="<%- placePath(place) %>"><%- place.name %></a></td>
             <td><%- place.location %></td>
-            <td><%- place.description %></td>
-            <td><a href="<%- editPlacePath(place) %>">Edit</a></td>
-            <td>
-              <form action="<%- deletePlacePath(place) %>" method="POST">
-                <input type="hidden" name="_method" value="delete" />
-                <input type="submit" value="Delete" />
-              </form>
-            </td>
+            <% if (admin) { %>
+              <td><a href="<%- editPlacePath(place) %>">Edit</a></td>
+              <td>
+                <form action="<%- deletePlacePath(place) %>" method="POST">
+                  <input type="hidden" name="_method" value="delete" />
+                  <input class="btn" type="submit" value="Delete" />
+                </form>
+              </td>
+            <% } %>
           </tr>
         <% }) %>
       </tbody>

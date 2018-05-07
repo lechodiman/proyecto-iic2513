@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   achievement.associate = function associate(models) {
     // associations can be defined here
-    
+    achievement.hasMany(models.achievementUser, { as: 'AchievementUsers' }, { onDelete: 'cascade', hooks: true });
   };
   return achievement;
 };

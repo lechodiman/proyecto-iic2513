@@ -1,26 +1,35 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
-    <meta charset="utf-8">
-    <title>Tochova</title>
-    <% if (env !== 'development') { %>
-      <link rel="stylesheet" href="/assets/styles.css">
+<head>
+  <meta charset="utf-8">
+  <title>Tochova</title>
+  <% if (env !== 'development') { %>
+    <link rel="stylesheet" href="/assets/styles.css">
     <% } %>
-  </head>
+</head>
 
-  <body>
-    <header>
-      <div id="banner">
-        <p><a href="/"> Home </a></p>
-        <p><a href="/misc/faq"> FAQ </a></p>
-        <p><a href="/misc/tips"> Tips </a></p>
-      </div>
+<body>
+  <div class="navbar">
+    <h1>TOCHOVA</h1>
+    <ul>
+      <a href="/"> Home </a>
+      <a href="/misc/faq"> FAQ </a>
+      <a href="/misc/tips"> Tips </a>        
+    </ul>
+    <ul>
+    <% if (currentUser) { %>
+      <a class="pull-right" href="<%= destroySessionPath %>"> Logout </a>
+      <a class="pull-right" href="<%= profilePath(currentUser) %>"> <%- currentUser.name %> </a>
+    <% } else { %>
+      <a class="pull-right" href="<%= newSessionPath %>"> Login </a>
+    <% } %>        
+    </ul>
+  </div>
 
-    </header>
-    <%- body %>
+  <%- body %>
     <script src="/assets/app.js"></script>
     <script src="/assets/appReact.js"></script>
-  </body>
+</body>
 
 </html>

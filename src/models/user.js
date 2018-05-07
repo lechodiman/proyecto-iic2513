@@ -10,7 +10,6 @@ async function buildPasswordHash(instance) {
 }
 
 
-
 module.exports = (sequelize, DataTypes) => {
   const user = sequelize.define('user', {
     name: {
@@ -41,12 +40,12 @@ module.exports = (sequelize, DataTypes) => {
   });
   user.associate = function associate(models) {
     // Adds userId to reviewRoute, user get the accessors getReviewRoutes and setReviewRoutes
-    user.hasMany(models.reviewRoute, {as: 'ReviewRoutes'}, { onDelete: 'cascade', hooks: true });
-    user.hasMany(models.reviewPlace, {as: 'ReviewPlaces'}, { onDelete: 'cascade', hooks: true });
-    user.hasMany(models.profileComment, {as: 'SentComment'}, { onDelete: 'cascade', hooks: true });
-    user.hasMany(models.profileComment, {as: 'ReceivedComment'}, { onDelete: 'cascade', hooks: true });
-    user.hasMany(models.achievementUser, {as: 'AchievementUser'}, { onDelete: 'cascade', hooks: true });
-
+    user.hasMany(models.reviewRoute, { as: 'ReviewRoutes' }, { onDelete: 'cascade', hooks: true });
+    user.hasMany(models.reviewPlace, { as: 'ReviewPlaces' }, { onDelete: 'cascade', hooks: true });
+    user.hasMany(models.profileComment, { as: 'SentComment' }, { onDelete: 'cascade', hooks: true });
+    user.hasMany(models.profileComment, { as: 'ReceivedComment' }, { onDelete: 'cascade', hooks: true });
+    user.hasMany(models.achievementUser, { as: 'AchievementUser' }, { onDelete: 'cascade', hooks: true });
+    user.hasMany(models.routeCount, { as: 'RouteCount' }, { onDelete: 'cascade', hooks: true });
   };
 
   user.beforeUpdate(buildPasswordHash);

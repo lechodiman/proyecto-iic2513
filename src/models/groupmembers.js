@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   groupMembers.associate = function associate(models) {
     // associations can be defined here
-    groupMembers.belongsTo(models.user, {as: 'member'});
+    groupMembers.belongsTo(models.user, { as: 'member' });
     groupMembers.belongsTo(models.group);
   };
   return groupMembers;

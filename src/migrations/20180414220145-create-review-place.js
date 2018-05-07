@@ -7,14 +7,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      comment:{
+      comment: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      userId:{
+      userId: {
         type: Sequelize.INTEGER,
       },
-      placeId:{
+      placeId: {
         type: Sequelize.INTEGER,
       },
       createdAt: {
