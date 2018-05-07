@@ -13,8 +13,8 @@
 
 	<% reviews.forEach(review => { %>
 	  <div>
-	    <p><%- review.comment %> </p>
-	    <p>Posted at <%- review.createdAt %></p>
+	    <p><%- review.comment.comment %> </p>
+	    <p>Posted at <%- review.comment.createdAt %> by <%- review.sender.name %></p>
 	  </div>
 
 	<% }); %>

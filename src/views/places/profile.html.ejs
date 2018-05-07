@@ -14,6 +14,8 @@
 	</div>
 	</div>
 
+
+
 	<h2> Routes: </h2>
 	<% routes.forEach(route => { %>
 	  <div>
@@ -21,19 +23,20 @@
 	  </div>
 
 	<% }); %>
-
-
-	<% reviews.forEach(review => { %>
-	  <div>
-	    <p><%- review.comment %> </p>
-	    <p>Posted at <%- review.createdAt %></p>
-	  </div>
-
-	<% }); %>
-
 	<% if (currentUser) { %>
-		<div> <%- include('_comment') %> </div>
 		<div> <a href ="<%- submitRoutePath %>"> New route </a></div>
 	<% } %>
 
+
+	<h2> Reviews: </h2>
+	<% reviews.forEach(review => { %>
+	  <div>
+	    <p><%- review.comment.comment %> </p>
+	    <p>Posted at <%- review.comment.createdAt %> by <%- review.sender.name %></p>
+	  </div>
+
+	<% }); %>
+	<% if (currentUser) { %>
+		<div> <%- include('_comment') %> </div>
+	<% }; %>
 </div>

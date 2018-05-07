@@ -20,12 +20,27 @@ async function saveReview(ctx, next) {
 }
 
 async function getReviews(ctx, next) {
-  ctx.state.reviews = await ctx.orm.reviewRoute.findAll({
+  const reviewRoutes = await ctx.orm.reviewRoute.findAll({
     attributes: ['id', 'comment', 'userId', 'createdAt'],
     where: { routeId: ctx.params.route_id },
     order: [['createdAt', 'DESC']],
   });
-  return next();
+  const users = [];
+
+  reviewRoutes.forEach((reviewRoute) => {
+    const user = ctx.orm.user.findOne({ where: { id: reviewRoute.userId } });
+    users.push(user);
+  });
+
+  return Promise.all(users)
+    .then((allUsers) => {
+      const result = [];
+      for (let i = 0; i < allUsers.length; i += 1) {
+        result.push({ comment: reviewRoutes[i], sender: allUsers[i] });
+      }
+      ctx.state.reviews = result;
+      return next();
+    });
 }
 
 
