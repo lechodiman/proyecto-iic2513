@@ -8,18 +8,25 @@
         <%= error %>
       </div>
     <% } %>
-    <form action="<%= createSessionPath %>" method="post">
+  <div class="login">
+    <form class="row" action="<%= createSessionPath %>" method="post">
       <input type="hidden" name="_method" value="put" />
-      <div class="field">
-        <label for="email">Email</label>
-        <input type="email" name="email" value="<%= locals.email %>" />
+      <div class="row">
+        <div class="input-field">
+          <label for="email">Email</label>
+          <input type="email" name="email" value="<%= locals.email %>" />
+        </div>        
       </div>
-      <div class="field">
-        <label for="password">Password</label>
-        <input type="password" name="password" value="<%= locals.password %>" />
+
+      <div class="row">
+        <div class="input-field">
+          <label for="password">Password</label>
+          <input type="password" name="password" value="<%= locals.password %>" />
+        </div>        
       </div>
-      <div class="field">
+      <div class="input-field">
         <input class="btn" type="submit" name="sign-in" value="Sign In" />
       </div>
-    </form>
+    </form>    
+  </div>
 </div>
