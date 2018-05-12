@@ -3,7 +3,7 @@ html {
   margin: 0;
   padding: 0;
   background-color: #f4f4f4;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   font-size: 16px;
   font-weight: normal;
   line-height: 1.6em;
@@ -170,30 +170,64 @@ textarea {
   color: white;
 }
 
+
+// Buttons
+
 .btn {
   display: inline-block;
   text-align: center;
-  white-space: nowrap;
-  user-select: none;
   border: 1px solid transparent;
   color: #fff;
-  background-color: #337ab7;
-  border-color: #2e6da4;
-  padding: 6px 12px;
+  padding: 8px 16px;
+  border-radius: 3px;
 }
 
-.btn:hover {
+.btn-default {
+  background-color: slategrey;
+  color: #fff;
+}
+
+.btn-default:hover {
+  background-color: lightslategrey;
+  color: #fff;
+}
+
+.btn-blue {
+  background-color: #337ab7;
+  border-color: #2e6da4;
+  -webkit-transition: all .2s;
+}
+
+.btn-blue:hover {
   color: #fff;
   background-color: #286090;
   border-color: #204d74;
   text-decoration: none;
 }
 
-.btn:focus {
+.btn-green {
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+  -webkit-transition: all .2s;
+
+}
+
+.btn-green:hover {
+  background-color: #449d44;
+  border-color: #398439;
   color: #fff;
-  background-color: #286090;
-  border-color: #122b40;
-  text-decoration: none;
+}
+
+.btn-red {
+  background-color: #d9534f;
+  border-color: #d43f3a;
+  -webkit-transition: all .2s;
+}
+
+.btn-red:hover {
+  background-color: #c9302c;
+  border-color: #ac2925;
+  color: #fff;
 }
 
 // Form control
