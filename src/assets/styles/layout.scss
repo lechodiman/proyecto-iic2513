@@ -18,7 +18,7 @@ a {
 a:hover,
 a:focus {
   color: #23527c;
-  text-decoration: underline;
+  outline: 0;
 }
 a:focus {
   outline: 5px auto -webkit-focus-ring-color;
@@ -93,6 +93,10 @@ textarea {
   background-color: white;
   height: 400px;
   text-align: center;
+}
+
+.section p{
+  padding: 0;
 }
 
 .section img {
