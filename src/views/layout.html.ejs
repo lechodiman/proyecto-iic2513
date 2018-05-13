@@ -10,22 +10,27 @@
 </head>
 
 <body>
-  <div class="navbar">
+  <nav>
     <h1>TOCHOVA</h1>
     <ul>
-      <a href="/"> Home </a>
-      <a href="/misc/faq"> FAQ </a>
-      <a href="/misc/tips"> Tips </a>        
-    </ul>
-    <ul>
+      <li><a href="/"> Home </a></li>
+      <li> <a href="#">Explore</a>
+        <ul class="drop-menu">
+          <li><a href="#">Users</a></li>
+          <li><a href="#">Places</a></li>
+          <li><a href="#">Groups</a></li> 
+        </ul>
+      </li>
+      <li><a href="/misc/faq"> FAQ </a></li>
+      <li><a href="/misc/tips"> Tips </a></li>              
     <% if (currentUser) { %>
-      <a class="pull-right" href="<%= destroySessionPath %>"> Logout </a>
-      <a class="pull-right" href="<%= profilePath(currentUser) %>"> <%- currentUser.name %> </a>
+      <li><a href="<%= destroySessionPath %>"> Logout </a></li>
+      <li><a href="<%= profilePath(currentUser) %>"> <%- currentUser.name %> </a></li>      
     <% } else { %>
-      <a class="pull-right" href="<%= newSessionPath %>"> Login </a>
+      <li><a href="<%= newSessionPath %>"> Login </a></li>
     <% } %>        
     </ul>
-  </div>
+  </nav>
 
   <%- body %>
     <script src="/assets/app.js"></script>
