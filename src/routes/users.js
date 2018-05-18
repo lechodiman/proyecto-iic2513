@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+const sendWelcomeEmail = require('../mailers/signup-alert');
 
 const router = new KoaRouter();
 
@@ -111,6 +112,7 @@ router.post('users.create', '/', async (ctx) => {
       fields: ['name', 'email', 'password'],
     });
     ctx.session.userId = user.id;
+    await sendWelcomeEmail(ctx, { user });
     ctx.redirect(ctx.router.url('users.profile', { id: user.id }));
   } catch (validationError) {
     await ctx.render('users/new', {
