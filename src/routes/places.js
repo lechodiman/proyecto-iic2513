@@ -72,9 +72,11 @@ router.get('places.new', '/new', async (ctx) => {
 router.post('places.create', '/', async (ctx) => {
   const place = ctx.orm.place.build(ctx.request.body);
   try {
-    await place.save({
-      fields: ['name', 'location', 'description'],
-    });
+    if (ctx.state.currentUser) {
+      await place.save({
+        fields: ['name', 'location', 'description'],
+      });
+    }
     ctx.redirect(ctx.router.url('places.list'));
   } catch (validationError) {
     await ctx.render('places/new', {
