@@ -5,7 +5,16 @@
 	<div class="user-description">
 		<div class="four">
 			<h3>User's Image</h3>
+			<% if (user.picture) { %>
+			<img src=<%= user.picture %> />
+			<% }%>
 		</div>
+
+		<% if (currentUser && currentUser.id == user.id) { %>
+			<div>
+			<%- include('_picture') %>
+			</div>
+		<% }%>
 
 		<div class="eight">
 			<h3>User's Description</h3>
@@ -64,6 +73,4 @@
 	</div>
 
 	<%- include('_comment') %>
-
-	<%- include('_picture') %>
 </div>

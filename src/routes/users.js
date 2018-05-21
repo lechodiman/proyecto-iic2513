@@ -180,7 +180,10 @@ router.post('users.comment', '/profile/:id', loadUser, saveComment, getComments,
 router.post('users.picture', '/profile/:id/picture', loadUser, async (ctx) => {
   const { image } = ctx.request.body.files;
 
-  await uploadFile(ctx, `${ctx.state.user.id}.png`, image);
+  if (ctx.state.currentUser.id === ctx.state.user.id) {
+    await uploadFile(ctx, `${ctx.state.user.id}.png`, image);
+    await ctx.state.user.update({ picture: ctx.state.url });
+  }
 
 
   ctx.redirect(ctx.router.url('users.profile', { id: ctx.params.id }));
