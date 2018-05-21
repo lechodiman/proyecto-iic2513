@@ -1,5 +1,6 @@
 const KoaRouter = require('koa-router');
 const sendWelcomeEmail = require('../mailers/signup-alert');
+const uploadFile = require('../services/file-storage');
 
 const router = new KoaRouter();
 
@@ -167,11 +168,21 @@ router.get('users.profile', '/profile/:id', loadUser, loadRoutes, loadAchievemen
     routes: ctx.state.routes,
     achievements: ctx.state.achievements,
     profilePath: _user => ctx.router.url('users.profile', { id: _user.id }),
+    submitPicturePath: ctx.router.url('users.picture', { id: user.id }),
   });
 });
 
 
 router.post('users.comment', '/profile/:id', loadUser, saveComment, getComments, async (ctx) => {
+  ctx.redirect(ctx.router.url('users.profile', { id: ctx.params.id }));
+});
+
+router.post('users.picture', '/profile/:id/picture', loadUser, async (ctx) => {
+  const { image } = ctx.request.body.files;
+
+  await uploadFile(ctx, `${ctx.state.user.id}.png`, image);
+
+
   ctx.redirect(ctx.router.url('users.profile', { id: ctx.params.id }));
 });
 
