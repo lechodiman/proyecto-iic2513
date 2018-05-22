@@ -1,4 +1,4 @@
-<div>
+<div class="login">
   <% if (locals.errors) { %>
     <div class="errors">
       You need to fix the following errors:
@@ -9,27 +9,39 @@
       </ul>
     </div>
   <% } %>
-  <form action="<%= submitUserPath %>" method="post">
+  <form class="row" action="<%= submitUserPath %>" method="post">
     <% if (!user.isNewRecord) { %>
       <input type="hidden" name="_method" value="patch" />
     <% } %>
-    <div class="field">
-      <label for="name">Name</label>
-      <input type="text" name="name" value="<%= user.name %>" />
+    <div class="row">
+      <div class="input-field six">
+        <label for="name">Name</label>
+        <input placeholder="First Name" type="text" name="name" value="<%= user.name %>" />
+      </div>
+      <div class="input-field six">
+        <label for="lastName">Last name</label>
+        <input placeholder="Last Name" type="text" name="lastName" value="<%= user.lastName %>" />
+      </div>      
     </div>
-    <div class="field">
-      <label for="email">Email</label>
-      <input type="text" name="email" value="<%= user.email %>" />
+
+    <div class="row">
+      <div class="input-field">
+        <label for="email">Email</label>
+        <input type="text" name="email" value="<%= user.email %>" />
+      </div>      
     </div>
-    <div class="field">
-      <label for="password">Password</label>
-      <input type="password" name="password" />
+
+    <div class="row">
+      <div class="input-field">
+        <label for="password">Password</label>
+        <input type="password" name="password" />
+      </div>      
     </div>
-    <div class="field">
+    <div class="input-field">
       <% if (user.isNewRecord) { %>
-        <input class="btn" type="submit" name="create" value="Create" />
+        <input class="btn btn-blue" type="submit" name="create" value="Create" />
       <% } else { %>
-        <input class="btn" type="submit" name="update" value="Update" />
+        <input class="btn btn-blue" type="submit" name="update" value="Update" />
       <% } %>
     </div>
   </form>

@@ -37,6 +37,9 @@ module.exports = (sequelize, DataTypes) => {
         len: [6],
       },
     },
+    picture: {
+      type: DataTypes.STRING,
+    },
   });
   user.associate = function associate(models) {
     // Adds userId to reviewRoute, user get the accessors getReviewRoutes and setReviewRoutes

@@ -1,7 +1,6 @@
 <div class="container">
   <h2>Places</h2>
 
-  <a href="<%- submitPlacePath %>">New place</a>
 
 
   <% if (!places.length) { %>
@@ -29,7 +28,7 @@
               <td>
                 <form action="<%- deletePlacePath(place) %>" method="POST">
                   <input type="hidden" name="_method" value="delete" />
-                  <input class="btn" type="submit" value="Delete" />
+                  <input class="btn btn-red" type="submit" value="Delete" />
                 </form>
               </td>
             <% } %>
@@ -38,4 +37,7 @@
       </tbody>
     </table>
   <% } %>
+
+  <a class="btn btn-blue" href="<%- submitPlacePath %>">New place</a>
+
 </div>

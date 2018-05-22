@@ -28,8 +28,21 @@
 .four {
     height: 100%;
     background-color: #59ABE3;
+    margin-bottom: 200px;
 }
 
 .user-description h3 {
     text-align: center;
+}
+
+.login {
+  width: 40%;
+  margin: auto;
+}
+
+#img {
+    max-width: 100%;
+    max-height: 100%;
+    min-width: 100%;
+    min-height: 100%;
 }

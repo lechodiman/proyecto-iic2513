@@ -1,4 +1,6 @@
 const KoaRouter = require('koa-router');
+const sendWelcomeEmail = require('../mailers/signup-alert');
+const uploadFile = require('../services/file-storage');
 
 const router = new KoaRouter();
 
@@ -111,6 +113,7 @@ router.post('users.create', '/', async (ctx) => {
       fields: ['name', 'email', 'password'],
     });
     ctx.session.userId = user.id;
+    await sendWelcomeEmail(ctx, { user });
     ctx.redirect(ctx.router.url('users.profile', { id: user.id }));
   } catch (validationError) {
     await ctx.render('users/new', {
@@ -165,11 +168,24 @@ router.get('users.profile', '/profile/:id', loadUser, loadRoutes, loadAchievemen
     routes: ctx.state.routes,
     achievements: ctx.state.achievements,
     profilePath: _user => ctx.router.url('users.profile', { id: _user.id }),
+    submitPicturePath: ctx.router.url('users.picture', { id: user.id }),
   });
 });
 
 
 router.post('users.comment', '/profile/:id', loadUser, saveComment, getComments, async (ctx) => {
+  ctx.redirect(ctx.router.url('users.profile', { id: ctx.params.id }));
+});
+
+router.post('users.picture', '/profile/:id/picture', loadUser, async (ctx) => {
+  const { image } = ctx.request.body.files;
+
+  if (ctx.state.currentUser.id === ctx.state.user.id) {
+    await uploadFile(ctx, `${ctx.state.user.id}.png`, image);
+    await ctx.state.user.update({ picture: ctx.state.url });
+  }
+
+
   ctx.redirect(ctx.router.url('users.profile', { id: ctx.params.id }));
 });
 

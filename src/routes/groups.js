@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+const sendGroupEmail = require('../mailers/create-group');
 
 const router = new KoaRouter();
 
@@ -87,10 +88,13 @@ router.get('groups.new', '/new', async (ctx) => {
 router.post('groups.create', '/', async (ctx) => {
   const group = ctx.orm.group.build(ctx.request.body);
   try {
-    await group.save({
-      fields: ['name'],
-    });
-    await saveMember(ctx, () => {});
+    if (ctx.state.currentUser) {
+      await group.save({
+        fields: ['name'],
+      });
+      await saveMember(ctx, () => {});
+      await sendGroupEmail(ctx, ctx.state.currentUser);
+    }
     ctx.redirect(ctx.router.url('groups.profile', {
       id: group.id,
     }));
@@ -117,10 +121,12 @@ router.get('groups.edit', '/:id/edit', loadGroup, async (ctx) => {
 router.patch('groups.update', '/:id', loadGroup, async (ctx) => {
   const { group } = ctx.state;
   try {
-    const { name } = ctx.request.body;
-    await group.update({
-      name,
-    });
+    if (ctx.state.currentUser) {
+      const { name } = ctx.request.body;
+      await group.update({
+        name,
+      });
+    }
     ctx.redirect(ctx.router.url('groups.list'));
   } catch (validationError) {
     await ctx.render('groups/edit', {

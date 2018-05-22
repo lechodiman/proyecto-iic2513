@@ -10,24 +10,35 @@
 </head>
 
 <body>
-  <div class="navbar">
+  <nav>
     <h1>TOCHOVA</h1>
     <ul>
-      <a href="/"> Home </a>
-      <a href="/misc/faq"> FAQ </a>
-      <a href="/misc/tips"> Tips </a>        
+      <li><a href="/"> Home </a></li>
+      <li> <a href="#">Explore <span class="fa fa-caret-down"></span> </a>
+        <ul class="drop-menu">
+          <li><a href="/users">Users</a></li>
+          <li><a href="/places">Places</a></li>
+          <li><a href="/groups">Groups</a></li> 
+        </ul>
+      </li>
+      <li><a href="/misc/faq"> FAQ </a></li>
+      <li><a href="/misc/tips"> Tips </a></li>
+      <li><a href="/misc/trophies"><span class="fa fa-trophy"></span></a></li>     
     </ul>
-    <ul>
+    <ul class="pull-right">              
     <% if (currentUser) { %>
-      <a class="pull-right" href="<%= destroySessionPath %>"> Logout </a>
-      <a class="pull-right" href="<%= profilePath(currentUser) %>"> <%- currentUser.name %> </a>
+      <li><a href="<%= profilePath(currentUser) %>"> <%- currentUser.name %> </a></li>
+      <li><a href="<%= destroySessionPath %>"> Logout </a></li>
     <% } else { %>
-      <a class="pull-right" href="<%= newSessionPath %>"> Login </a>
+      <li><a href="/users/new">Sign Up</a></li>
+      <li><a href="<%= newSessionPath %>"> Login </a></li>
     <% } %>        
     </ul>
-  </div>
+  </nav>
 
   <%- body %>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="/assets/app.js"></script>
     <script src="/assets/appReact.js"></script>
 </body>

@@ -44,16 +44,10 @@ async function getReviews(ctx, next) {
 }
 
 
-async function awardTrophies(ctx) {
-  const user = ctx.state.currentUser;
-  const climbs = await ctx.orm.routeCount.findAll({ where: { userId: user.id } });
-  let total = 0;
-  climbs.forEach((climb) => {
-    total += climb.route_count;
-  });
-
-  if (total >= 5) {
-    const trophy = await ctx.orm.achievement.findOne({ where: { name: '5 Climbs' } });
+async function awardSingleTrophy(ctx, total, times, name, user) {
+  if (total >= times) {
+    const trophy = await ctx.orm.achievement.findOne({ where: { name } });
+    if (!trophy) { return; }
     const alreadyAwarded = await ctx.orm.achievementUser.findOne({
       attributes: ['id', 'userId', 'achievementId', 'createdAt'],
       where: { achievementId: trophy.id, userId: user.id },
@@ -65,6 +59,21 @@ async function awardTrophies(ctx) {
       result.setAchievement(trophy.id);
     }
   }
+}
+
+async function awardTrophies(ctx) {
+  const user = ctx.state.currentUser;
+  const climbs = await ctx.orm.routeCount.findAll({ where: { userId: user.id } });
+  let total = 0;
+  climbs.forEach((climb) => {
+    total += climb.route_count;
+  });
+
+  await awardSingleTrophy(ctx, total, 5, '5 Climbs', user);
+  await awardSingleTrophy(ctx, total, 10, '10 Climbs', user);
+  await awardSingleTrophy(ctx, total, 25, '25 Climbs', user);
+  await awardSingleTrophy(ctx, total, 50, '50 Climbs', user);
+  await awardSingleTrophy(ctx, total, 100, '100 Climbs', user);
 }
 
 
@@ -80,10 +89,12 @@ router.post('routes.create', '/', async (ctx) => {
   const placeId = ctx.params.id;
   const route = ctx.orm.route.build(ctx.request.body);
   try {
-    await route.save({
-      fields: ['name', 'description'],
-    });
-    route.setPlace(placeId);
+    if (ctx.state.currentUser) {
+      await route.save({
+        fields: ['name', 'description'],
+      });
+      route.setPlace(placeId);
+    }
     ctx.redirect(ctx.router.url('routes.profile', { id: ctx.params.id, route_id: route.id }));
   } catch (validationError) {
     await ctx.render('routes/new', {
