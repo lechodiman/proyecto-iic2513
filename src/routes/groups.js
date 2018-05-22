@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+const sendGroupEmail = require('../mailers/create-group');
 
 const router = new KoaRouter();
 
@@ -92,6 +93,7 @@ router.post('groups.create', '/', async (ctx) => {
         fields: ['name'],
       });
       await saveMember(ctx, () => {});
+      await sendGroupEmail(ctx, ctx.state.currentUser);
     }
     ctx.redirect(ctx.router.url('groups.profile', {
       id: group.id,
