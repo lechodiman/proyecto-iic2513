@@ -10,5 +10,9 @@ router.get('tips', '/tips', async (ctx) => {
   await ctx.render('misc/tips');
 });
 
+router.get('trophies', '/trophies', async (ctx) => {
+  await ctx.render('misc/trophies');
+});
+
 
 module.exports = router;

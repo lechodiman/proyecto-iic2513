@@ -23,11 +23,11 @@
       </li>
       <li><a href="/misc/faq"> FAQ </a></li>
       <li><a href="/misc/tips"> Tips </a></li>
+      <li><a href="/misc/trophies"><span class="fa fa-trophy"></span></a></li>     
     </ul>
     <ul class="pull-right">              
     <% if (currentUser) { %>
       <li><a href="<%= profilePath(currentUser) %>"> <%- currentUser.name %> </a></li>
-      <li><a href="#"><span class="fa fa-trophy"></span></a></li>     
       <li><a href="<%= destroySessionPath %>"> Logout </a></li>
     <% } else { %>
       <li><a href="/users/new">Sign Up</a></li>
