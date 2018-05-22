@@ -1,7 +1,3 @@
-.place-description {
-    height: 443px;
-}
-
 .four {
     height: 100%;
     background-color: #59ABE3;
@@ -9,4 +5,22 @@
 
 .place-description h3 {
     text-align: center;
+}
+
+.route-profile-container {
+  width: 80%;
+  margin: 20px auto 0 auto;
+  grid-template-columns: 1fr;
+  grid-template-rows: 490px auto;
+  grid-template-areas: 
+  	"descr"
+  	"rev";
+}
+
+.route-profile-description {
+	grid-area: descr;
+}
+
+.route-profile-review {
+	grid-area: rev;
 }

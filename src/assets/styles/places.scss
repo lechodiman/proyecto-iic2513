@@ -27,4 +27,26 @@
   padding: 30px;
 }
 
+.place-profile-container {
+  width: 80%;
+  margin: 20px auto 0 auto;
 
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 490px auto;
+  grid-template-areas: 
+  	"descr routes"
+  	"rev rev";	
+}
+
+.place-description {
+	grid-area: descr;
+}
+
+.place-routes {
+	grid-area: routes;
+}
+
+.place-reviews {
+	grid-area: rev;
+}
