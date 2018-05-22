@@ -10,6 +10,6 @@ module.exports = {
   },
   // defaults to be passed to nodemailer's emails
   defaults: {
-    from: 'Tochova <tochova@example.org>',
+    from: 'Tochova <thetochovapp@gmail.com>',
   },
 };
