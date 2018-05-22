@@ -1,42 +1,42 @@
-<div class="container">
+<div class="place-name container">
 	<h2><%- place.name %></h2>
-
-	<div class="row">
-	<div class="place-description">
-		<div class="four">
-			<h3>Place's Image</h3>
-		</div>
-
-		<div class="eight">
-			<h3>Place's Description</h3>
-			<p><%- place.description %></p>
-		</div>		
-	</div>
-	</div>
-
-
-
-	<h2> Routes: </h2>
-	<% routes.forEach(route => { %>
-	  <div>
-	    <p><a href="<%- routePath(route) %>"><%- route.name %></a></p>
-	  </div>
-
-	<% }); %>
-	<% if (currentUser) { %>
-		<div> <a href ="<%- submitRoutePath %>"> New route </a></div>
-	<% } %>
-
-
-	<h2> Reviews: </h2>
-	<% reviews.forEach(review => { %>
-	  <div>
-	    <p><%- review.comment.comment %> </p>
-	    <p>Posted at <%- review.comment.createdAt %> by <%- review.sender.name %></p>
-	  </div>
-
-	<% }); %>
-	<% if (currentUser) { %>
-		<div> <%- include('_comment') %> </div>
-	<% }; %>
 </div>
+
+<div class="place-profile-container">
+	<div class="place-description">
+		<h2>Place's Description</h2>
+		<p><%- place.description %></p>
+	</div>
+
+	<div class="place-routes">	
+		<h2> Routes: </h2>
+		<% routes.forEach(route => { %>
+		  <div>
+		    <p><a href="<%- routePath(route) %>"><%- route.name %></a></p>
+		  </div>
+
+		<% }); %>
+		<% if (currentUser) { %>
+			<div> <a class="btn btn-green" href ="<%- submitRoutePath %>"> New route </a></div>
+		<% } %>
+
+	</div>
+
+	<div class="place-reviews">
+		<h2> Reviews: </h2>
+		<% reviews.forEach(review => { %>
+		  <div>
+		    <p><%- review.comment.comment %> </p>
+		    <p>Posted at <%- review.comment.createdAt %> by <%- review.sender.name %></p>
+		  </div>
+
+		<% }); %>
+		<% if (currentUser) { %>
+			<div> <%- include('_comment') %> </div>
+		<% }; %>
+	</div>
+
+</div>
+
+	
+

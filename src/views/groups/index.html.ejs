@@ -1,42 +1,27 @@
-<div class="container">
-  <h2>Groups</h2>
+<h2 class="text-center">Groups</h2>
+
+<% if (!groups.length) { %>
+  <p>No results</p>
+<% } else { %>
 
 
+<% groups.forEach((group) => { %>
+  <div class="group-container">
+    <h3 class="group-name"><a class="btn btn-green" href="<%- profilePath(group) %>"><%- group.name %></a></h3>
+    <% if (admin) { %>
+    <a class="btn btn-blue" href="<%- editGroupPath(group) %>">Edit</a>
+    <form action="<%- deleteGroupPath(group) %>" method="POST">
+      <input type="hidden" name="_method" value="delete" />
+      <input class="btn btn-red" type="submit" value="Delete" />
+    </form>
+    <% } %>
+  </div>
+<% }) %>
 
-  <% if (!groups.length) { %>
-    <p>No results</p>
-  <% } else { %>
+<% } %>
 
-    <table id="groups-list">
-      <thead>
-          <tr>
-            <th>Name</th>
-            <% if (admin) { %>
-              <th </th>
-              <th </th>
-            <% } %>
-          </tr>
-      </thead>
-      <tbody>
-        <% groups.forEach((group) => { %>
-          <tr>
-            <td><a href="<%- profilePath(group) %>"><%- group.name %></a></td>
-            <% if (admin) { %>
-              <td><a href="<%- editGroupPath(group) %>">Edit</a></td>
-              <td>
-                <form action="<%- deleteGroupPath(group) %>" method="POST">
-                  <input type="hidden" name="_method" value="delete" />
-                  <input class="btn btn-red" type="submit" value="Delete" />
-                </form>
-              </td>
-            <% } %>
-          </tr>
-        <% }) %>
-      </tbody>
-    </table>
-  <% } %>
-
+<div class="new-group">
   <a class="btn btn-blue" href="<%- submitGroupPath %>">New group</a>
-
-
 </div>
+
+
