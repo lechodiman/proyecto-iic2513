@@ -1,14 +1,9 @@
-<div class="container">
-	<h2 class="text-center"><%- user.name %>'s profile</h2>
-
-	<div class="row">
-	<div class="user-description">
-		<div class="four">
-			<h3>User's Image</h3>
-			<% if (user.picture) { %>
+<div class="user-profile-container">
+	<div class="user-picture">
+		<h3>User's Image</h3>
+		<% if (user.picture) { %>
 			<img id='img' src=<%= user.picture %> />
-			<% }%>
-		</div>
+		<% }%>
 
 		<% if (currentUser && currentUser.id == user.id) { %>
 			<div>
@@ -16,22 +11,19 @@
 			</div>
 		<% }%>
 
-		<div class="eight">
-			<h3>User's Description</h3>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi unde tempore, asperiores expedita architecto eaque sunt at. Quod nulla, ipsa, dolores iste minus aliquid nostrum, incidunt repudiandae voluptatum aliquam nihil nesciunt fugit perferendis cupiditate minima obcaecati laudantium ducimus dolorum quibusdam illum praesentium. Expedita vitae voluptatibus, esse similique, quaerat quisquam itaque?</p>
-		</div>
-	</div>
 	</div>
 
+	<div class="user-name">
+		<h2><%- user.name %></h2>
+	</div>
 
-	<div id="routes">
-
+	<div class="user-routes">
 		<h3>Routes</h3>
-			<table>
-			  <tr>
-			    <th class="title">Route</th>
-			    <th class="title">Times climbed</th>
-			  </tr>
+		<table>
+		  <tr>
+		    <th class="title">Route</th>
+		    <th class="title">Times climbed</th>
+		  </tr>
 
 		<% routes.forEach(route => { %>
 			<tr>
@@ -42,13 +34,12 @@
 		</table>
 	</div>
 
-	<div id="trophies">
-
+	<div class="user-achievements">
 		<h3>Achievements</h3>
-			<table>
-			  <tr>
-			    <th class="title">Name</th>
-			  </tr>
+		<table>
+		  <tr>
+		    <th class="title">Name</th>
+		  </tr>
 
 		<% achievements.forEach(achievement => { %>
 			<tr>
@@ -58,8 +49,7 @@
 		</table>
 	</div>
 
-	<div id="comments">
-
+	<div class="user-comments">
 		<h3>Comments</h3>
 
 		<% comments.forEach(comment => { %>
@@ -70,7 +60,7 @@
 
 		<% }); %>
 
+		<%- include('_comment') %>
 	</div>
-
-	<%- include('_comment') %>
+	
 </div>
