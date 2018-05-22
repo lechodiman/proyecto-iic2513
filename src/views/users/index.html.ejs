@@ -6,7 +6,7 @@
 
 <% users.forEach((user) => { %>
   <div class="user-container">
-    <h3 class="user-name"><a href="<%- profilePath(user) %>"><%- user.name %></a></h3>
+    <h3 class="user-name"><a class="btn btn-green" href="<%- profilePath(user) %>"><%- user.name %></a></h3>
     <% if (admin) { %>
     <h4 class="user-email"><%- user.email %></h4>
     <a class="btn btn-blue" href="<%- editUserPath(user) %>">Edit</a>

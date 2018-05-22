@@ -6,8 +6,8 @@
 
 <% places.forEach((place) => { %>
   <div class="place-container">
-    <h3 class="place-name"><a href="<%- placePath(place) %>"><%- place.name %></a></h3>
-    <h4 class="place-location"><%- place.location %></h4>
+    <h3 class="place-name"><a class="btn btn-green" href="<%- placePath(place) %>"><%- place.name %></a></h3>
+    <h4 class="place-location">Location: <%- place.location %></h4>
     <% if (admin) { %>
     <a class="btn btn-blue" href="<%- editPlacePath(place) %>">Edit</a>
     <form action="<%- deletePlacePath(place) %>" method="POST">
