@@ -46,3 +46,47 @@
     min-width: 100%;
     min-height: 100%;
 }
+
+.user-container {
+  max-width: 600px;
+  margin: 20px auto 0 auto;
+  padding: 30px;
+  border: solid 2px black;
+  display: flex;
+  justify-content: space-between;
+}
+
+.user-profile-container {
+  width: 80%;
+  margin: 20px auto 0 auto;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 443px 100px auto;
+  grid-template-areas: 
+    "img routes ach"
+    "name routes ach"
+    "comm comm comm";
+  grid-column-gap: 1.5em;
+
+}
+
+.user-picture {
+  grid-area: img;
+}
+
+.user-name {
+  grid-area: name;
+}
+
+.user-routes {
+  grid-area: routes;
+}
+
+.user-achievements {
+  grid-area: ach;
+}
+
+.user-comments {
+  grid-area: comm;
+}

@@ -1,43 +1,26 @@
-<div class="container">
-  <h2>Places</h2>
+<h2 class="text-center">Places</h2>
 
+<% if (!places.length) { %>
+  <p>No results</p>
+<% } else { %>
 
+<% places.forEach((place) => { %>
+  <div class="place-container">
+    <h3 class="place-name"><a href="<%- placePath(place) %>"><%- place.name %></a></h3>
+    <h4 class="place-location"><%- place.location %></h4>
+    <% if (admin) { %>
+    <a class="btn btn-blue" href="<%- editPlacePath(place) %>">Edit</a>
+    <form action="<%- deletePlacePath(place) %>" method="POST">
+      <input type="hidden" name="_method" value="delete" />
+      <input class="btn btn-red" type="submit" value="Delete" />
+    </form>
+    <% } %>
+  </div>
+<% }) %>
 
-  <% if (!places.length) { %>
-    <p>No results</p>
-  <% } else { %>
+<% } %>
 
-    <table id="places-list">
-      <thead>
-          <tr>
-            <th>Name</th>
-            <th>Location</th>
-            <% if (admin) { %>
-              <th </th>
-              <th </th>
-            <% } %>
-          </tr>
-      </thead>
-      <tbody>
-        <% places.forEach((place) => { %>
-          <tr>
-            <td><a href="<%- placePath(place) %>"><%- place.name %></a></td>
-            <td><%- place.location %></td>
-            <% if (admin) { %>
-              <td><a href="<%- editPlacePath(place) %>">Edit</a></td>
-              <td>
-                <form action="<%- deletePlacePath(place) %>" method="POST">
-                  <input type="hidden" name="_method" value="delete" />
-                  <input class="btn btn-red" type="submit" value="Delete" />
-                </form>
-              </td>
-            <% } %>
-          </tr>
-        <% }) %>
-      </tbody>
-    </table>
-  <% } %>
-
+<div class="new-place">
   <a class="btn btn-blue" href="<%- submitPlacePath %>">New place</a>
-
 </div>
+
