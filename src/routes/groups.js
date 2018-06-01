@@ -21,6 +21,42 @@ async function isMember(ctx, groupId, member) {
   });
 }
 
+async function saveComment(ctx, next) {
+  const user = ctx.state.currentUser;
+  let { comment } = ctx.request.body;
+  if (await isMember(ctx, ctx.params.id, user)) {
+    comment = await ctx.orm.groupComment.build({ comment });
+    comment = await comment.save();
+    await comment.setUser(user.id);
+    await comment.setGroup(ctx.params.id);
+  }
+  return next();
+}
+
+async function getComments(ctx, next) {
+  const groupComments = await ctx.orm.groupComment.findAll({
+    attributes: ['id', 'comment', 'userId', 'createdAt'],
+    where: { groupId: ctx.params.id },
+    order: [['createdAt', 'DESC']],
+  });
+  const users = [];
+
+  groupComments.forEach((groupComment) => {
+    const user = ctx.orm.user.findOne({ where: { id: groupComment.userId } });
+    users.push(user);
+  });
+
+  return Promise.all(users)
+    .then((allUsers) => {
+      const result = [];
+      for (let i = 0; i < allUsers.length; i += 1) {
+        result.push({ comment: groupComments[i], user: allUsers[i] });
+      }
+      ctx.state.groupComments = result;
+      return next();
+    });
+}
+
 async function saveMember(ctx, next) {
   const user = ctx.state.currentUser;
   const alreadyMember = await isMember(ctx, ctx.params.id, user);
@@ -96,7 +132,7 @@ router.post('groups.create', '/', async (ctx) => {
       await group.save({
         fields: ['name'],
       });
-      await saveMember(ctx, () => {});
+      await saveMember(ctx, () => { });
       await sendGroupEmail(ctx, ctx.state.currentUser);
     }
     ctx.redirect(ctx.router.url('groups.profile', {
@@ -149,11 +185,15 @@ router.del('groups.delete', '/:id', loadGroup, async (ctx) => {
   ctx.redirect(ctx.router.url('groups.list', { number: 1 }));
 });
 
-router.get('groups.profile', '/profile/:id', loadGroup, getMembers, async (ctx) => {
+router.get('groups.profile', '/profile/:id', loadGroup, getComments, getMembers, async (ctx) => {
   const { group } = ctx.state;
+  const user = ctx.state.currentUser;
   await ctx.render('groups/profile', {
     group,
     members: ctx.state.members,
+    comments: ctx.state.groupComments,
+    commentPath: ctx.router.url('groups.comments', { id: ctx.params.id }),
+    alredyMember: await isMember(ctx, ctx.params.id, user),
     profilePathGroup: _group => ctx.router.url('groups.profile', {
       id: _group.id,
     }),
@@ -167,5 +207,10 @@ router.post('groups.profile', '/profile/:id', loadGroup, saveMember, getMembers,
   }));
 });
 
+router.post('groups.comments', '/profile/:id/comment', loadGroup, saveComment, getComments, async (ctx) => {
+  ctx.redirect(ctx.router.url('groups.profile', {
+    id: ctx.params.id,
+  }));
+});
 
 module.exports = router;
