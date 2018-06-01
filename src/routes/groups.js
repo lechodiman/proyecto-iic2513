@@ -65,8 +65,9 @@ async function getMembers(ctx, next) {
 }
 
 
-router.get('groups.list', '/', async (ctx) => {
-  const groups = await ctx.orm.group.findAll();
+router.get('groups.list', '/page/:number', async (ctx) => {
+  const num = parseInt(ctx.params.number, 10);
+  const groups = await ctx.orm.group.findAll({ limit: 5, offset: 5 * (num - 1) });
   await ctx.render('groups/index', {
     groups,
     submitGroupPath: ctx.router.url('groups.new'),
@@ -74,6 +75,9 @@ router.get('groups.list', '/', async (ctx) => {
     deleteGroupPath: group => ctx.router.url('groups.delete', { id: group.id }),
     profilePathGroup: group => ctx.router.url('groups.profile', { id: group.id }),
     admin: await ctx.state.isAdmin(),
+    nextPagePath: () => ctx.router.url('groups.list', { number: num + 1 }),
+    previousPagePath: () => ctx.router.url('groups.list', { number: num - 1 }),
+    pageNumber: num,
   });
 });
 
@@ -127,7 +131,7 @@ router.patch('groups.update', '/:id', loadGroup, async (ctx) => {
         name,
       });
     }
-    ctx.redirect(ctx.router.url('groups.list'));
+    ctx.redirect(ctx.router.url('groups.list', { number: 1 }));
   } catch (validationError) {
     await ctx.render('groups/edit', {
       group,
@@ -142,7 +146,7 @@ router.patch('groups.update', '/:id', loadGroup, async (ctx) => {
 router.del('groups.delete', '/:id', loadGroup, async (ctx) => {
   const { group } = ctx.state;
   await group.destroy();
-  ctx.redirect(ctx.router.url('groups.list'));
+  ctx.redirect(ctx.router.url('groups.list', { number: 1 }));
 });
 
 router.get('groups.profile', '/profile/:id', loadGroup, getMembers, async (ctx) => {
