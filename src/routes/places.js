@@ -49,8 +49,9 @@ async function getRoutes(ctx) {
   return routes;
 }
 
-router.get('places.list', '/', async (ctx) => {
-  const places = await ctx.orm.place.findAll();
+router.get('places.list', '/page/:number', async (ctx) => {
+  const num = parseInt(ctx.params.number, 10);
+  const places = await ctx.orm.place.findAll({ limit: 5, offset: 5 * (num - 1) });
   await ctx.render('places/index', {
     places,
     submitPlacePath: ctx.router.url('places.new'),
@@ -58,6 +59,9 @@ router.get('places.list', '/', async (ctx) => {
     deletePlacePath: place => ctx.router.url('places.delete', { id: place.id }),
     placePath: place => ctx.router.url('places.profile', { id: place.id }),
     admin: await ctx.state.isAdmin(),
+    nextPagePath: () => ctx.router.url('places.list', { number: num + 1 }),
+    previousPagePath: () => ctx.router.url('places.list', { number: num - 1 }),
+    pageNumber: num,
   });
 });
 
@@ -77,7 +81,7 @@ router.post('places.create', '/', async (ctx) => {
         fields: ['name', 'location', 'description'],
       });
     }
-    ctx.redirect(ctx.router.url('places.list'));
+    ctx.redirect(ctx.router.url('places.list', { number: 1 }));
   } catch (validationError) {
     await ctx.render('places/new', {
       place,
@@ -103,7 +107,7 @@ router.patch('places.update', '/:id', loadPlace, async (ctx) => {
     if (await ctx.state.isAdmin()) {
       await place.update({ name, location, description });
     }
-    ctx.redirect(ctx.router.url('places.list'));
+    ctx.redirect(ctx.router.url('places.list', { number: 1 }));
   } catch (validationError) {
     await ctx.render('places/edit', {
       place,
@@ -118,7 +122,7 @@ router.del('places.delete', '/:id', loadPlace, async (ctx) => {
   if (await ctx.state.isAdmin()) {
     await place.destroy();
   }
-  ctx.redirect(ctx.router.url('places.list'));
+  ctx.redirect(ctx.router.url('places.list', { number: 1 }));
 });
 
 

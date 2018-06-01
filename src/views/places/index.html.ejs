@@ -20,6 +20,15 @@
 
 <% } %>
 
+<% if (places.length) { %>
+  <a class="btn btn-blue" href="<%- nextPagePath() %>">Next</a>
+<% } %>
+
+<% if (pageNumber > 1) {%>
+  <a class="btn btn-blue" href="<%- previousPagePath() %>">Previous</a>
+<% } %>
+
+
 <div class="new-place">
   <a class="btn btn-blue" href="<%- submitPlacePath %>">New place</a>
 </div>
