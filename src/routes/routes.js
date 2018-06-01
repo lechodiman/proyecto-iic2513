@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+const uploadRouteGallery = require('../services/file-gallery-routes');
 
 const router = new KoaRouter();
 
@@ -146,6 +147,7 @@ router.get('routes.profile', '/:route_id', loadRoute, getReviews, async (ctx) =>
     reviews: ctx.state.reviews,
     routePath: _route => ctx.router.url('routes.profile', { id: ctx.params.id, route_id: _route.id }),
     routeAddPath: _route => ctx.router.url('routes.add', { id: ctx.params.id, route_id: _route.id }),
+    submitPicturePath: ctx.router.url('routes.picture', { id: ctx.params.id, route_id: route.id }),
   });
 });
 
@@ -169,6 +171,21 @@ router.post('routes.add', '/:route_id/add', loadRoute, async (ctx) => {
   }
 
   await awardTrophies(ctx);
+
+  ctx.redirect(ctx.router.url('routes.profile', { id: ctx.params.id, route_id: ctx.params.route_id }));
+});
+
+router.post('routes.picture', '/profile/:route_id/picture', loadRoute, async (ctx) => {
+  const { image } = ctx.request.body.files;
+  if (ctx.state.currentUser) {
+    let imageRoute = await ctx.orm.routeImage.build();
+    imageRoute.routeId = ctx.state.route.id;
+    imageRoute = await imageRoute.save();
+    await uploadRouteGallery(ctx, `${image.name}-${ctx.state.currentUser.name}.png`, image);
+    await imageRoute.update({ url: ctx.state.url });
+    await imageRoute.save();
+  }
+
 
   ctx.redirect(ctx.router.url('routes.profile', { id: ctx.params.id, route_id: ctx.params.route_id }));
 });

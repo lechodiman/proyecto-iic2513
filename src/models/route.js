@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     // Adds routeId to reviewRoute, route get the accessors getReviewRoutes and setReviewRoutes
     route.hasMany(models.reviewRoute, { as: 'ReviewRoutes' }, { onDelete: 'cascade', hooks: true });
     route.hasMany(models.routeCount, { as: 'RouteCount' }, { onDelete: 'cascade', hooks: true });
+    route.hasMany(models.routeImage, { as: 'RouteImages' }, { onDelete: 'cascade', hooks: true });
   };
   return route;
 };
