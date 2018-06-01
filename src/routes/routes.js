@@ -180,6 +180,7 @@ router.post('routes.picture', '/profile/:route_id/picture', loadRoute, async (ct
   if (ctx.state.currentUser) {
     let imageRoute = await ctx.orm.routeImage.build();
     imageRoute.routeId = ctx.state.route.id;
+    imageRoute.userId = ctx.state.currentUser.id;
     imageRoute = await imageRoute.save();
     await uploadRouteGallery(ctx, `${image.name}-${ctx.state.currentUser.name}.png`, image);
     await imageRoute.update({ url: ctx.state.url });

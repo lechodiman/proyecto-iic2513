@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
   routeImage.associate = function associate(models) {
     // associations can be defined here
     routeImage.belongsTo(models.route);
+    routeImage.belongsTo(models.user);
   };
   return routeImage;
 };
