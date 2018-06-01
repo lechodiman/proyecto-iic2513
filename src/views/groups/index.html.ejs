@@ -7,7 +7,7 @@
 
 <% groups.forEach((group) => { %>
   <div class="group-container">
-    <h3 class="group-name"><a class="btn btn-green" href="<%- profilePath(group) %>"><%- group.name %></a></h3>
+    <h3 class="group-name"><a class="btn btn-green" href="<%- profilePathGroup(group) %>"><%- group.name %></a></h3>
     <% if (admin) { %>
     <a class="btn btn-blue" href="<%- editGroupPath(group) %>">Edit</a>
     <form action="<%- deleteGroupPath(group) %>" method="POST">
