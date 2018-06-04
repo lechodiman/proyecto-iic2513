@@ -18,21 +18,28 @@
         <ul class="drop-menu">
           <li><a href="/users/page/1">Users</a></li>
           <li><a href="/places/page/1">Places</a></li>
-          <li><a href="/groups/page/1">Groups</a></li> 
+          <li><a href="/groups/page/1">Groups</a></li>
         </ul>
       </li>
       <li><a href="/misc/faq"> FAQ </a></li>
       <li><a href="/misc/tips"> Tips </a></li>
-      <li><a href="/misc/trophies"><span class="fa fa-trophy"></span></a></li>     
+      <li><a href="/misc/trophies"><span class="fa fa-trophy"></span></a></li>
     </ul>
-    <ul class="pull-right">              
+    <ul class="pull-right">
+      <% if (userIsAdmin) { %>
+        <li> <a href="#">Admin<span class="fa fa-caret-down"></span> </a>
+          <ul class="drop-menu">
+            <li><a href="/admin/places/page/1">Places</a></li>
+          </ul>
+        </li>
+      <% } %>
     <% if (currentUser) { %>
       <li><a href="<%= profilePath(currentUser) %>"> <%- currentUser.name %> </a></li>
       <li><a href="<%= destroySessionPath %>"> Logout </a></li>
     <% } else { %>
       <li><a href="/users/new">Sign Up</a></li>
       <li><a href="<%= newSessionPath %>"> Login </a></li>
-    <% } %>        
+    <% } %>
     </ul>
   </nav>
 

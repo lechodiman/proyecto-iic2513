@@ -74,20 +74,38 @@ router.get('places.new', '/new', async (ctx) => {
 });
 
 router.post('places.create', '/', async (ctx) => {
-  const place = ctx.orm.place.build(ctx.request.body);
-  try {
-    if (ctx.state.currentUser) {
-      await place.save({
-        fields: ['name', 'location', 'description'],
+  let place = ctx.orm.place.build(ctx.request.body);
+  if (await ctx.state.isAdmin()) {
+    try {
+      if (ctx.state.currentUser) {
+        await place.save({
+          fields: ['name', 'location', 'description'],
+        });
+      }
+      ctx.redirect(ctx.router.url('places.list', { number: 1 }));
+    } catch (validationError) {
+      await ctx.render('places/new', {
+        place,
+        errors: validationError.errors,
+        submitPlacePath: ctx.router.url('places.create'),
       });
     }
-    ctx.redirect(ctx.router.url('places.list', { number: 1 }));
-  } catch (validationError) {
-    await ctx.render('places/new', {
-      place,
-      errors: validationError.errors,
-      submitPlacePath: ctx.router.url('places.create'),
-    });
+  } else {
+    try {
+      if (ctx.state.currentUser) {
+        place = ctx.orm.suggestedPlace.build(ctx.request.body);
+        await place.save({
+          fields: ['name', 'location', 'description'],
+        });
+      }
+      ctx.redirect(ctx.router.url('places.list', { number: 1 }));
+    } catch (validationError) {
+      await ctx.render('places/new', {
+        place,
+        errors: validationError.errors,
+        submitPlacePath: ctx.router.url('places.create'),
+      });
+    }
   }
 });
 

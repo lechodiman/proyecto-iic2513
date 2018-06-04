@@ -8,12 +8,14 @@ const routes = require('./routes/routes');
 const groups = require('./routes/groups');
 const miscs = require('./routes/misc');
 const session = require('./routes/session');
+const admin = require('./routes/admin');
 
 const router = new KoaRouter();
 
 router.use(async (ctx, next) => {
   Object.assign(ctx.state, {
     currentUser: ctx.session.userId && await ctx.orm.user.findById(ctx.session.userId),
+    userIsAdmin: ctx.session.admin,
     newSessionPath: ctx.router.url('session.new'),
     destroySessionPath: ctx.router.url('session.destroy'),
     profilePath: user => ctx.router.url('users.profile', { id: user.id }),
@@ -34,5 +36,7 @@ router.use('/places/:id/routes', routes.routes());
 router.use('/groups', groups.routes());
 router.use('/misc', miscs.routes());
 router.use('/session', session.routes());
+router.use('/admin', admin.routes());
+
 
 module.exports = router;
