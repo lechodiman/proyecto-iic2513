@@ -209,7 +209,11 @@ router.post('routes.picture', '/profile/:route_id/picture', loadRoute, async (ct
 
 router.get('routes.gallery', '/:route_id/gallery/page/:number', async (ctx) => {
   const num = parseInt(ctx.params.number, 10);
-  const images = await ctx.orm.routeImage.findAll({ limit: 1, offset: 1 * (num - 1) });
+  const images = await ctx.orm.routeImage.findAll({
+    where: { routeId: ctx.params.route_id },
+    limit: 1,
+    offset: 1 * (num - 1),
+  });
   await ctx.render('routes/gallery', {
     images,
     nextPagePath: () => ctx.router.url('routes.gallery', { id: ctx.params.id, route_id: ctx.params.route_id, number: num + 1 }),
