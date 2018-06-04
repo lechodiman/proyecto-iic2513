@@ -8,7 +8,11 @@ const routes = require('./routes/routes');
 const groups = require('./routes/groups');
 const miscs = require('./routes/misc');
 const session = require('./routes/session');
+<<<<<<< HEAD
 const admin = require('./routes/admin');
+=======
+const api = require('./routes/api');
+>>>>>>> ReactFirstTry
 
 const router = new KoaRouter();
 
@@ -35,7 +39,11 @@ router.use('/places/:id/routes', routes.routes());
 router.use('/groups', groups.routes());
 router.use('/misc', miscs.routes());
 router.use('/session', session.routes());
+<<<<<<< HEAD
 router.use('/admin', admin.routes());
 
+=======
+router.use('/api', api.routes());
+>>>>>>> ReactFirstTry
 
 module.exports = router;
