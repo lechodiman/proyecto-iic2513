@@ -88,21 +88,36 @@ router.get('routes.new', '/new', async (ctx) => {
 
 router.post('routes.create', '/', async (ctx) => {
   const placeId = ctx.params.id;
-  const route = ctx.orm.route.build(ctx.request.body);
-  try {
-    if (ctx.state.currentUser) {
-      await route.save({
-        fields: ['name', 'description'],
+  let route = ctx.orm.route.build(ctx.request.body);
+  if (await ctx.state.isAdmin()) {
+    try {
+      if (ctx.state.currentUser) {
+        await route.save({
+          fields: ['name', 'description'],
+        });
+        route.setPlace(placeId);
+      }
+      ctx.redirect(ctx.router.url('routes.profile', { id: ctx.params.id, route_id: route.id }));
+    } catch (validationError) {
+      await ctx.render('routes/new', {
+        route,
+        errors: validationError.errors,
+        submitRoutePath: ctx.router.url('routes.create', { id: ctx.params.id }),
       });
-      route.setPlace(placeId);
     }
-    ctx.redirect(ctx.router.url('routes.profile', { id: ctx.params.id, route_id: route.id }));
-  } catch (validationError) {
-    await ctx.render('routes/new', {
-      route,
-      errors: validationError.errors,
-      submitRoutePath: ctx.router.url('routes.create', { id: ctx.params.id }),
-    });
+  } else {
+    try {
+      if (ctx.state.currentUser) {
+        route = ctx.orm.suggestedRoute.build(ctx.request.body);
+        await route.save({
+          fields: ['name', 'description'],
+        });
+        route.setPlace(placeId);
+      }
+      ctx.redirect(ctx.router.url('places.profile', { id: ctx.params.id }));
+    } catch (validationError) {
+      ctx.redirect(ctx.router.url('places.profile', { id: ctx.params.id }));
+    }
   }
 });
 

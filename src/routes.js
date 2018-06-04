@@ -15,7 +15,7 @@ const router = new KoaRouter();
 router.use(async (ctx, next) => {
   Object.assign(ctx.state, {
     currentUser: ctx.session.userId && await ctx.orm.user.findById(ctx.session.userId),
-    userIsAdmin: ctx.session.admin,
+    userIsAdmin: () => ctx.session.admin,
     newSessionPath: ctx.router.url('session.new'),
     destroySessionPath: ctx.router.url('session.destroy'),
     profilePath: user => ctx.router.url('users.profile', { id: user.id }),
@@ -26,7 +26,6 @@ router.use(async (ctx, next) => {
   });
   return next();
 });
-
 
 router.use('/', index.routes());
 router.use('/hello', hello.routes());

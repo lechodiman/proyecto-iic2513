@@ -1,0 +1,33 @@
+<h2 class="text-center">Suggested Routes</h2>
+
+<% if (!routes.length) { %>
+  <p>No results</p>
+<% } else { %>
+
+<% routes.forEach((route) => { %>
+  <div class="place-container">
+    <h3 class="place-name"><%- route.name %></h3>
+    <% if (admin) { %>
+      <form action="<%= acceptRoutePath(route) %>" method="post">
+        <input class="btn btn-green" type="submit" value="Accept Route">
+      </form>
+    <form action="<%- deleteRoutePath(route) %>" method="POST">
+      <input type="hidden" name="_method" value="delete" />
+      <input class="btn btn-red" type="submit" value="Delete" />
+    </form>
+    <% } %>
+  </div>
+<% }) %>
+
+<% } %>
+
+<div class="place-container">
+  <% if (pageNumber > 1) {%>
+    <a class="btn btn-blue" href="<%- previousPagePath() %>">Previous</a>
+  <% } %>
+
+  <% if (routes.length) { %>
+    <a class="btn btn-blue" href="<%- nextPagePath() %>">Next</a>
+  <% } %>
+
+</div>
