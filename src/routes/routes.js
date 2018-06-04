@@ -160,6 +160,7 @@ router.get('routes.profile', '/:route_id', loadRoute, getReviews, async (ctx) =>
   await ctx.render('routes/profile', {
     route,
     reviews: ctx.state.reviews,
+    galleryPath: ctx.router.url('routes.gallery', { id: ctx.params.id, route_id: ctx.params.route_id, number: 1 }),
     routePath: _route => ctx.router.url('routes.profile', { id: ctx.params.id, route_id: _route.id }),
     routeAddPath: _route => ctx.router.url('routes.add', { id: ctx.params.id, route_id: _route.id }),
     submitPicturePath: ctx.router.url('routes.picture', { id: ctx.params.id, route_id: route.id }),
@@ -204,6 +205,17 @@ router.post('routes.picture', '/profile/:route_id/picture', loadRoute, async (ct
 
 
   ctx.redirect(ctx.router.url('routes.profile', { id: ctx.params.id, route_id: ctx.params.route_id }));
+});
+
+router.get('routes.gallery', '/:route_id/gallery/page/:number', async (ctx) => {
+  const num = parseInt(ctx.params.number, 10);
+  const images = await ctx.orm.routeImage.findAll({ limit: 1, offset: 1 * (num - 1) });
+  await ctx.render('routes/gallery', {
+    images,
+    nextPagePath: () => ctx.router.url('routes.gallery', { id: ctx.params.id, route_id: ctx.params.route_id, number: num + 1 }),
+    previousPagePath: () => ctx.router.url('routes.gallery', { id: ctx.params.id, route_id: ctx.params.route_id, number: num - 1 }),
+    pageNumber: num,
+  });
 });
 
 module.exports = router;
