@@ -368,6 +368,14 @@ ul, ol {
   border-bottom-left-radius: 4px;
 }
 
+.list-group-item:hover {
+  color: #555;
+  text-decoration: none;
+  background-color: #f5f5f5;
+}
+
+// Pagination
+
 // Buttons
 
 .btn {

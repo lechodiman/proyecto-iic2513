@@ -40,20 +40,20 @@
   justify-content: center;
 }
 
-
 .user-container {
   max-width: 600px;
   margin: 20px auto 0 auto;
   padding: 30px;
   border: solid 2px black;
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: space-around;  
 }
+
 
 .user-profile-container {
   width: 80%;
   margin: 20px auto 0 auto;
-
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 443px 100px auto;

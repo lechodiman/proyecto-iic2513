@@ -20,13 +20,16 @@
 
 <% } %>
 
-<% if (places.length) { %>
-  <a class="btn btn-blue" href="<%- nextPagePath() %>">Next</a>
-<% } %>
+<div class="place-container">
+  <% if (pageNumber > 1) {%>
+    <a class="btn btn-blue" href="<%- previousPagePath() %>">Previous</a>
+  <% } %>
 
-<% if (pageNumber > 1) {%>
-  <a class="btn btn-blue" href="<%- previousPagePath() %>">Previous</a>
-<% } %>
+  <% if (places.length) { %>
+    <a class="btn btn-blue" href="<%- nextPagePath() %>">Next</a>
+  <% } %>
+    
+</div>
 
 
 <div class="new-place">
