@@ -1,64 +1,69 @@
 <div class="user-profile-container">
-	<div class="user-picture">
-		<h3>User's Image</h3>
+	<div class="user-picture card">
 		<% if (user.picture) { %>
-			<img id='img' src=<%= user.picture %> />
+			<img id='user-img' src=<%= user.picture %> />
 		<% }%>
 
 		<% if (currentUser && currentUser.id == user.id) { %>
-			<div>
-			<%- include('_picture') %>
+			<div class="img-form">
+				<%- include('_picture') %>
 			</div>
 		<% }%>
 
 	</div>
 
-	<div class="user-name">
+	<div class="user-name card">
 		<h2><%- user.name %></h2>
 	</div>
 
-	<div class="user-routes">
-		<h3>Routes</h3>
-		<table>
-		  <tr>
-		    <th class="title">Route</th>
-		    <th class="title">Times climbed</th>
-		  </tr>
+	<div class="user-routes card">
+		<div class="card-header amber">
+			<h3>Routes You Climbed</h3>
+		</div>
 
-		<% routes.forEach(route => { %>
-			<tr>
-				<td class="routes-item"><%- route.route.name %></td>
-				<td class="routes-item"><%- route.count %></td>
-			</tr>
-		<% }); %>
-		</table>
+		<ul class="list-group">
+			<% routes.forEach(route => { %>
+				<li class="list-group-item">
+					<%- route.route.name %>
+					<span class="badge badge-blue pull-right"><%- route.count %></span>
+				</li>
+			<% }); %>				
+		</ul>
+
 	</div>
 
-	<div class="user-achievements">
-		<h3>Achievements</h3>
-		<table>
-		  <tr>
-		    <th class="title">Name</th>
-		  </tr>
+	<div class="user-achievements card">
+		<div class="card-header cyan">
+			<h3>Achievements</h3>		
+		</div>
 
-		<% achievements.forEach(achievement => { %>
-			<tr>
-				<td><%- achievement.name %></td>
-			</tr>
-		<% }); %>
-		</table>
+		<ul class="list-group">
+			<% achievements.forEach(achievement => { %>
+				<li class="list-group-item">
+					<%- achievement.name %>
+				</li>
+			<% }); %>
+		</ul>
 	</div>
 
-	<div class="user-comments">
-		<h3>Comments</h3>
+	<div class="user-comments card">
+		<div class="card-header purple">
+			<h3>Comments</h3>		
+		</div>
 
-		<% comments.forEach(comment => { %>
-		  <div class="comment">
-		    <p><%- comment.comment.comment %> </p>
-		    <p>Posted at <%- comment.comment.createdAt %> by <%- comment.sender.name %></p>
-		  </div>
+		<ul class="list-group">
+			<% comments.forEach(comment => { %>
+			  <ul class="list-group-item">
+			  	<div class="comment-header">
+				  	<p class="comment-author"><%- comment.sender.name %></p>
+				    <p class="comment-date">Posted at <%- comment.comment.createdAt %></p>			  		
+			  	</div>
+			    <p class="comment-body"><%- comment.comment.comment %> </p>
+			  </ul>
 
-		<% }); %>
+			<% }); %>
+			
+		</ul>
 
 		<%- include('_comment') %>
 	</div>
