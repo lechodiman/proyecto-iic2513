@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+const uploadRouteGallery = require('../services/file-gallery-routes');
 
 const router = new KoaRouter();
 
@@ -87,21 +88,36 @@ router.get('routes.new', '/new', async (ctx) => {
 
 router.post('routes.create', '/', async (ctx) => {
   const placeId = ctx.params.id;
-  const route = ctx.orm.route.build(ctx.request.body);
-  try {
-    if (ctx.state.currentUser) {
-      await route.save({
-        fields: ['name', 'description'],
+  let route = ctx.orm.route.build(ctx.request.body);
+  if (await ctx.state.isAdmin()) {
+    try {
+      if (ctx.state.currentUser) {
+        await route.save({
+          fields: ['name', 'description'],
+        });
+        route.setPlace(placeId);
+      }
+      ctx.redirect(ctx.router.url('routes.profile', { id: ctx.params.id, route_id: route.id }));
+    } catch (validationError) {
+      await ctx.render('routes/new', {
+        route,
+        errors: validationError.errors,
+        submitRoutePath: ctx.router.url('routes.create', { id: ctx.params.id }),
       });
-      route.setPlace(placeId);
     }
-    ctx.redirect(ctx.router.url('routes.profile', { id: ctx.params.id, route_id: route.id }));
-  } catch (validationError) {
-    await ctx.render('routes/new', {
-      route,
-      errors: validationError.errors,
-      submitRoutePath: ctx.router.url('routes.create', { id: ctx.params.id }),
-    });
+  } else {
+    try {
+      if (ctx.state.currentUser) {
+        route = ctx.orm.suggestedRoute.build(ctx.request.body);
+        await route.save({
+          fields: ['name', 'description'],
+        });
+        route.setPlace(placeId);
+      }
+      ctx.redirect(ctx.router.url('places.profile', { id: ctx.params.id }));
+    } catch (validationError) {
+      ctx.redirect(ctx.router.url('places.profile', { id: ctx.params.id }));
+    }
   }
 });
 
@@ -144,8 +160,10 @@ router.get('routes.profile', '/:route_id', loadRoute, getReviews, async (ctx) =>
   await ctx.render('routes/profile', {
     route,
     reviews: ctx.state.reviews,
+    galleryPath: ctx.router.url('routes.gallery', { id: ctx.params.id, route_id: ctx.params.route_id, number: 1 }),
     routePath: _route => ctx.router.url('routes.profile', { id: ctx.params.id, route_id: _route.id }),
     routeAddPath: _route => ctx.router.url('routes.add', { id: ctx.params.id, route_id: _route.id }),
+    submitPicturePath: ctx.router.url('routes.picture', { id: ctx.params.id, route_id: route.id }),
   });
 });
 
@@ -171,6 +189,37 @@ router.post('routes.add', '/:route_id/add', loadRoute, async (ctx) => {
   await awardTrophies(ctx);
 
   ctx.redirect(ctx.router.url('routes.profile', { id: ctx.params.id, route_id: ctx.params.route_id }));
+});
+
+router.post('routes.picture', '/profile/:route_id/picture', loadRoute, async (ctx) => {
+  const { image } = ctx.request.body.files;
+  if (ctx.state.currentUser) {
+    let imageRoute = await ctx.orm.routeImage.build();
+    imageRoute.routeId = ctx.state.route.id;
+    imageRoute.userId = ctx.state.currentUser.id;
+    imageRoute = await imageRoute.save();
+    await uploadRouteGallery(ctx, `${image.name}-${ctx.state.currentUser.name}.png`, image);
+    await imageRoute.update({ url: ctx.state.url });
+    await imageRoute.save();
+  }
+
+
+  ctx.redirect(ctx.router.url('routes.profile', { id: ctx.params.id, route_id: ctx.params.route_id }));
+});
+
+router.get('routes.gallery', '/:route_id/gallery/page/:number', async (ctx) => {
+  const num = parseInt(ctx.params.number, 10);
+  const images = await ctx.orm.routeImage.findAll({
+    where: { routeId: ctx.params.route_id },
+    limit: 1,
+    offset: 1 * (num - 1),
+  });
+  await ctx.render('routes/gallery', {
+    images,
+    nextPagePath: () => ctx.router.url('routes.gallery', { id: ctx.params.id, route_id: ctx.params.route_id, number: num + 1 }),
+    previousPagePath: () => ctx.router.url('routes.gallery', { id: ctx.params.id, route_id: ctx.params.route_id, number: num - 1 }),
+    pageNumber: num,
+  });
 });
 
 module.exports = router;

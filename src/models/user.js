@@ -49,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
     user.hasMany(models.profileComment, { as: 'ReceivedComment' }, { onDelete: 'cascade', hooks: true });
     user.hasMany(models.achievementUser, { as: 'AchievementUser' }, { onDelete: 'cascade', hooks: true });
     user.hasMany(models.routeCount, { as: 'RouteCount' }, { onDelete: 'cascade', hooks: true });
+    user.hasMany(models.routeImage, { as: 'RouteImage' }, { onDelete: 'cascade', hooks: true });
   };
 
   user.beforeUpdate(buildPasswordHash);

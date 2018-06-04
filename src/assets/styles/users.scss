@@ -34,11 +34,10 @@
   margin: auto;
 }
 
-#img {
-    max-width: 100%;
-    max-height: 100%;
-    min-width: 100%;
-    min-height: 100%;
+.img-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .user-container {
@@ -47,13 +46,14 @@
   padding: 30px;
   border: solid 2px black;
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: space-around;  
 }
+
 
 .user-profile-container {
   width: 80%;
   margin: 20px auto 0 auto;
-
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 443px 100px auto;
@@ -62,14 +62,20 @@
     "name routes ach"
     "comm comm comm";
   grid-column-gap: 1.5em;
+  grid-row-gap: 1.5em;
 }
 
 .user-picture {
   grid-area: img;
+  display: flex;
+  flex-direction: column;
 }
 
 .user-name {
   grid-area: name;
+  display: flex;
+  align-items: center;
+  justify-content: center;  
 }
 
 .user-routes {
@@ -84,3 +90,25 @@
   grid-area: comm;
 }
 
+.card h2 {
+  margin: 0;
+}
+
+.comment-header {
+  display: flex;
+}
+
+.comment-author {
+  font-size: 16px;
+  font-weight: bold;
+  flex:1;
+}
+
+.comment-date {
+  color: #757575;
+  font-size: 0.8rem;
+}
+
+.comment-body {
+  font-size: 14px;
+}

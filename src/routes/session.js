@@ -14,6 +14,7 @@ router.put('session.create', '/', async (ctx) => {
   const isPasswordCorrect = user && await user.checkPassword(password);
   if (isPasswordCorrect) {
     ctx.session.userId = user.id;
+    ctx.session.admin = await ctx.orm.admin.findOne({ where: { adminId: user.id } });
     return ctx.redirect(ctx.router.url('users.profile', { id: user.id }));
   }
   return ctx.render('session/new', {
@@ -24,6 +25,7 @@ router.put('session.create', '/', async (ctx) => {
 });
 
 router.get('session.destroy', '/logout', (ctx) => {
+  ctx.session.admin = false;
   ctx.session = null;
   ctx.redirect(ctx.router.url('session.new'));
 });

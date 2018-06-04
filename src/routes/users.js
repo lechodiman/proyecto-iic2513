@@ -86,8 +86,9 @@ async function getComments(ctx, next) {
     });
 }
 
-router.get('users.list', '/', async (ctx) => {
-  const users = await ctx.orm.user.findAll();
+router.get('users.list', '/page/:number', async (ctx) => {
+  const num = parseInt(ctx.params.number, 10);
+  const users = await ctx.orm.user.findAll({ limit: 5, offset: 5 * (num - 1) });
   await ctx.render('users/index', {
     users,
     submitUserPath: ctx.router.url('users.new'),
@@ -95,6 +96,9 @@ router.get('users.list', '/', async (ctx) => {
     deleteUserPath: user => ctx.router.url('users.delete', { id: user.id }),
     profilePath: user => ctx.router.url('users.profile', { id: user.id }),
     admin: await ctx.state.isAdmin(),
+    nextPagePath: () => ctx.router.url('users.list', { number: num + 1 }),
+    previousPagePath: () => ctx.router.url('users.list', { number: num - 1 }),
+    pageNumber: num,
   });
 });
 
@@ -139,7 +143,7 @@ router.patch('users.update', '/:id', loadUser, async (ctx) => {
     try {
       const { name, email, password } = ctx.request.body;
       await user.update({ name, email, password });
-      ctx.redirect(ctx.router.url('users.list'));
+      ctx.redirect(ctx.router.url('users.list', { number: 1 }));
     } catch (validationError) {
       await ctx.render('users/edit', {
         user,
@@ -148,7 +152,7 @@ router.patch('users.update', '/:id', loadUser, async (ctx) => {
       });
     }
   } else {
-    ctx.redirect(ctx.router.url('users.list'));
+    ctx.redirect(ctx.router.url('users.list', { number: 1 }));
   }
 });
 
@@ -157,7 +161,7 @@ router.del('users.delete', '/:id', loadUser, async (ctx) => {
     const { user } = ctx.state;
     await user.destroy();
   }
-  ctx.redirect(ctx.router.url('users.list'));
+  ctx.redirect(ctx.router.url('users.list', { number: 1 }));
 });
 
 router.get('users.profile', '/profile/:id', loadUser, loadRoutes, loadAchievements, getComments, async (ctx) => {
@@ -167,6 +171,7 @@ router.get('users.profile', '/profile/:id', loadUser, loadRoutes, loadAchievemen
     comments: ctx.state.comments,
     routes: ctx.state.routes,
     achievements: ctx.state.achievements,
+    galleryPath: ctx.router.url('users.gallery', { id: ctx.params.id, number: 1 }),
     profilePath: _user => ctx.router.url('users.profile', { id: _user.id }),
     submitPicturePath: ctx.router.url('users.picture', { id: user.id }),
   });
@@ -187,6 +192,21 @@ router.post('users.picture', '/profile/:id/picture', loadUser, async (ctx) => {
 
 
   ctx.redirect(ctx.router.url('users.profile', { id: ctx.params.id }));
+});
+
+router.get('users.gallery', 'profile/:id/gallery/page/:number', async (ctx) => {
+  const num = parseInt(ctx.params.number, 10);
+  const images = await ctx.orm.routeImage.findAll({
+    where: { userId: ctx.params.id },
+    limit: 1,
+    offset: 1 * (num - 1),
+  });
+  await ctx.render('users/gallery', {
+    images,
+    nextPagePath: () => ctx.router.url('users.gallery', { id: ctx.params.id, number: num + 1 }),
+    previousPagePath: () => ctx.router.url('users.gallery', { id: ctx.params.id, number: num - 1 }),
+    pageNumber: num,
+  });
 });
 
 

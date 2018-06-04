@@ -1,21 +1,40 @@
 <h2 class="text-center">Users</h2>
 
+  
 <% if (!users.length) { %>
   <p>No results</p>
 <% } else { %>
 
-<% users.forEach((user) => { %>
-  <div class="user-container">
-    <h3 class="user-name"><a class="btn btn-green" href="<%- profilePath(user) %>"><%- user.name %></a></h3>
-    <% if (admin) { %>
-    <h4 class="user-email"><%- user.email %></h4>
-    <a class="btn btn-blue" href="<%- editUserPath(user) %>">Edit</a>
-    <form action="<%- deleteUserPath(user) %>" method="POST">
-      <input type="hidden" name="_method" value="delete" />
-      <input class="btn btn-red" type="submit" value="Delete" />
-    </form>
-    <% } %>
-  </div>
-<% }) %>
+  <% users.forEach((user) => { %>
+    <div class="user-container">
+      <h3 class="user-name"><a class="btn btn-green" href="<%- profilePath(user) %>"><%- user.name %></a></h3>
+      <% if (admin) { %>
+      <h4 class="user-email"><%- user.email %></h4>
+      <a class="btn btn-blue" href="<%- editUserPath(user) %>"> Edit </a>
+      <form action="<%- deleteUserPath(user) %>" method="POST">
+        <input type="hidden" name="_method" value="delete" />
+        <input class="btn btn-red" type="submit" value="Delete" />
+      </form>
+      <% } %>
+    </div>
+  <% }) %>
 
 <% } %>
+
+<div class="user-container">
+  <% if (pageNumber > 1) {%>
+    <div class="prev-page">
+      <a class="btn btn-blue" href="<%- previousPagePath() %>">Previous</a>
+    </div>
+  <% } %>  
+
+  <% if (users.length) { %>
+    <div class="next-page">
+      <a class="btn btn-blue" href="<%- nextPagePath() %>">Next</a>    
+    </div>
+  <% } %>
+
+</div>
+
+
+

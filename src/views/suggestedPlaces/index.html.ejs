@@ -1,4 +1,4 @@
-<h2 class="text-center">Places</h2>
+<h2 class="text-center">Suggested Places</h2>
 
 <% if (!places.length) { %>
   <p>No results</p>
@@ -6,10 +6,12 @@
 
 <% places.forEach((place) => { %>
   <div class="place-container">
-    <h3 class="place-name"><a class="btn btn-green" href="<%- placePath(place) %>"><%- place.name %></a></h3>
+    <h3 class="place-name"><%- place.name %></h3>
     <h4 class="place-location">Location: <%- place.location %></h4>
     <% if (admin) { %>
-    <a class="btn btn-blue" href="<%- editPlacePath(place) %>">Edit</a>
+      <form action="<%= acceptPlacePath(place) %>" method="post">
+        <input class="btn btn-green" type="submit" value="Accept Place">
+      </form>
     <form action="<%- deletePlacePath(place) %>" method="POST">
       <input type="hidden" name="_method" value="delete" />
       <input class="btn btn-red" type="submit" value="Delete" />
@@ -28,11 +30,5 @@
   <% if (places.length) { %>
     <a class="btn btn-blue" href="<%- nextPagePath() %>">Next</a>
   <% } %>
-    
+
 </div>
-
-
-<div class="new-place">
-  <a class="btn btn-blue" href="<%- submitPlacePath %>">New place</a>
-</div>
-

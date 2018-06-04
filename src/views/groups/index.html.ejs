@@ -7,7 +7,7 @@
 
 <% groups.forEach((group) => { %>
   <div class="group-container">
-    <h3 class="group-name"><a class="btn btn-green" href="<%- profilePath(group) %>"><%- group.name %></a></h3>
+    <h3 class="group-name"><a class="btn btn-green" href="<%- profilePathGroup(group) %>"><%- group.name %></a></h3>
     <% if (admin) { %>
     <a class="btn btn-blue" href="<%- editGroupPath(group) %>">Edit</a>
     <form action="<%- deleteGroupPath(group) %>" method="POST">
@@ -19,6 +19,20 @@
 <% }) %>
 
 <% } %>
+
+<div class="group-container">
+
+  <% if (pageNumber > 1) {%>
+    <a class="btn btn-blue" href="<%- previousPagePath() %>">Previous</a>
+  <% } %>
+    
+  <% if (groups.length) { %>
+    <a class="btn btn-blue" href="<%- nextPagePath() %>">Next</a>
+  <% } %>
+  
+</div>
+
+
 
 <div class="new-group">
   <a class="btn btn-blue" href="<%- submitGroupPath %>">New group</a>

@@ -8,6 +8,22 @@
 	    <p><%- member.name %> </p>
 
 	<% }); %>
-
-	<%- include('_addMember') %>
+	
+	<% if (currentUser) { %>
+		<% if (alredyMember) {%>
+			<div class="place-reviews">
+				<h2> Comment: </h2>
+				<% comments.forEach(comment => { %>
+				  <div>
+					<p><%- comment.comment.comment %> </p>
+					<p>Posted at <%- comment.comment.createdAt %> by <%- comment.user.name %></p>
+				  </div>
+		
+				<% }); %>
+			</div>
+			<div> <%- include('_comment') %> </div>
+		<% } else { %>
+			<%- include('_addMember') %>
+		<% } %>
+	<% }; %>
 </div>
