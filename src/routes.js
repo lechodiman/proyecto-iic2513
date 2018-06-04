@@ -8,6 +8,7 @@ const routes = require('./routes/routes');
 const groups = require('./routes/groups');
 const miscs = require('./routes/misc');
 const session = require('./routes/session');
+const api = require('./routes/api');
 
 const router = new KoaRouter();
 
@@ -34,5 +35,6 @@ router.use('/places/:id/routes', routes.routes());
 router.use('/groups', groups.routes());
 router.use('/misc', miscs.routes());
 router.use('/session', session.routes());
+router.use('/api', api.routes());
 
 module.exports = router;

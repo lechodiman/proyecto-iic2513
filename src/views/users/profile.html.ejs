@@ -51,7 +51,6 @@
 
 	<div class="user-comments">
 		<h3>Comments</h3>
-
 		<% comments.forEach(comment => { %>
 		  <div class="comment">
 		    <p><%- comment.comment.comment %> </p>
@@ -60,7 +59,7 @@
 
 		<% }); %>
 
-		<%- include('_comment') %>
+		<div id="userProfileComment-react-app" data-user-profile-comment="<%- comments %>" data-id-profile="<%= user.id %>"> Here go React </div>
 	</div>
 	
 </div>

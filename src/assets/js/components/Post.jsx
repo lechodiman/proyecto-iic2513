@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function Post(props) {
-  console.log(props.placeLocation);
   return (
     <div>
       <button onClick={props.onNewPost}>Load post</button>
