@@ -48,7 +48,7 @@ export default class Comments extends Component {
             <div>
                 <CommentsComponent comments={this.state.comments}/>
                 <form onSubmit={this.onHandleSubmit.bind(this)}>
-                    <textarea value={this.props.currentItem} onChange={this.onHandleChange.bind(this)} name="comment"></textarea>
+                    <textarea value={this.state.currentItem} onChange={this.onHandleChange.bind(this)} name="comment"></textarea>
                     <button className="btn btn-green">Comment</button>
                 </form>
 
