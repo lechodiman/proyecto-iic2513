@@ -22,3 +22,8 @@ export default function CommentsComponent (props) {
             </div>
         )
 }
+
+CommentsComponent.propTypes = {
+  comments: PropTypes.arrayOf(PropTypes.object),
+};
+

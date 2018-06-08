@@ -22,6 +22,7 @@ async function saveComment(ctx, next) {
 }
 
 async function getComments(ctx, next) {
+  // I modified this to send comment already formatted
   let profileComments = await ctx.orm.profileComment.findAll({
     attributes: ['id', 'comment', 'SenderId', 'createdAt'],
     where: { ReceiverId: ctx.params.id },
