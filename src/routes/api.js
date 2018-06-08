@@ -22,10 +22,10 @@ async function saveComment(ctx, next) {
 }
 
 async function getComments(ctx, next) {
-  const profileComments = await ctx.orm.profileComment.findAll({
+  let profileComments = await ctx.orm.profileComment.findAll({
     attributes: ['id', 'comment', 'SenderId', 'createdAt'],
     where: { ReceiverId: ctx.params.id },
-    order: [['createdAt', 'DESC']],
+    order: [['createdAt', 'ASC']],
   });
 
   const users = [];
@@ -39,17 +39,23 @@ async function getComments(ctx, next) {
     .then((allUsers) => {
       const result = [];
       for (let i = 0; i < allUsers.length; i += 1) {
-        result.push({ comment: profileComments[i], sender: allUsers[i] });
+        let thisComment = profileComments[i];
+        result.push({
+          id: thisComment.id,
+          comment: thisComment.comment,
+          createdAt: thisComment.createdAt,
+          user: allUsers[i].name
+         });
       }
       ctx.state.comments = result;
       return next();
     });
 }
 
-router.get('api.users.comment', '/user/profile/:id', async (ctx) => {
+router.get('api.users.comment.list', '/user/comments/:id', loadUser, getComments, async (ctx) => {
   switch (ctx.accepts('json')) {
     case 'json':
-      ctx.body = { msg: 'hola' };
+      ctx.body = { comments: ctx.state.comments };
       break;
     default:
   }

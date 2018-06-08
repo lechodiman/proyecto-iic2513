@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import faker from 'faker';
 
 export default function CommentsComponent (props) {
     return (
@@ -9,7 +10,7 @@ export default function CommentsComponent (props) {
                 </div>
                 <ul className="list-group">
                     {props.comments.map(comment => {
-                        return (<ul className="list-group-item">
+                        return (<ul className="list-group-item" key={`${faker.random.uuid()}`}>
                             <div className="comment-header">
                                 <p className="comment-author">{comment.user}</p>
                                 <p className="comment-date">Posted at {comment.createdAt}</p>

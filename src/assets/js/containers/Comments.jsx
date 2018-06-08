@@ -12,8 +12,22 @@ export default class Comments extends Component {
         }
     }
 
-    componentDidMount() {
-        console.log('component did mount')
+    async componentDidMount() {
+        // GET request to get previous comments
+        const response = await fetch(`/api/user/comments/${this.state.userId}`, {
+          method: 'GET',
+          credentials: 'same-origin',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          }
+        });
+        const json = await response.json();
+        const comments = json.comments;
+        this.setState({
+          comments: comments,
+        });
+
     }
 
     onHandleChange(event) {
