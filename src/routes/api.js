@@ -60,12 +60,13 @@ async function loadPlace(ctx, next) {
 
 async function saveReview(ctx, next) {
   const user = ctx.state.currentUser;
-  let comment = ctx.request.body.review;
+  let comment = ctx.request.body.comment;
   if (user) {
     comment = await ctx.orm.reviewPlace.build({ comment });
     comment = await comment.save();
     await comment.setUser(user.id);
     await comment.setPlace(ctx.params.id);
+    ctx.state.message = comment;
   }
   return next();
 }
