@@ -5,7 +5,8 @@ import Comments from './containers/Comments';
 
 const reactAppContainer = document.getElementById('react-app');
 const reactLogin = document.getElementById('react-weather');
-const reactCommentsContainer = document.getElementById('user-comments-app');
+const reactUserCommentsContainer = document.getElementById('user-comments-app');
+const reactPlaceCommentsContainer = document.getElementById('place-comments-app');
 
 
 if (reactAppContainer) {
@@ -30,8 +31,14 @@ if (reactLogin) {
   render(App);
 }
 
-if (reactCommentsContainer) {
+if (reactUserCommentsContainer) {
   ReactDOM.render(
-      <Comments {...reactCommentsContainer.dataset} />,
-    reactCommentsContainer)
+      <Comments {...reactUserCommentsContainer.dataset} />,
+    reactUserCommentsContainer)
+}
+
+if (reactPlaceCommentsContainer) {
+  ReactDOM.render(
+      <Comments {...reactPlaceCommentsContainer.dataset} />,
+    reactPlaceCommentsContainer)
 }

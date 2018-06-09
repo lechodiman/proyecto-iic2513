@@ -22,6 +22,12 @@
 
 	</div>
 
+	<div class="place-reviews card" id="place-comments-app" data-user-id="<%= place.id %>" data-api-get-path="/api/place/profile/" data-api-post-path="/api/place/profile/">
+		This is the real app
+	</div>
+
+
+	<!--  
 	<div class="place-reviews">
 		<h2> Reviews: </h2>
 		<% reviews.forEach(review => { %>
@@ -35,6 +41,9 @@
 			<div> <%- include('_comment') %> </div>
 		<% }; %>
 	</div>
+
+	-->
+
 <div id="react-weather" data-place-location="<%- place.location %>">
 	Here go React
 </div>

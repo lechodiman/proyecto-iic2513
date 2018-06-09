@@ -9,12 +9,15 @@ export default class Comments extends Component {
             comments: [],
             currentItem: '',
             isLoading: false,
+            apiGetPath: props.apiGetPath,
+            apiPostPath: props.apiPostPath,
         }
     }
 
     async componentDidMount() {
         // GET request to get previous comments
-        const response = await fetch(`/api/user/comments/${this.state.userId}`, {
+        let getUrl = this.state.apiGetPath + this.state.userId;
+        const response = await fetch(getUrl, {
           method: 'GET',
           credentials: 'same-origin',
           headers: {
@@ -23,11 +26,11 @@ export default class Comments extends Component {
           }
         });
         const json = await response.json();
+        console.log(json);
         const comments = json.comments;
         this.setState({
           comments: comments,
         });
-
     }
 
     onHandleChange(event) {
@@ -38,7 +41,8 @@ export default class Comments extends Component {
         // Fetch to user api, this should change depending on the comment section
         event.preventDefault();
         this.setState({isLoading: true});
-        const response = await fetch(`/api/user/profile/${this.state.userId}`, {
+        let postUrl = this.state.apiPostPath + this.state.userId;
+        const response = await fetch(postUrl, {
           method: 'POST',
           credentials: 'same-origin',
           headers: {
