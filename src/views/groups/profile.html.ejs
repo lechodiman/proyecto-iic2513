@@ -1,17 +1,26 @@
-<div class="container">
-	<h2><%- group.name %>'s hub</h2>
+<div class="group-profile-container">
+	<div class="group-profile-name card">
+		<h2><%- group.name %>'s hub</h2>	
+	</div>
 
-	<h3> Members: </h3>
 
-	<% members.forEach( (member) => { %>
+	<div class="group-members card">
+		<div class="card-header cyan">
+			<h3> Members </h3>			
+		</div>
+		
+		<ul class="list-group">
+			<% members.forEach( (member) => { %>
+				<li class="list-group-item"><%- member.name %></li>		
 
-	    <p><%- member.name %> </p>
-
-	<% }); %>
+			<% }); %>		
+			
+		</ul>
+	</div>
 	
 	<% if (currentUser) { %>
 		<% if (alredyMember) {%>
-			<div class="place-reviews">
+			<div class="group-comments">
 				<h2> Comment: </h2>
 				<% comments.forEach(comment => { %>
 				  <div>
