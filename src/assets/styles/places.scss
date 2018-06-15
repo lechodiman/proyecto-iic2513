@@ -32,21 +32,36 @@
   margin: 20px auto 0 auto;
 
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 3fr 2fr 1fr;
   grid-template-rows: 490px auto;
   grid-template-areas: 
-  	"descr routes"
-  	"rev rev";	
+  	"descr routes wheather"
+  	"rev rev rev";
+  grid-column-gap: 1.5em;	
+  grid-row-gap: 1.5em; 
+
 }
 
-.place-description {
+.place-profile-description {
 	grid-area: descr;
 }
 
 .place-routes {
 	grid-area: routes;
+  display: flex;
+  flex-direction: column;
+}
+
+.place-routes .new-route-btn {
+  align-self: center;
+  margin-top: auto;
+  margin-bottom: 1.5em;
 }
 
 .place-reviews {
 	grid-area: rev;
+}
+
+.place-wheather {
+  grid-area: wheather;
 }
