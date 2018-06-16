@@ -5,15 +5,68 @@
 .route-profile-container {
   width: 80%;
   margin: 20px auto 0 auto;
-  grid-template-columns: 1fr;
-  grid-template-rows: 490px auto;
-  grid-template-areas: 
-  	"descr"
-  	"rev";
+  display: grid;
+  grid-template-columns: 3fr 3fr;
+  grid-template-rows: 100px 125px 250px auto;
+  grid-template-areas:
+  	"name name"
+    "descr gallery"
+  	"descr add"
+    "rev rev";
+  grid-gap: 1.5em;
+}
+
+.route-profile-name {
+  grid-area: name;
+  display: flex;
+  align-items: center;
+  justify-content: center;  
 }
 
 .route-profile-description {
 	grid-area: descr;
+}
+
+.route-profile-gallery {
+  grid-area: gallery;
+}
+
+.route-profile-gallery h3 {
+  color: #fff;
+}
+
+.route-profile-gallery a {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;    
+}
+
+.route-profile-gallery .card-header {
+  height: 100%;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+
+.route-profile-add {
+  grid-area: add;
+  display: flex;
+  flex-direction: column;
+}
+
+.route-profile-add p {
+  align-self: center;
+  padding: 0;
+  
+}
+
+
+.route-profile-add .add-route-btn {
+  align-self: center;
+  margin-top: auto;
+  margin-bottom: 1.5em;
 }
 
 .route-profile-review {

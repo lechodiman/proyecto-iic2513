@@ -1,15 +1,31 @@
-<div class="route-profile-name container">
-	<h2><%- route.name %></h2>
-</div>
-
 <div class="route-profile-container">
 
-	<div class="route-profile-description">
-		<h3>Route's Description</h3>
+	<div class="route-profile-name card">
+		<h2><%- route.name %></h2>
+	</div>
+
+	<div class="route-profile-description card">
+		<div class="card-header green">
+			<h3>Description</h3>
+		</div>
+
 		<p><%- route.description %></p>
 	</div>
 
-	<div class="route-profile-review">
+	<% if (currentUser) { %>
+		<div class="route-profile-add card">
+			<div class="card-header amber">
+				<h3>I Climbed this!</h3>
+			</div>
+
+			<p>Add this route to the ones you climbed</p>
+
+			<%- include('_add_route') %>				
+		</div>
+	<% } %>
+
+
+	<div class="route-profile-review card">
 		<h3>Add a review</h3>
 		<% reviews.forEach(review => { %>
 		  <div>
@@ -21,18 +37,16 @@
 
 		<% if (currentUser) { %>
 			<div>
-					<%- include('_pictures') %>
+				<%- include('_pictures') %>
 				<%- include('_comment') %>
-			</div>
-			<div class="add_route">
-				<h4>Add route to the ones you climbed</h4>
-				<%- include('_add_route') %>
 			</div>
 		<% } %>
 	</div>
 
-	<div>
-		<p><a href=<%- galleryPath%>>Gallery</a></p>
+	<div class="route-profile-gallery card">
+		<div class="card-header cyan">
+			<a href=<%- galleryPath%>> <h3>Gallery</h3> </a>
+		</div>
 	<div>
 
 </div>
