@@ -5,9 +5,15 @@
 <% } %>
 
 
-<% images.forEach((image) => { %>
-  <img src=<%-image.url%>>
-<% }) %>
+<div class="imgs-container">
+    <% images.forEach((image) => { %>
+        <div class="img-item">
+            <a href="<%-image.url%>">
+                <img src="<%-image.url%>">
+            </a>
+        </div>
+    <% }) %>
+</div>
 
 
 <div class="place-container">
