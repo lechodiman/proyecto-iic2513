@@ -7,7 +7,7 @@ const reactAppContainer = document.getElementById('react-app');
 const reactLogin = document.getElementById('react-weather');
 const reactUserCommentsContainer = document.getElementById('user-comments-app');
 const reactPlaceCommentsContainer = document.getElementById('place-comments-app');
-
+const reactRouteCommentsContainer = document.getElementById('route-comments-app');
 
 if (reactAppContainer) {
   const render = function render(Component) {
@@ -41,4 +41,10 @@ if (reactPlaceCommentsContainer) {
   ReactDOM.render(
       <Comments {...reactPlaceCommentsContainer.dataset} />,
     reactPlaceCommentsContainer)
+}
+
+if (reactRouteCommentsContainer) {
+  ReactDOM.render(
+      <Comments {...reactRouteCommentsContainer.dataset} />,
+    reactRouteCommentsContainer)
 }

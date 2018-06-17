@@ -20,27 +20,21 @@
 
 			<p>Add this route to the ones you climbed</p>
 
-			<%- include('_add_route') %>				
+			<%- include('_add_route') %>
+		</div>
+	<% } %>
+
+	<% if (currentUser) { %>
+		<div>
+			<%- include('_pictures') %>
 		</div>
 	<% } %>
 
 
 	<div class="route-profile-review card">
-		<h3>Add a review</h3>
-		<% reviews.forEach(review => { %>
-		  <div>
-		    <p><%- review.comment.comment %> </p>
-		    <p>Posted at <%- review.comment.createdAt %> by <%- review.sender.name %></p>
-		  </div>
-
-		<% }); %>
-
-		<% if (currentUser) { %>
-			<div>
-				<%- include('_pictures') %>
-				<%- include('_comment') %>
-			</div>
-		<% } %>
+		<div class="place-reviews card" id="route-comments-app" data-current-user="<%= currentUser %>" data-user-id="<%= route.id %>" data-api-get-path="/api/route/profile/" data-api-post-path="/api/route/profile/">
+			Loading...
+		</div>
 	</div>
 
 	<div class="route-profile-gallery card">

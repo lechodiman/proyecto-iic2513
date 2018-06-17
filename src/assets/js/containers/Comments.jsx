@@ -62,6 +62,7 @@ export default class Comments extends Component {
 
 
     render() {
+      if (this.props.currentUser){
         return (
             <div>
                 <CommentsComponent comments={this.state.comments}/>
@@ -72,5 +73,12 @@ export default class Comments extends Component {
 
             </div>
             )
-    }
+    }else{
+      return (
+          <div>
+              <CommentsComponent comments={this.state.comments}/>
+          </div>
+          )
+  }
+}
 }

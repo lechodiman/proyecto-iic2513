@@ -11,7 +11,7 @@
 		<p><%- place.description %></p>
 	</div>
 
-	<div class="place-routes card">	
+	<div class="place-routes card">
 		<div class="card-header amber">
 			<h3>Routes</h3>
 		</div>
@@ -21,23 +21,20 @@
 				<a class="list-group-item list-group-item-action" href="<%- routePath(route) %>"><%- route.name %></a>
 			<% }); %>
 		</div>
-		
+
 		<% if (currentUser) { %>
-			<a class="btn btn-green new-route-btn" href ="<%- submitRoutePath %>"> New route </a>				
+			<a class="btn btn-green new-route-btn" href ="<%- submitRoutePath %>"> New route </a>
 		<% } %>
 
 	</div>
 
-	<div class="place-reviews card" id="place-comments-app" data-user-id="<%= place.id %>" data-api-get-path="/api/place/profile/" data-api-post-path="/api/place/profile/">
-		This is the real app
+	<div class="place-reviews card" id="place-comments-app" data-current-user="<%= currentUser %>" data-user-id="<%= place.id %>" data-api-get-path="/api/place/profile/" data-api-post-path="/api/place/profile/">
+		Loading...
 	</div>
 
 
 	<div class="place-wheather card" id="react-weather" data-place-location="<%- place.location %>">
-		Here go React
+		Loading...
 	</div>
 
 </div>
-
-	
-

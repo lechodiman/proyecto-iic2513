@@ -23,7 +23,7 @@ async function saveComment(ctx, next) {
 
 async function getComments(ctx, next) {
   // I modified this to send comment already formatted
-  let profileComments = await ctx.orm.profileComment.findAll({
+  const profileComments = await ctx.orm.profileComment.findAll({
     attributes: ['id', 'comment', 'SenderId', 'createdAt'],
     where: { ReceiverId: ctx.params.id },
     order: [['createdAt', 'ASC']],
@@ -40,13 +40,13 @@ async function getComments(ctx, next) {
     .then((allUsers) => {
       const result = [];
       for (let i = 0; i < allUsers.length; i += 1) {
-        let thisComment = profileComments[i];
+        const thisComment = profileComments[i];
         result.push({
           id: thisComment.id,
           comment: thisComment.comment,
           createdAt: thisComment.createdAt,
-          user: allUsers[i].name
-         });
+          user: allUsers[i].name,
+        });
       }
       ctx.state.comments = result;
       return next();
@@ -60,7 +60,7 @@ async function loadPlace(ctx, next) {
 
 async function saveReview(ctx, next) {
   const user = ctx.state.currentUser;
-  let comment = ctx.request.body.comment;
+  let { comment } = ctx.request.body;
   if (user) {
     comment = await ctx.orm.reviewPlace.build({ comment });
     comment = await comment.save();
@@ -88,43 +88,180 @@ async function getReviews(ctx, next) {
     .then((allUsers) => {
       const result = [];
       for (let i = 0; i < allUsers.length; i += 1) {
-        let thisReview = reviewPlaces[i];
+        const thisReview = reviewPlaces[i];
         result.push({
-          id:thisReview.id,
+          id: thisReview.id,
           comment: thisReview.comment,
           createdAt: thisReview.createdAt,
-          user: allUsers[i].name
-        })
+          user: allUsers[i].name,
+        });
       }
       ctx.state.reviews = result;
       return next();
     });
 }
 
-router.get('api.users.comment.list', '/user/profile/:id', loadUser, getComments, async (ctx) => {
-  switch (ctx.accepts('json')) {
-    case 'json':
-      ctx.body = { comments: ctx.state.comments };
-      break;
-    default:
+async function loadRoute(ctx, next) {
+  ctx.state.route = await ctx.orm.route.findById(ctx.params.id);
+  return next();
+}
+
+async function saveRouteReview(ctx, next) {
+  const user = ctx.state.currentUser;
+  let { comment } = ctx.request.body;
+  if (user) {
+    comment = await ctx.orm.reviewRoute.build({ comment });
+    comment = await comment.save();
+    await comment.setUser(user.id);
+    await comment.setRoute(ctx.params.id);
+    ctx.state.message = comment;
   }
+  return next();
+}
+
+async function getRouteReviews(ctx, next) {
+  const reviewRoutes = await ctx.orm.reviewRoute.findAll({
+    attributes: ['id', 'comment', 'userId', 'createdAt'],
+    where: { routeId: ctx.params.id },
+    order: [['createdAt', 'ASC']],
+  });
+  const users = [];
+
+  reviewRoutes.forEach((reviewRoute) => {
+    const user = ctx.orm.user.findOne({ where: { id: reviewRoute.userId } });
+    users.push(user);
+  });
+
+  return Promise.all(users)
+    .then((allUsers) => {
+      const result = [];
+      for (let i = 0; i < allUsers.length; i += 1) {
+        const thisReview = reviewRoutes[i];
+        result.push({
+          id: thisReview.id,
+          comment: thisReview.comment,
+          createdAt: thisReview.createdAt,
+          user: allUsers[i].name,
+        });
+      }
+      ctx.state.reviews = result;
+      return next();
+    });
+}
+
+
+async function getRoutesFromPlace(ctx, placeId) {
+  const routes = await ctx.orm.route.findAll({
+    where: { placeId },
+    attributes: ['id', 'name', 'description'],
+  });
+  return routes;
+}
+
+
+// Public API
+
+router.get('api.places.list', '/place', async (ctx) => {
+  // Get all places with their respective information
+  const places = await ctx.orm.place.findAll({ attributes: ['id', 'name', 'location', 'description'] });
+  const routes = await ctx.orm.route.findAll({ attributes: ['id', 'name', 'description', 'placeId'] });
+
+  const res = [];
+  places.forEach((place) => {
+    const placeInfo = {
+      id: place.id,
+      name: place.name,
+      location: place.location,
+      description: place.description,
+      routes: [],
+    };
+    routes.forEach((route) => {
+      if (route.placeId === place.id) {
+        placeInfo.routes.push({
+          id: route.id,
+          name: route.name,
+          description: route.description,
+        });
+      }
+    });
+    res.push(placeInfo);
+  });
+  ctx.body = { places: res };
+});
+
+router.get('api.places.info', '/place/:id', async (ctx) => {
+  // Get place information
+  const place = await ctx.orm.place.findById(ctx.params.id);
+  const res = {
+    id: place.id,
+    name: place.name,
+    location: place.location,
+    description: place.description,
+    routes: await getRoutesFromPlace(ctx, place.id),
+  };
+  ctx.body = res;
+});
+
+router.get('api.routes.', '/route', async (ctx) => {
+  // Get all routes with their respective information
+  const routes = await ctx.orm.route.findAll({ attributes: ['id', 'name', 'description', 'placeId'] });
+  ctx.body = { routes };
+});
+
+router.get('api.places.info.reviews', '/place/:id/reviews', getReviews, async (ctx) => {
+  // Get place information
+  const place = await ctx.orm.place.findById(ctx.params.id);
+  const res = {
+    id: place.id,
+    name: place.name,
+    location: place.location,
+    description: place.description,
+    routes: await getRoutesFromPlace(ctx, place.id),
+  };
+  ctx.body = res;
+});
+
+router.get('api.users.comment.list', '/user/profile/:id', loadUser, getComments, async (ctx) => {
+  // Get all comments from a user profile
+  ctx.body = { comments: ctx.state.comments };
 });
 
 router.post('api.users.comment', '/user/profile/:id', loadUser, saveComment, async (ctx) => {
-  ctx.body = { user: ctx.state.currentUser.name, message: ctx.state.message.comment, createdAt: ctx.state.message.createdAt };
+  // Post a comment to a user profile
+  ctx.body = {
+    user: ctx.state.currentUser.name,
+    message: ctx.state.message.comment,
+    createdAt: ctx.state.message.createdAt,
+  };
 });
 
 router.get('api.places.review.list', '/place/profile/:id', loadPlace, getReviews, async (ctx) => {
-  switch (ctx.accepts('json')) {
-    case 'json':
-      ctx.body = { comments: ctx.state.reviews };
-      break;
-    default:
-  }
+  // Get all reviews of a place
+  ctx.body = { comments: ctx.state.reviews };
 });
 
 router.post('api.places.review', '/place/profile/:id', loadPlace, saveReview, async (ctx) => {
-  ctx.body = { user: ctx.state.currentUser.name, message: ctx.state.message.comment, createdAt: ctx.state.message.createdAt };
+  // Post a review to a place
+  ctx.body = {
+    user: ctx.state.currentUser.name,
+    message: ctx.state.message.comment,
+    createdAt: ctx.state.message.createdAt,
+  };
 });
+
+router.get('api.routes.review.list', '/route/profile/:id', loadRoute, getRouteReviews, async (ctx) => {
+  // Get all reviews of a route
+  ctx.body = { comments: ctx.state.reviews };
+});
+
+router.post('api.routes.review', '/route/profile/:id', loadRoute, saveRouteReview, async (ctx) => {
+  // Post a review to a route
+  ctx.body = {
+    user: ctx.state.currentUser.name,
+    message: ctx.state.message.comment,
+    createdAt: ctx.state.message.createdAt,
+  };
+});
+
 
 module.exports = router;
