@@ -25,7 +25,7 @@ export default class Comments extends Component {
             'Content-Type': 'application/json',
           }
         });
-        const json = await response.json();s
+        const json = await response.json();
         const comments = json.comments;
         this.setState({
           comments: comments,
