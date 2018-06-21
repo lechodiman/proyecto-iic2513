@@ -27,9 +27,18 @@
 		</ul>
 	</div>
 	
-	<div class="group-comments card" id="group-comments-app" data-current-user="<%= currentUser %>" data-user-id="<%= group.id %>" data-api-get-path="/api/group/profile/" data-api-post-path="/api/group/profile/">
-		Loading...
-	</div>
+	<% if (currentUser && alredyMember) { -%>
+		<div class="group-comments card" id="group-comments-app" data-current-user="<%= currentUser %>" data-user-id="<%= group.id %>" data-api-get-path="/api/group/profile/" data-api-post-path="/api/group/profile/">
+			Loading...
+		</div>		
+	<% } else { -%>
+		<div class="group-comments card">
+			<div class="card-header purple">
+				<h3>Comments</h3>
+			</div>
+			<p>Non members can not see this group´s comments.</p>
+		</div>	
+	<% } -%>
 
 	
 	<!-- 
@@ -47,7 +56,7 @@
 			<div> <%- include('_comment') %> </div>
 		<% } %>
 	<% }; %>
-	-->
+	 -->
 
 
 </div>
