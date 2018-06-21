@@ -7,10 +7,11 @@
   margin: 20px auto 0 auto;
   display: grid;
   grid-template-columns: 3fr 3fr;
-  grid-template-rows: 100px 125px 250px auto;
+  grid-template-rows: 100px 125px 250px 250px auto;
   grid-template-areas:
   	"name name"
     "descr gallery"
+    "descr upload"
   	"descr add"
     "rev rev";
   grid-gap: 1.5em;
@@ -49,6 +50,10 @@
   box-sizing: border-box;
 }
 
+.route-upload-pictures {
+  grid-area: upload;
+}
+
 
 .route-profile-add {
   grid-area: add;
@@ -70,4 +75,15 @@
 
 .route-profile-review {
 	grid-area: rev;
+}
+
+.pictures-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.pictures-form input {
+  margin-top: 1.5em;
 }
