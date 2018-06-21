@@ -140,3 +140,11 @@
 .comment-body {
   font-size: 14px;
 }
+
+.comment-form {
+  display: flex;
+}
+
+.comment-form textarea {
+  flex: 1;
+}
