@@ -158,6 +158,69 @@ async function getRoutesFromPlace(ctx, placeId) {
   return routes;
 }
 
+// Groups
+
+async function loadGroup(ctx, next) {
+  ctx.state.group = await ctx.orm.group.findById(ctx.params.id);
+  return next();
+}
+
+async function saveGroupComment(ctx, next) {
+  const user = ctx.state.currentUser;
+  let { comment } = ctx.request.body;
+  if (await isMember(ctx, ctx.params.id, user)) {
+    comment = await ctx.orm.groupComment.build({ comment });
+    comment = await comment.save();
+    await comment.setUser(user.id);
+    await comment.setGroup(ctx.params.id);
+    ctx.state.message = comment;
+  }
+  return next();
+}
+
+async function getGroupComments(ctx, next) {
+  const groupComments = await ctx.orm.groupComment.findAll({
+    attributes: ['id', 'comment', 'userId', 'createdAt'],
+    where: { groupId: ctx.params.id },
+    order: [['createdAt', 'DESC']],
+  });
+  const users = [];
+
+  groupComments.forEach((groupComment) => {
+    const user = ctx.orm.user.findOne({ where: { id: groupComment.userId } });
+    users.push(user);
+  });
+
+  return Promise.all(users)
+    .then((allUsers) => {
+      const result = [];
+      for (let i = 0; i < allUsers.length; i += 1) {
+        const thisComment = groupComments[i];
+        result.push({
+          id: thisComment.id,
+          comment: thisComment.comment,
+          createdAt: thisComment.createdAt,
+          user: allUsers[i].name,
+        });
+      }
+      ctx.state.groupComments = result;
+      return next();
+    });
+}
+
+async function isMember(ctx, groupId, member) {
+  if (!member) {
+    return false;
+  }
+
+  return ctx.orm.groupMembers.findOne({
+    where: {
+      memberId: member.id,
+      groupId,
+    },
+  });
+}
+
 
 // Public API
 
@@ -262,6 +325,21 @@ router.post('api.routes.review', '/route/profile/:id', loadRoute, saveRouteRevie
     createdAt: ctx.state.message.createdAt,
   };
 });
+
+router.get('api.groups.comment.list', '/group/profile/:id', loadGroup, getGroupComments, async (ctx) => {
+  // Get all comments of a group
+  ctx.body = { comments: ctx.state.groupComments };
+});
+
+router.post('api.groups.comment', '/group/profile/:id', loadGroup, saveGroupComment, async (ctx) => {
+  // Post a comment to a group
+  ctx.body = {
+    user: ctx.state.currentUser.name,
+    message: ctx.state.message.comment,
+    createdAt: ctx.state.message.createdAt,
+  };
+});
+
 
 
 module.exports = router;

@@ -9,6 +9,7 @@ const reactLogin = document.getElementById('react-weather');
 const reactUserCommentsContainer = document.getElementById('user-comments-app');
 const reactPlaceCommentsContainer = document.getElementById('place-comments-app');
 const reactRouteCommentsContainer = document.getElementById('route-comments-app');
+const reactGroupCommentsContainer = document.getElementById('group-comments-app');
 const reactSearchContainer = document.getElementById('route-search-app');
 
 if (reactAppContainer) {
@@ -51,6 +52,13 @@ if (reactRouteCommentsContainer) {
   ReactDOM.render(
     <Comments {...reactRouteCommentsContainer.dataset} />,
     reactRouteCommentsContainer,
+  );
+}
+
+if (reactGroupCommentsContainer) {
+  ReactDOM.render(
+    <Comments {...reactGroupCommentsContainer.dataset} />,
+    reactGroupCommentsContainer,
   );
 }
 

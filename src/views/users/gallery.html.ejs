@@ -1,7 +1,7 @@
 <h2 class="text-center">Gallery</h2>
 
 <% if (!images.length) { %>
-  <p>No results</p>
+  <h5 class="text-center">You do not have images in your gallery yet.</h5>
 <% } %>
 
 
@@ -15,14 +15,16 @@
     <% }) %>
 </div>
 
+<% if (images.length) { -%>
+  <div class="place-container">
+    <% if (pageNumber > 1) {%>
+      <a class="btn btn-blue" href="<%- previousPagePath() %>">Previous</a>
+    <% } %>
 
-<div class="place-container">
-  <% if (pageNumber > 1) {%>
-    <a class="btn btn-blue" href="<%- previousPagePath() %>">Previous</a>
-  <% } %>
+    <% if (images.length) { %>
+      <a class="btn btn-blue" href="<%- nextPagePath() %>">Next</a>
+    <% } %>
 
-  <% if (images.length) { %>
-    <a class="btn btn-blue" href="<%- nextPagePath() %>">Next</a>
-  <% } %>
+  </div>
+<% } -%>
 
-</div>
