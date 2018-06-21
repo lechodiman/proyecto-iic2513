@@ -20,7 +20,7 @@ export default class Post extends Component {
 
   async fetchNewPost() {
     this.setState({ loading: true });
-    const newPost = await postsService.getWeather(this.l);
+    const newPost = await postsService.getWeather(this.state.l);
     this.setState({ tem: Math.round(newPost.main.temp - 273.15), loading: false });
   }
 

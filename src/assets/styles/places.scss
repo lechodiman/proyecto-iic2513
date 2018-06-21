@@ -73,6 +73,11 @@
   height: 100%;
 }
 
+.weather-container p {
+  padding: 0;
+  align-self: center;
+}
+
 .refresh-weather {
   align-self: center;
   margin-top: auto;
