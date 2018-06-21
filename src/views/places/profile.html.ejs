@@ -17,6 +17,10 @@
 		</div>
 
 		<div class="list-group">
+			<% if (routes.length === 0) { -%>
+				<h4 class="text-center">No routes yet!</h4>
+			<% } -%>
+
 			<% routes.forEach(route => { %>
 				<a class="list-group-item list-group-item-action" href="<%- routePath(route) %>"><%- route.name %></a>
 			<% }); %>
@@ -37,4 +41,31 @@
 		Loading...
 	</div>
 
+
+	<div id='map'></div>
+
+	<script>
+	  mapboxgl.accessToken = '<%- token %>';
+	  var map = new mapboxgl.Map({
+	    container: 'map',
+	    style: 'mapbox://styles/mapbox/streets-v9',
+	    center: [<%- long %>, <%- lat %>],
+	    zoom: 18 // starting zoom
+	  });
+
+	  // make a marker for each feature and add to the map
+	  var popup = new mapboxgl.Popup()
+	    .setHTML("<%- place.name %>")
+
+	  var marker = new mapboxgl.Marker()
+	    .setLngLat([<%- long %>, <%- lat %>])
+	    .setPopup(popup)
+	    .addTo(map);
+
+	  map.addControl(new MapboxDirections({
+	    accessToken: mapboxgl.accessToken
+	  }), 'top-left');
+	</script>
+
 </div>
+

@@ -33,12 +33,13 @@
 
   display: grid;
   grid-template-columns: 3fr 2fr 1fr;
-  grid-template-rows: 490px auto;
-  grid-template-areas: 
+  grid-template-rows: minmax(400px, auto) auto minmax(600px, auto) ;
+  grid-template-areas:
   	"descr routes wheather"
-  	"rev rev rev";
-  grid-column-gap: 1.5em;	
-  grid-row-gap: 1.5em; 
+    "rev rev rev"
+    "map map map";
+  grid-column-gap: 1.5em;
+  grid-row-gap: 1.5em;
 
 }
 
@@ -64,4 +65,32 @@
 
 .place-wheather {
   grid-area: wheather;
+}
+
+.weather-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.refresh-weather {
+  align-self: center;
+  margin-top: auto;
+  margin-bottom: 1.5em;
+}
+
+#map {
+  grid-area: map;
+  width: 100%;
+  margin: 0 auto;
+  height: 400px;
+}
+
+.marker {
+  background-image: '/assets/places.png';
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
 }
