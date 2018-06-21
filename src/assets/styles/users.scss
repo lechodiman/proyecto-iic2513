@@ -22,11 +22,11 @@
 }
 
 .user-description {
-    height: 443px;
+  height: 443px;
 }
 
 .user-description h3 {
-    text-align: center;
+  text-align: center;
 }
 
 .login {
@@ -38,6 +38,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: auto;
 }
 
 .user-container {
@@ -69,6 +70,10 @@
   grid-area: img;
   display: flex;
   flex-direction: column;
+}
+
+.user-picture #user-img {
+  flex: auto;
 }
 
 .user-name {
