@@ -20,7 +20,7 @@
 
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 100px 490px auto;
+  grid-template-rows: 100px minmax(200px, auto) auto;
   grid-template-areas:
     "name"
     "members"
@@ -37,6 +37,18 @@
 
 .group-members {
   grid-area: members;
+}
+
+.add-member-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-member-group p {
+  margin: 0;
+  padding: 0;
 }
 
 .group-comments {

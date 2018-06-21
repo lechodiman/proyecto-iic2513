@@ -3,18 +3,27 @@
 		<h2><%- group.name %>'s hub</h2>	
 	</div>
 
-
 	<div class="group-members card">
 		<div class="card-header cyan">
 			<h3> Members </h3>			
 		</div>
 		
 		<ul class="list-group">
-			<% members.forEach( (member) => { %>
-				<li class="list-group-item"><%- member.name %></li>		
+			<% if (members.length === 0) { -%>
+				<h3 class="text-center"> No members yet :(</h4>
 
-			<% }); %>		
-			
+			<% } else { -%>
+				
+				<% members.forEach( (member) => { %>
+					<li class="list-group-item"><%- member.name %></li>		
+				<% }); %>		
+
+			<% } -%>
+
+			<% if (!(currentUser && alredyMember)) { -%>
+				<%- include('_addMember') %>
+			<% } -%>
+
 		</ul>
 	</div>
 	
@@ -27,12 +36,9 @@
 					<p><%- comment.comment.comment %> </p>
 					<p>Posted at <%- comment.comment.createdAt %> by <%- comment.user.name %></p>
 				  </div>
-		
 				<% }); %>
 			</div>
 			<div> <%- include('_comment') %> </div>
-		<% } else { %>
-			<%- include('_addMember') %>
 		<% } %>
 	<% }; %>
 </div>

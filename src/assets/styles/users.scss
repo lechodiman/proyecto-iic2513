@@ -57,10 +57,11 @@
   margin: 20px auto 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 443px 100px auto;
+  grid-template-rows: 443px 100px 125px auto;
   grid-template-areas: 
     "img routes ach"
     "name routes ach"
+    "gallery routes ach"
     "comm comm comm";
   grid-column-gap: 1.5em;
   grid-row-gap: 1.5em;
@@ -93,6 +94,28 @@
 
 .user-comments {
   grid-area: comm;
+}
+
+.user-gallery {
+  grid-area: gallery;
+}
+
+.user-profile-gallery .card-header {
+  height: 100%;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.user-profile-gallery h3 {
+  color: #fff;
+}
+
+.user-profile-gallery a {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;    
 }
 
 .card h2 {
