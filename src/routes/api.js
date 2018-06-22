@@ -7,6 +7,19 @@ async function loadUser(ctx, next) {
   return next();
 }
 
+async function isMember(ctx, groupId, member) {
+  if (!member) {
+    return false;
+  }
+
+  return ctx.orm.groupMembers.findOne({
+    where: {
+      memberId: member.id,
+      groupId,
+    },
+  });
+}
+
 async function saveComment(ctx, next) {
   let { comment } = ctx.request.body;
   const sender = ctx.state.currentUser;
@@ -208,20 +221,6 @@ async function getGroupComments(ctx, next) {
     });
 }
 
-async function isMember(ctx, groupId, member) {
-  if (!member) {
-    return false;
-  }
-
-  return ctx.orm.groupMembers.findOne({
-    where: {
-      memberId: member.id,
-      groupId,
-    },
-  });
-}
-
-
 // Public API
 
 router.get('api.places.list', '/place', async (ctx) => {
@@ -339,7 +338,5 @@ router.post('api.groups.comment', '/group/profile/:id', loadGroup, saveGroupComm
     createdAt: ctx.state.message.createdAt,
   };
 });
-
-
 
 module.exports = router;
