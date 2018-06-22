@@ -198,8 +198,8 @@ router.get('users.gallery', 'profile/:id/gallery/page/:number', async (ctx) => {
   const num = parseInt(ctx.params.number, 10);
   const images = await ctx.orm.routeImage.findAll({
     where: { userId: ctx.params.id },
-    limit: 1,
-    offset: 1 * (num - 1),
+    limit: 10,
+    offset: 10 * (num - 1),
   });
   await ctx.render('users/gallery', {
     images,

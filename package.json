@@ -51,6 +51,7 @@
     "koa-router": "^7.4.0",
     "koa-session": "^5.8.1",
     "koa-static": "^4.0.2",
+    "mapbox-gl": "^0.46.0",
     "node-sass": "^4.8.3",
     "nodemailer": "^4.6.4",
     "pg": "^6.4.2",

@@ -2,7 +2,7 @@ module.exports = {
   up(queryInterface) {
     const placesData = [
       {
-        name: 'Cerro Manquehuito',
+        name: 'Cerro Manquehue',
         location: 'Santiago',
         description: 'Cerro Manquehue is the highest peak in the Santiago valley measuring in at 1638 meters above sea level! ',
         createdAt: new Date(),

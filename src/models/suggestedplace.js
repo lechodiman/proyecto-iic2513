@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     description: DataTypes.STRING,
   });
-  suggestedPlace.associate = function associate(models) {
+  suggestedPlace.associate = function associate() {
     // associations can be defined here
   };
   return suggestedPlace;

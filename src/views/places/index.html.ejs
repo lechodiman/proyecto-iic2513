@@ -1,38 +1,13 @@
 <h2 class="text-center">Places</h2>
 
-<% if (!places.length) { %>
-  <p>No results</p>
-<% } else { %>
+<div id="route-search-app" data-place-path="/places/" data-edit-place-path="/places/"
+  data-delete-place-path="/places/"  data-admin="<%= userIsAdmin() %>">
+  Loading...
+</div>
 
-<% places.forEach((place) => { %>
-  <div class="place-container">
-    <h3 class="place-name"><a class="btn btn-green" href="<%- placePath(place) %>"><%- place.name %></a></h3>
-    <h4 class="place-location">Location: <%- place.location %></h4>
-    <% if (admin) { %>
-    <a class="btn btn-blue" href="<%- editPlacePath(place) %>">Edit</a>
-    <form action="<%- deletePlacePath(place) %>" method="POST">
-      <input type="hidden" name="_method" value="delete" />
-      <input class="btn btn-red" type="submit" value="Delete" />
-    </form>
-    <% } %>
+
+<% if (currentUser) { %>
+  <div class="new-place">
+    <a class="btn btn-blue" href="<%- submitPlacePath %>">New place</a>
   </div>
-<% }) %>
-
 <% } %>
-
-<div class="place-container">
-  <% if (pageNumber > 1) {%>
-    <a class="btn btn-blue" href="<%- previousPagePath() %>">Previous</a>
-  <% } %>
-
-  <% if (places.length) { %>
-    <a class="btn btn-blue" href="<%- nextPagePath() %>">Next</a>
-  <% } %>
-    
-</div>
-
-
-<div class="new-place">
-  <a class="btn btn-blue" href="<%- submitPlacePath %>">New place</a>
-</div>
-

@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 
 export default function Post(props) {
   return (
-    <div>
-      <button onClick={props.onNewPost}>Checkout the weather</button>
-      <h4>{props.tem} º Celsius</h4>
+    <div className="weather-container ">
+    	<div className="card-header blue-grey">
+    		<h3>Weather</h3>
+    	</div>
+      <p>{props.tem} º Celsius</p>
+      <button className="btn btn-green refresh-weather" onClick={props.onNewPost}>Checkout the weather</button>
     </div>
   );
 }

@@ -3,42 +3,69 @@
 </div>
 
 <div class="place-profile-container">
-	<div class="place-description">
-		<h2>Place's Description</h2>
+	<div class="place-profile-description card">
+		<div class="card-header green">
+			<h3>Description</h3>
+		</div>
+
 		<p><%- place.description %></p>
 	</div>
 
-	<div class="place-routes">	
-		<h2> Routes: </h2>
-		<% routes.forEach(route => { %>
-		  <div>
-		    <p><a href="<%- routePath(route) %>"><%- route.name %></a></p>
-		  </div>
+	<div class="place-routes card">
+		<div class="card-header amber">
+			<h3>Routes</h3>
+		</div>
 
-		<% }); %>
+		<div class="list-group">
+			<% if (routes.length === 0) { -%>
+				<h4 class="text-center">No routes yet!</h4>
+			<% } -%>
+
+			<% routes.forEach(route => { %>
+				<a class="list-group-item list-group-item-action" href="<%- routePath(route) %>"><%- route.name %></a>
+			<% }); %>
+		</div>
+
 		<% if (currentUser) { %>
-			<div> <a class="btn btn-green" href ="<%- submitRoutePath %>"> New route </a></div>
+			<a class="btn btn-green new-route-btn" href ="<%- submitRoutePath %>"> New route </a>
 		<% } %>
 
 	</div>
 
-	<div class="place-reviews">
-		<h2> Reviews: </h2>
-		<% reviews.forEach(review => { %>
-		  <div>
-		    <p><%- review.comment.comment %> </p>
-		    <p>Posted at <%- review.comment.createdAt %> by <%- review.sender.name %></p>
-		  </div>
-
-		<% }); %>
-		<% if (currentUser) { %>
-			<div> <%- include('_comment') %> </div>
-		<% }; %>
+	<div class="place-reviews card" id="place-comments-app" data-current-user="<%= currentUser %>" data-user-id="<%= place.id %>" data-api-get-path="/api/place/profile/" data-api-post-path="/api/place/profile/">
+		Loading...
 	</div>
-<div id="react-weather" data-place-location="<%- place.location %>">
-	Here go React
-</div>
-</div>
 
-	
+
+	<div class="place-wheather card" id="react-weather" data-place-location="<%- place.location %>">
+		Loading...
+	</div>
+
+
+	<div id='map'></div>
+
+	<script>
+	  mapboxgl.accessToken = '<%- token %>';
+	  var map = new mapboxgl.Map({
+	    container: 'map',
+	    style: 'mapbox://styles/mapbox/streets-v9',
+	    center: [<%- long %>, <%- lat %>],
+	    zoom: 18 // starting zoom
+	  });
+
+	  // make a marker for each feature and add to the map
+	  var popup = new mapboxgl.Popup()
+	    .setHTML("<%- place.name %>")
+
+	  var marker = new mapboxgl.Marker()
+	    .setLngLat([<%- long %>, <%- lat %>])
+	    .setPopup(popup)
+	    .addTo(map);
+
+	  map.addControl(new MapboxDirections({
+	    accessToken: mapboxgl.accessToken
+	  }), 'top-left');
+	</script>
+
+</div>
 

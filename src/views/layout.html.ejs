@@ -4,6 +4,11 @@
 <head>
   <meta charset="utf-8">
   <title>Tochova</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.css' rel='stylesheet' />
+  <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v3.1.3/mapbox-gl-directions.js'></script>
+<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v3.1.3/mapbox-gl-directions.css' type='text/css' />
   <% if (env !== 'development') { %>
     <link rel="stylesheet" href="/assets/styles.css">
     <% } %>
@@ -23,9 +28,9 @@
       </li>
       <li> <a href="#">Know more <span class="fa fa-caret-down"></span> </a>
         <ul class="drop-menu">
-            <li><a href="/misc/faq"> FAQ </a></li>
-            <li><a href="/misc/tips"> Tips </a></li>
-            <li><a href="/misc/trophies"><span class="fa fa-trophy"></span></a></li>
+          <li><a href="/misc/faq"> FAQ </a></li>
+          <li><a href="/misc/tips"> Tips </a></li>
+          <li><a href="/misc/trophies"><span class="fa fa-trophy"></span></a></li>
         </ul>
       </li>
     </ul>
@@ -37,14 +42,18 @@
             <li><a href="/admin/routes/page/1">Routes</a></li>
           </ul>
         </li>
-      <% } %>
-    <% if (currentUser) { %>
-      <li><a href="<%= profilePath(currentUser) %>"> <%- currentUser.name %> </a></li>
-      <li><a href="<%= destroySessionPath %>"> Logout </a></li>
-    <% } else { %>
-      <li><a href="/users/new">Sign Up</a></li>
-      <li><a href="<%= newSessionPath %>"> Login </a></li>
-    <% } %>
+        <% } %>
+          <% if (currentUser) { %>
+            <li>
+              <a href="<%= profilePath(currentUser) %>">
+                <%- currentUser.name %>
+              </a>
+            </li>
+            <li><a href="<%= destroySessionPath %>"> Logout </a></li>
+            <% } else { %>
+              <li><a href="/users/new">Sign Up</a></li>
+              <li><a href="<%= newSessionPath %>"> Login </a></li>
+              <% } %>
     </ul>
   </nav>
 

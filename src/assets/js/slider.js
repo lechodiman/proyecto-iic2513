@@ -1,3 +1,5 @@
+/* eslint-env jquery */
+
 $(document).ready(() => {
   const imgItems = $('.slider li').length;
   let imgPos = 1;
@@ -7,7 +9,7 @@ $(document).ready(() => {
 
   let interval;
 
-  for (let i = 0; i < imgItems; i++) {
+  for (let i = 0; i < imgItems; i += 1) {
     $('.pagination').append('<li><span class="fa fa-circle"></span></li>');
   }
 
@@ -15,21 +17,9 @@ $(document).ready(() => {
   $('.slider li:first').show();
   $('.pagination li:first').css({ color: '#CD6E2E' });
 
-
-  $('.pagination li').on('click', onPagClick);
-  $('.right span').on('click', nextSlider);
-  $('.left span').on('click', prevSlider);
-
-  function startSlider() {
-    interval = setInterval(nextSlider, pause);
-  }
-
   function pauseSlider() {
     clearInterval(interval);
   }
-
-  $slideShow.on('mouseenter', pauseSlider);
-  $slideShow.on('mouseleave', startSlider);
 
   function onPagClick() {
     const paginationPos = $(this).index() + 1;
@@ -63,6 +53,18 @@ $(document).ready(() => {
     $('.slider li').hide();
     $(`.slider li:nth-child(${imgPos})`).fadeIn();
   }
+
+  function startSlider() {
+    interval = setInterval(nextSlider, pause);
+  }
+
+  $slideShow.on('mouseenter', pauseSlider);
+  $slideShow.on('mouseleave', startSlider);
+
+  $('.pagination li').on('click', onPagClick);
+  $('.right span').on('click', nextSlider);
+  $('.left span').on('click', prevSlider);
+
 
   startSlider();
 });

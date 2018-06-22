@@ -1,4 +1,6 @@
 const KoaRouter = require('koa-router');
+const geocode = require('../services/mapbox');
+const mapConfig = require('../config/map');
 
 const router = new KoaRouter();
 
@@ -49,20 +51,18 @@ async function getRoutes(ctx) {
   return routes;
 }
 
-router.get('places.list', '/page/:number', async (ctx) => {
-  const num = parseInt(ctx.params.number, 10);
-  const places = await ctx.orm.place.findAll({ limit: 5, offset: 5 * (num - 1) });
+router.get('places.index', '/', async (ctx) => {
   await ctx.render('places/index', {
-    places,
     submitPlacePath: ctx.router.url('places.new'),
     editPlacePath: place => ctx.router.url('places.edit', { id: place.id }),
     deletePlacePath: place => ctx.router.url('places.delete', { id: place.id }),
     placePath: place => ctx.router.url('places.profile', { id: place.id }),
     admin: await ctx.state.isAdmin(),
-    nextPagePath: () => ctx.router.url('places.list', { number: num + 1 }),
-    previousPagePath: () => ctx.router.url('places.list', { number: num - 1 }),
-    pageNumber: num,
   });
+});
+
+router.get('places.list', '/page/:number', async (ctx) => {
+  ctx.redirect(ctx.router.url('places.index'));
 });
 
 router.get('places.new', '/new', async (ctx) => {
@@ -146,18 +146,41 @@ router.del('places.delete', '/:id', loadPlace, async (ctx) => {
 
 router.get('places.profile', '/:id', loadPlace, getReviews, async (ctx) => {
   const { place } = ctx.state;
+
+  const geolocation = await geocode(`${place.name}, ${place.location} Chile`);
+  let location;
+  try {
+    location = geolocation.features[0].center;
+  } catch (e) {
+    location = await geocode(`${place.location} Chile`).features[0].center;
+  }
   await ctx.render('places/profile', {
     place,
+    lat: location[1],
+    long: location[0],
+    token: mapConfig.token,
     routes: await getRoutes(ctx),
     reviews: ctx.state.reviews,
     placePath: _place => ctx.router.url('places.profile', { id: _place.id }),
     routePath: _route => ctx.router.url('routes.profile', { id: ctx.params.id, route_id: _route.id }),
     submitRoutePath: ctx.router.url('routes.new', { id: ctx.params.id }),
+    mapPath: ctx.router.url('places.map', { id: place.id, lat: location[1], long: location[0] }),
   });
 });
 
 router.post('places.profile', '/:id', loadPlace, saveReview, getReviews, async (ctx) => {
   ctx.redirect(ctx.router.url('places.profile', { id: ctx.params.id }));
 });
+
+router.get('places.map', '/:id/map/:lat/:long', loadPlace, async (ctx) => {
+  const { place } = ctx.state;
+  await ctx.render('places/map', {
+    place,
+    lat: parseFloat(ctx.params.lat),
+    long: parseFloat(ctx.params.long),
+    token: mapConfig.token,
+  });
+});
+
 
 module.exports = router;

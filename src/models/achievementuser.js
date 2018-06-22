@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize) => {
   const achievementUser = sequelize.define('achievementUser', {
   });
   achievementUser.associate = function associate(models) {

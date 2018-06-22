@@ -1,29 +1,62 @@
-<div class="container">
-	<h2><%- group.name %>'s hub</h2>
+<div class="group-profile-container">
+	<div class="group-profile-name card">
+		<h2><%- group.name %>'s hub</h2>	
+	</div>
 
-	<h3> Members: </h3>
+	<div class="group-members card">
+		<div class="card-header cyan">
+			<h3> Members </h3>			
+		</div>
+		
+		<ul class="list-group">
+			<% if (members.length === 0) { -%>
+				<h3 class="text-center"> No members yet :(</h4>
 
-	<% members.forEach( (member) => { %>
+			<% } else { -%>
+				
+				<% members.forEach( (member) => { %>
+					<li class="list-group-item"><%- member.name %></li>		
+				<% }); %>		
 
-	    <p><%- member.name %> </p>
+			<% } -%>
 
-	<% }); %>
+			<% if (!(currentUser && alredyMember)) { -%>
+				<%- include('_addMember') %>
+			<% } -%>
+
+		</ul>
+	</div>
 	
+	<% if (currentUser && alredyMember) { -%>
+		<div class="group-comments card" id="group-comments-app" data-current-user="<%= currentUser %>" data-user-id="<%= group.id %>" data-api-get-path="/api/group/profile/" data-api-post-path="/api/group/profile/">
+			Loading...
+		</div>		
+	<% } else { -%>
+		<div class="group-comments card">
+			<div class="card-header purple">
+				<h3>Comments</h3>
+			</div>
+			<p>Non members can not see this group´s comments.</p>
+		</div>	
+	<% } -%>
+
+	
+	<!-- 
 	<% if (currentUser) { %>
 		<% if (alredyMember) {%>
-			<div class="place-reviews">
+			<div class="group-comments">
 				<h2> Comment: </h2>
 				<% comments.forEach(comment => { %>
 				  <div>
 					<p><%- comment.comment.comment %> </p>
 					<p>Posted at <%- comment.comment.createdAt %> by <%- comment.user.name %></p>
 				  </div>
-		
 				<% }); %>
 			</div>
 			<div> <%- include('_comment') %> </div>
-		<% } else { %>
-			<%- include('_addMember') %>
 		<% } %>
 	<% }; %>
+	 -->
+
+
 </div>

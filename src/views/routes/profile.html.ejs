@@ -1,38 +1,50 @@
-<div class="route-profile-name container">
-	<h2><%- route.name %></h2>
-</div>
-
 <div class="route-profile-container">
 
-	<div class="route-profile-description">
-		<h3>Route's Description</h3>
+	<div class="route-profile-name card">
+		<h2><%- route.name %></h2>
+	</div>
+
+	<div class="route-profile-description card">
+		<div class="card-header green">
+			<h3>Description</h3>
+		</div>
+
 		<p><%- route.description %></p>
 	</div>
 
-	<div class="route-profile-review">
-		<h3>Add a review</h3>
-		<% reviews.forEach(review => { %>
-		  <div>
-		    <p><%- review.comment.comment %> </p>
-		    <p>Posted at <%- review.comment.createdAt %> by <%- review.sender.name %></p>
-		  </div>
-
-		<% }); %>
-
-		<% if (currentUser) { %>
-			<div>
-					<%- include('_pictures') %>
-				<%- include('_comment') %>
+	<% if (currentUser) { %>
+		<div class="route-profile-add card">
+			<div class="card-header amber">
+				<h3>I Climbed this!</h3>
 			</div>
-			<div class="add_route">
-				<h4>Add route to the ones you climbed</h4>
-				<%- include('_add_route') %>
+
+			<p>Add this route to the ones you climbed</p>
+
+			<%- include('_add_route') %>
+		</div>
+	<% } %>
+
+
+	<% if (currentUser) { %>
+		<div class="route-upload-pictures card">
+			<div class="card-header blue-grey">
+				<h3>Upload Picture</h3>
 			</div>
-		<% } %>
+			<%- include('_pictures') %>
+		</div>
+	<% } %>
+
+
+	<div class="route-profile-review card">
+		<div class="place-reviews card" id="route-comments-app" data-current-user="<%= currentUser %>" data-user-id="<%= route.id %>" data-api-get-path="/api/route/profile/" data-api-post-path="/api/route/profile/">
+			Loading...
+		</div>
 	</div>
 
-	<div>
-		<p><a href=<%- galleryPath%>>Gallery</a></p>
+	<div class="route-profile-gallery card">
+		<div class="card-header cyan">
+			<a href=<%- galleryPath%>> <h3>Gallery</h3> </a>
+		</div>
 	<div>
 
 </div>

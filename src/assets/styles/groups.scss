@@ -14,4 +14,44 @@
   padding: 30px;
 }
 
+.group-profile-container {
+  width: 80%;
+  margin: 20px auto 0 auto;
 
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 100px minmax(200px, auto) auto;
+  grid-template-areas:
+    "name"
+    "members"
+    "comments";
+  grid-gap: 1.5em;
+}
+
+.group-profile-name {
+  grid-area: name;
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+}
+
+.group-members {
+  grid-area: members;
+}
+
+.add-member-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-member-group p {
+  margin: 0;
+  padding: 0;
+}
+
+.group-comments {
+  grid-area: comments;
+  margin-bottom: 1.5em;
+}

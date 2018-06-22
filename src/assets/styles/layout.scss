@@ -7,7 +7,7 @@ html {
   margin: 0;
   padding: 0;
   background-color: #f4f4f4;
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
   font-size: 16px;
   font-weight: normal;
   line-height: 1.6em;
@@ -34,7 +34,7 @@ label {
   width: 250px;
 }
 
-input[type="text"], 
+input[type="text"],
 input[type=email],
 input[type="password"] {
   display: inline-block;
@@ -58,7 +58,8 @@ textarea {
   margin: 0;
   width: 100%;
   height: 3rem;
-  background-color: transparent;
+  resize: none;
+  font-family: inherit;
 }
 
 nav {
@@ -164,7 +165,6 @@ ul, ol {
   height: 100%;
   top: 0;
   left: 0;
-  padding: 15px 50px;
 
   display: flex;
   flex-direction: column;
@@ -219,8 +219,14 @@ ul, ol {
   right: 10px;
 }
 
-
 // Page content
+
+.sections-container {
+  width: 80%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+}
 
 .container {
   margin: auto;
@@ -230,6 +236,7 @@ ul, ol {
 .section {
   background-color: white;
   height: 400px;
+  flex-basis: 30%;
   text-align: center;
 }
 
@@ -315,6 +322,14 @@ ul, ol {
   background-color: #9c27b0;
 }
 
+.green {
+  background-color: #4CAF50; 
+}
+
+.blue-grey {
+  background-color: #607d8b;
+}
+
 .card .card-header {
   padding: 20px;
   border-bottom: 1px solid #e0e0e0;
@@ -350,6 +365,7 @@ ul, ol {
   padding-left: 0;
   margin-bottom: 20px;
 }
+
 .list-group-item {
   position: relative;
   display: block;
@@ -358,10 +374,12 @@ ul, ol {
   background-color: #fff;
   border: 1px solid #ddd;
 }
+
 .list-group-item:first-child {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
 }
+
 .list-group-item:last-child {
   margin-bottom: 0;
   border-bottom-right-radius: 4px;
@@ -372,6 +390,11 @@ ul, ol {
   color: #555;
   text-decoration: none;
   background-color: #f5f5f5;
+}
+
+.list-group-item-action {
+  color: #495057;
+  text-align: inherit;
 }
 
 // Pagination
@@ -448,6 +471,7 @@ ul, ol {
   cursor: text;
 }
 
+
 // Helper classes
 
 .text-left {
@@ -462,19 +486,6 @@ ul, ol {
 .text-justify {
   text-align: justify;
 }
-.text-nowrap {
-  white-space: nowrap;
-}
-.text-lowercase {
-  text-transform: lowercase;
-}
-.text-uppercase {
-  text-transform: uppercase;
-}
-.text-capitalize {
-  text-transform: capitalize;
-}
-
 .center-block {
   display: block;
   margin-right: auto;
@@ -489,7 +500,6 @@ ul, ol {
 .hide {
   display: none !important;
 }
-
 .clr {
   clear: both;
 }

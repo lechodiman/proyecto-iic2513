@@ -46,23 +46,15 @@
 		</ul>
 	</div>
 
-	<div class="user-comments">
-		<h3>Comments</h3>
-		<% comments.forEach(comment => { %>
-		  <div class="comment">
-		    <p><%- comment.comment.comment %> </p>
-		    <p>Posted at <%- comment.comment.createdAt %> by <%- comment.sender.name %></p>
-		  </div>
-
-			<% }); %>
-
-		</ul>
-
-		<div id="userProfileComment-react-app" data-user-profile-comment="<%- comments %>" data-id-profile="<%= user.id %>"> Here go React </div>
+	<div class="user-comments card" id="user-comments-app" data-current-user="<%= currentUser %>" data-user-id="<%= user.id %>" data-api-get-path="/api/user/profile/" data-api-post-path="/api/user/profile/">
+		Loading...
 	</div>
 
-	<div>
-		<p><a href=<%- galleryPath%>>Gallery</a></p>
+
+	<div class="user-profile-gallery card">
+		<div class="card-header blue-grey">
+			<a href=<%- galleryPath%>> <h3>Gallery</h3> </a>
+		</div>
 	<div>
 
 
