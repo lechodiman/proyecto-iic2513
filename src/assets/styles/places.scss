@@ -99,3 +99,17 @@
   border-radius: 50%;
   cursor: pointer;
 }
+
+.search-field {
+  margin: 0 auto;
+  flex-basis: 100%;
+  flex: 1;
+}
+
+.search-container {
+  max-width: 600px;
+  margin: 20px auto 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+}

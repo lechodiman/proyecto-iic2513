@@ -81,12 +81,15 @@ export default class Search extends Component {
   render() {
     return (
       <div>
-        <form className="place-container">
-          <input
-            placeholder="Search..."
-            ref={input => this.search = input}
-            onChange={this.onHandleChange}
-          />
+        <form className="search-container">
+          <div className="input-field search-field">
+            <input
+              type="text"
+              placeholder="Search..."
+              ref={input => this.search = input}
+              onChange={this.onHandleChange}
+            />
+          </div>
           <p>{this.state.query}</p>
         </form>
 
